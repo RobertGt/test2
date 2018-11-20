@@ -1,0 +1,144 @@
+ <!DOCTYPE html>
+<html>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/table_basic.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:01 GMT -->
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台 - 会员账号管理</title>
+    <meta name="keywords" content="后台">
+    <meta name="description" content="后台">
+
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link href="../../static/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="../../static/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../../static/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <link href="../../static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+</head>
+<style>
+.fancybox img{
+	width: 30%;
+}
+</style>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>会员账号管理</h5>
+                        <div class="ibox-tools">
+							<a class="refresh-link" href="javascript:location.reload()">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+						<div class="row">
+							<div class="col-sm-1 m-b-xs searchFrom">
+								<div class="input-group">
+									<select class="input-sm form-control" name="platform" style="font-size: 13px;">
+										<option value=''>登录平台</option>
+										<option value='wechat'>wechat</option>
+										<option value='qq'>qq</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-sm-1 m-b-xs searchFrom">
+								<div class="input-group">
+
+									<select class="input-sm form-control" name="sex" style="font-size: 13px;">
+										<option value=0>选择性别</option>
+										<option value=1>男</option>
+										<option value=2>女</option>
+									</select>
+								</div>
+							</div>
+              				<div class="col-sm-2 m-b-xs searchFrom">
+								<div class="input-group">
+
+									<input type="text" class="input-sm form-control" name="nickname" placeholder="请输入昵称">
+									<span class="input-group-btn">
+										<button class="btn btn-sm btn-primary" id="search"> 搜索</button> </span>
+								</div>
+							</div>
+						</div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+							<div class="col-sm-6">
+								<div class="dataTables_paginate paging_simple_numbers" id="editable_paginate"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="../../static/js/bootstrap.min.js"></script>
+    <script src="../../static/layer/layer.js"></script>
+	<script src="../../static/layer/extend/layer.ext.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="../../static/js/plugins/toastr/toastr.min.js"></script>
+    <script src="../../static/js/toastr.options.js"></script>
+    <script src="../../static/js/jquery.cookie.js"></script>
+	<script src="../../static/js/mapgoo.js"></script>
+</body>
+
+</html>
+
+<script>
+	var list = 'admin/userList';
+	var del = 'admin/userDelete';
+	var title = ['编号','昵称','头像','性别','省份','城市','平台','创建时间','登陆时间','操作'];
+	var table = [
+	    {"name":"row","type":"text"},
+		{"name":"nickname","type":"text"},
+		{"name":"avatar","type":"image"},
+		{"name":"sex","type":"text"},
+		{"name":"province","type":"text"},
+		{"name":"city","type":"text"},
+        {"name":"platform","type":"text"},
+        {"name":"createTime","type":"text"},
+		{"name":"updateTime","type":"text"}
+	];
+	var object = new $.FormObject(title,table,list,".table-responsive",['del']);
+	object.run();
+	$(document).on("click",".operation .btn-danger",function() {
+		var id = $(this).attr("data-id");
+		object.del(del,id);
+
+	});
+	$(document).on("click","#search",function(){
+		var searchdata = {};
+		var name,value;
+		$(".searchFrom input").each(function(){
+			name = $(this).attr("name");
+			value = $(this).val();
+			searchdata[name] = value;
+		})
+		$(".searchFrom select").each(function(){
+			name = $(this).attr("name");
+			value = $(this).val();
+			searchdata[name] = value;
+		})
+		object.search(list, searchdata);
+	})
+</script>

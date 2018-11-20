@@ -1,0 +1,259 @@
+ <!DOCTYPE html>
+<html>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/table_basic.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:01 GMT -->
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台 - 文章发布管理</title>
+    <meta name="keywords" content="后台">
+    <meta name="description" content="后台">
+
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link href="../../static/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="../../static/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../../static/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+    <link href="../../static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+</head>
+<style>
+    .fancybox img{
+        width: 150px;
+    }
+    .themeInfo{
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+    }
+    .laybag{
+        background-color: #ffffff00!important;
+        box-shadow: none!important;
+    }
+</style>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>文章发布管理</h5>
+                        <div class="ibox-tools">
+							<a class="refresh-link" href="javascript:location.reload()">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+						<div class="row">
+                            <div class="col-sm-2 m-b-xs searchFrom">
+                                <div class="input-group">
+
+                                    <input type="text" class="input-sm form-control" name="title" placeholder="请输入文章标题">
+                                    <span class="input-group-btn">
+										<button class="btn btn-sm btn-primary" id="search"> 搜索</button> </span>
+                                </div>
+                            </div>
+							<button class="operation btn btn-sm btn-primary" style="float: right;" type="button">
+								<i class="fa fa-plus"></i>
+								发布文章
+							</button>
+						</div>
+                        <div class="btn-group  m-b">
+                            <button class="btn btn-sm btn-white" type="button" id="orderdesc">
+                                <i class="fa fa-sort-alpha-desc"></i>
+                                排序
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+							<div class="col-sm-6">
+								<div class="dataTables_paginate paging_simple_numbers" id="editable_paginate"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="../../static/js/bootstrap.min.js"></script>
+    <script src="../../static/layer/layer.js"></script>
+    <script src="../../static/layer/extend/layer.ext.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+    <script src="../../static/js/plugins/toastr/toastr.min.js"></script>
+    <script src="../../static/js/toastr.options.js"></script>
+    <script src="../../static/js/jquery.cookie.js"></script>
+    <script src="../../static/js/mapgoo.js"></script>
+</body>
+
+</html>
+
+<script>
+    var updateId = 0;
+	var list = 'admin/articleList';
+	var del = 'admin/articleDelete';
+	var publish = 'admin/articlePublish';
+	var order = 'admin/articleSort';
+	var add = 'insert.html';
+    var update = 'update.html';
+    var view = 'view.html';
+	var title = ['排序', '编号','文章封面','文章标题','文章摘要','发布时间', '发布者', '阅读数', '分享数', '状态', '操作'];
+	var viewUrl = '';
+	var table = [
+        {"name":"sort","type":"input"},
+	    {"name":"row","type":"text"},
+		{"name":"thumb","type":"image"},
+		{"name":"title","type":"text", "width":"16%"},
+		{"name":"describe","type":"text", "width":"20%"},
+        {"name":"createTime","type":"text"},
+        {"name":"account","type":"text"},
+        {"name":"read","type":"text"},
+        {"name":"share","type":"text"},
+        {"name":"state","type":"select", "select":["发布", "已发布"]},
+	];
+	var object = new $.FormObject(title,table,list,".table-responsive",['view', 'edit', 'del']);
+	object.run();
+	$(document).on("click",".operation .btn-danger",function() {
+		var id = $(this).attr("data-id");
+		object.del(del,id);
+	});
+    $(document).on("click",".operation .btn-white",function() {
+        viewUrl = $(this).attr("data-url");
+        layer.open({
+            type: 2,
+            title: false,
+            shadeClose: true,
+            shade: 0.8,
+            skin:"laybag",
+            closeBtn:false,
+            area: ['395px', '813px'],
+            content: view
+        });
+    });
+  $(document).ready(function(){$(".fancybox").fancybox({openEffect:"none",closeEffect:"none"})});
+	$(document).on("click",".operation .btn-success",function(){
+		var id = $(this).attr("data-id");
+		var title = $(".ibox-title h5").text();
+		object.edit(update,id,'修改文章');
+	})
+	$(document).on("click",".operation.btn-primary",function(){
+		var title = $(this).text();
+		object.add(add,title);
+	})
+    $(document).on("click","#orderdesc",function(){
+        var orderdata = {};
+        var id,sort;
+        $(".sortlist").each(function(){
+            id = $(this).attr("data-id");
+            sort = $(this).val();
+            orderdata[id] = sort;
+        })
+        object.order(WEBHTTP + order,orderdata);
+    })
+    $(document).on("click","#search",function(){
+        var searchdata = {};
+        var name,value;
+        $(".searchFrom input").each(function(){
+            name = $(this).attr("name");
+            value = $(this).val();
+            searchdata[name] = value;
+        })
+        object.search(list, searchdata);
+    })
+    $(document).on("click", ".publish", function(){
+        var obj = $(this);
+        var publishId = $(this).attr("data-id");
+        var data = {state:1, articleId:publishId};
+        layer.confirm("是否确定发布文章?", {
+            btn: ["确定", "取消"]
+        }, function() {
+            layer.load(0, {shade: [0.1,'#000']});
+            $.ajax({
+                headers: {
+                    token: $.cookie('login_token')
+                },
+                type : 'POST',
+                url : WEBHTTP + publish,
+                data : data,
+                async : false,
+                success : function(response){
+                    layer.closeAll();
+                    if(response.error == 0){
+                        obj.removeClass('publish').addClass('cancel').html("已发布");
+                        toastr.success("发布成功");
+                    }else if(response.error == 401){
+                        toastr.error(response.reason);
+                        setTimeout(function(){
+                            $.cookie('login_token', '', {path: '/', expires: -1});
+                            $.cookie('login_account', '', {path: '/', expires: -1});
+                            location.href = "../../index.html"
+                        },500);
+                    }else {
+                        toastr.error(response.reason);
+                    }
+                },
+                error :function(response){
+                    layer.closeAll();
+                    toastr.error('加载失败');
+                }
+            });
+        })
+    })
+    $(document).on("click", ".cancel", function(){
+        var obj = $(this);
+        var publishId = $(this).attr("data-id");
+        var data = {state:0, articleId:publishId};
+        layer.confirm("是否撤回发布文章?", {
+            btn: ["确定", "取消"]
+        }, function() {
+            layer.load(0, {shade: [0.1,'#000']});
+            $.ajax({
+                headers: {
+                    token: $.cookie('login_token')
+                },
+                type : 'POST',
+                url : WEBHTTP + publish,
+                data : data,
+                async : false,
+                success : function(response){
+                    layer.closeAll();
+                    if(response.error == 0){
+                        obj.removeClass('cancel').addClass('publish').html("发布");
+                        toastr.success("撤回成功");
+                    }else if(response.error == 401){
+                        toastr.error(response.reason);
+                        setTimeout(function(){
+                            $.cookie('login_token', '', {path: '/', expires: -1});
+                            $.cookie('login_account', '', {path: '/', expires: -1});
+                            location.href = "../../index.html"
+                        },500);
+                    }else {
+                        toastr.error(response.reason);
+                    }
+                },
+                error :function(response){
+                    layer.closeAll();
+                    toastr.error('加载失败');
+                }
+            });
+        })
+    })
+</script>

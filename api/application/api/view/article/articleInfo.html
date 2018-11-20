@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+    <title>文章详情</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" name="viewport" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+
+</head>
+<style>
+    body{
+        font-family: "微软雅黑";
+        background: white;
+    }
+    .title{
+        line-height: 30px;
+        text-align: left;
+        font-size: 17px;
+        font-weight: bolder;
+        overflow: hidden;
+    }
+    .time{
+        font-size: 12px;
+        color: #929292;
+        margin-bottom: 20px;
+    }
+    .content img{
+        width: 100%!important;
+    }
+    .author{
+        margin: 10px 0px 0px 0px;
+        font-size: 15px;
+    }
+</style>
+<body>
+    <div class="title">{$response.title}</div>
+    <div class="author">{$response.author}</div>
+    <div class="time">{$response.read}阅读&nbsp;{$response.share}分享&nbsp;&nbsp;{$response.createTime}</div>
+    <div class="content">
+        {$response.content}
+    </div>
+</body>
+</html>

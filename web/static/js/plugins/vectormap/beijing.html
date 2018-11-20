@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>基于jquery的中国地图</title>
+    <link href="js/jquery.vector-map.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="js/jquery-1.6.min.js" type="text/javascript"></script>
+    <script src="js/jquery.vector-map.js" type="text/javascript"></script>
+	<script src="js/beijing_2-zh.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            //数据可以动态生成，格式自己定义，cha对应china-zh.js中省份的简称			
+			var beijingStatus = [{ cha: 'CHAOYANG', name: '朝阳区', des: '<br/>无活动点',tel:'13718187045',flag:'cy'},
+							 { cha: 'CHONGWEN', name: '崇文区', des: '<br/>无活动点',tel:'13718187045' ,flag:'cw'},
+							 { cha: 'DONGCHENG', name: '东城区', des: '<br/>无活动点',tel:'13718187045' ,flag:'dc'},
+							 { cha: 'FENGTAI', name: '丰台区', des: '<br/>无活动点',tel:'13718187045' ,flag:'ft'},
+							 { cha: 'HAIDIAN', name: '海淀区', des: '<br/>无活动点',tel:'13718187045' ,flag:'hd'},
+							 { cha: 'SHIJINGSHAN', name: '石景山区', des: '<br/>无活动点',tel:'13718187045' ,flag:'sjs'},
+							 { cha: 'XICHENG', name: '西城区', des: '<br/>无活动点',tel:'13718187045' ,flag:'xc'},
+							 { cha: 'XUANWU', name: '宣武区', des: '<br/>无活动点',tel:'13718187045' ,flag:'xw'},
+                             { cha: 'CHANGPING', name: '昌平区', des: '<br/>无活动点',tel:'13718187045' ,flag:'cp'},
+                             { cha: 'DAXING', name: '大兴区', des: '<br/>无活动点' ,tel:'13718187045' ,flag:'dx'},
+                             { cha: 'FANGSHAN', name: '房山县', des: '<br/>2个活动点' ,tel:'13718187045' ,flag:'fs'},
+                             { cha: 'HUAIROU', name: '怀柔区', des: '<br/>无活动点',tel:'13718187045'  ,flag:'hr'},
+                             { cha: 'MENTOUGOU', name: '门头沟区', des: '<br/>无活动点' ,tel:'13718187045' ,flag:'mtg'},
+                             { cha: 'MIYUN', name: '密云县', des: '<br/>无活动点' ,tel:'13718187045' ,flag:'my'},
+                             { cha: 'PINGGU', name: '平谷县', des: '<br/>无活动点',tel:'13718187045' ,flag:'pg'},
+                             { cha: 'SHUNYI', name: '顺义区', des: '<br/>无活动点' ,tel:'13718187045' ,flag:'sy'},
+                             { cha: 'TONGZHOU', name: '通州区', des: '<br/>无活动点' ,tel:'13718187045' ,flag:'tz'},
+                             { cha: 'YANQING', name: '延庆县', des: '<br/>无活动点' ,tel:'13718187045' ,flag:'yq'}
+                          ];
+			
+			$('#container1').vectorMap({ map: 'beijing_2-zh',
+                color: "#B4B4B4", //地图颜色
+                onLabelShow: function (event, label, code) {//动态显示内容
+                    $.each(beijingStatus, function (i, items) {
+                        if (code == items.cha) {
+                            label.html(items.name + items.des +"<br/>"+ items.tel);
+                        }
+                    });
+                }
+				
+            })
+			
+            $.each(beijingStatus, function (i, items) {
+                if (items.flag.indexOf('cy') != -1) {//动态设定颜色，此处用了自定义简单的判断
+                    var josnStr = "{" + items.cha + ":'#9dc934'}";
+                    $('#container1').vectorMap('set', 'colors', eval('(' + josnStr + ')'));
+                }
+				if (items.flag.indexOf('cw') != -1) {//动态设定颜色，此处用了自定义简单的判断
+                    var josnStr = "{" + items.cha + ":'#9dc934'}";
+                    $('#container1').vectorMap('set', 'colors', eval('(' + josnStr + ')'));
+                }
+				if (items.flag.indexOf('dc') != -1) {//动态设定颜色，此处用了自定义简单的判断
+                    var josnStr = "{" + items.cha + ":'#9dc934'}";
+                    $('#container1').vectorMap('set', 'colors', eval('(' + josnStr + ')'));
+                }
+				if (items.flag.indexOf('ft') != -1) {//动态设定颜色，此处用了自定义简单的判断
+                    var josnStr = "{" + items.cha + ":'#9dc934'}";
+                    $('#container1').vectorMap('set', 'colors', eval('(' + josnStr + ')'));
+                }
+				if (items.flag.indexOf('hd') != -1) {//动态设定颜色，此处用了自定义简单的判断
+                    var josnStr = "{" + items.cha + ":'#9dc934'}";
+                    $('#container1').vectorMap('set', 'colors', eval('(' + josnStr + ')'));
+                }
+				if (items.flag.indexOf('sjs') != -1) {//动态设定颜色，此处用了自定义简单的判断
+                    var josnStr = "{" + items.cha + ":'#9dc934'}";
+                    $('#container1').vectorMap('set', 'colors', eval('(' + josnStr + ')'));
+                }
+				if (items.flag.indexOf('xc') != -1) {//动态设定颜色，此处用了自定义简单的判断
+                    var josnStr = "{" + items.cha + ":'#9dc934'}";
+                    $('#container1').vectorMap('set', 'colors', eval('(' + josnStr + ')'));
+                }
+				if (items.flag.indexOf('xw') != -1) {//动态设定颜色，此处用了自定义简单的判断
+                    var josnStr = "{" + items.cha + ":'#9dc934'}";
+                    $('#container1').vectorMap('set', 'colors', eval('(' + josnStr + ')'));
+                }
+				if (items.flag.indexOf('cp') != -1) {//动态设定颜色，此处用了自定义简单的判断
+                    var josnStr = "{" + items.cha + ":'#ffcc99'}";
+                    $('#container1').vectorMap('set', 'colors', eval('(' + josnStr + ')'));
+                }
+				if (items.flag.indexOf('dx') != -1) {//动态设定颜色，此处用了自定义简单的判断
+                    var josnStr = "{" + items.cha + ":'#ffcc99'}";
+                    $('#container1').vectorMap('set', 'colors', eval('(' + josnStr + ')'));
+                }
+				if (items.flag.indexOf('fs') != -1) {//动态设定颜色，此处用了自定义简单的判断
+                    var josnStr = "{" + items.cha + ":'#ffcc99'}";
+                    $('#container1').vectorMap('set', 'colors', eval('(' + josnStr + ')'));
+                }
+				if (items.flag.indexOf('hr') != -1) {//动态设定颜色，此处用了自定义简单的判断
+                    var josnStr = "{" + items.cha + ":'#ffcc99'}";
+                    $('#container1').vectorMap('set', 'colors', eval('(' + josnStr + ')'));
+                }
+				if (items.flag.indexOf('mtg') != -1) {//动态设定颜色，此处用了自定义简单的判断
+                    var josnStr = "{" + items.cha + ":'#ffcc99'}";
+                    $('#container1').vectorMap('set', 'colors', eval('(' + josnStr + ')'));
+                }
+				if (items.flag.indexOf('my') != -1) {//动态设定颜色，此处用了自定义简单的判断
+                    var josnStr = "{" + items.cha + ":'#ffcc99'}";
+                    $('#container1').vectorMap('set', 'colors', eval('(' + josnStr + ')'));
+                }
+				if (items.flag.indexOf('pg') != -1) {//动态设定颜色，此处用了自定义简单的判断
+                    var josnStr = "{" + items.cha + ":'#ffcc99'}";
+                    $('#container1').vectorMap('set', 'colors', eval('(' + josnStr + ')'));
+                }
+				if (items.flag.indexOf('sy') != -1) {//动态设定颜色，此处用了自定义简单的判断
+                    var josnStr = "{" + items.cha + ":'#ffcc99'}";
+                    $('#container1').vectorMap('set', 'colors', eval('(' + josnStr + ')'));
+                }
+				if (items.flag.indexOf('tz') != -1) {//动态设定颜色，此处用了自定义简单的判断
+                    var josnStr = "{" + items.cha + ":'#ffcc99'}";
+                    $('#container1').vectorMap('set', 'colors', eval('(' + josnStr + ')'));
+                }
+				if (items.flag.indexOf('yq') != -1) {//动态设定颜色，此处用了自定义简单的判断
+                    var josnStr = "{" + items.cha + ":'#ffcc99'}";
+                    $('#container1').vectorMap('set', 'colors', eval('(' + josnStr + ')'));
+                }
+            });
+            //$('.jvectormap-zoomin').click(); //放大
+        });
+      
+    </script>
+</head>
+<body>
+	
+	<div id="container1" style="margin-left: 45px; padding-top: 10px; padding-left: 10px;
+        background: white; width: 700px; height: 560px;">
+    </div>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/form_validate.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:19:15 GMT -->
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  <title>后台 - 修改图标</title>
+  <meta name="keywords" content="后台">
+  <meta name="description" content="后台">
+
+  <link rel="shortcut icon" href="../../favicon.ico">
+  <link href="../../static/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+  <link href="../../static/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+  <link href="../../static/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+  <link href="../../static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+</head>
+<style>
+  .fixed-table-container {
+    border-bottom: none;
+    padding-bottom: 0px;
+  }
+
+  .attachments {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+  }
+
+  .col-sm-2 .subnet {
+    width: 95%;
+    height: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .col-sm-2 .subnet {
+      width: 89%;
+    }
+  }
+
+  .col-sm-2 .subnet button {
+    margin-top: 27%;
+    display: none;
+  }
+
+  .progress {
+    height: 20px;
+    overflow: hidden;
+    background-color: #ECECEC;
+    -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
+    position: relative;
+    width: 70%;
+    margin-left: 15%;
+    padding: 1px;
+    margin-top: 27%;
+    display: none;
+  }
+
+  .bar {
+    background-color: green;
+    display: block;
+    width: 0%;
+    height: 20px;
+  }
+
+  .percent {
+    position: absolute;
+    height: 20px;
+    display: inline-block;
+    top: 3px;
+    left: 2%;
+    color: #FFFFFF;
+  }
+
+  .imglist {
+    float: left;
+  }
+
+  .imglist .tupian {
+    width: 77px;
+    height: 77px;
+    margin: 0px 5px;
+  }
+
+  .imglist .dels {
+    position: absolute;
+    width: 20px;
+    margin-left: 67px;
+    margin-top: -8px;
+    cursor: pointer;
+  }
+  .help-block{
+    margin-top: 0px;
+  }
+</style>
+
+<body class="gray-bg">
+  <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+          <div class="ibox-title">
+            <h5>修改图标</h5>
+            <div class="ibox-tools">
+              <a class="refresh-link" href="javascript:location.reload()">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+              <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+            </div>
+          </div>
+          <div class="ibox-content">
+            <form class="form-horizontal m-t" id="signupForm" action="">
+              <input type="hidden" name="iconId" value="0">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">图标名称：</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="请输入图标名称" name="name"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">图标 <span style="color: red">(比例1:1)</span>：</label>
+                <div class="col-sm-2">
+                  <img src="../../static/img/icon.png" class="attachments " id="iconUrl"/>
+                </div>
+              </div>
+              <input name="iconUrl" type="hidden" class="form-control"/>
+              <div class="form-group">
+                <div class="col-sm-8 col-sm-offset-2">
+                  <button class="btn btn-primary">
+                    <i class="fa fa-check"></i>
+                    <span class="bold">修改</span>
+                  </button>
+                  <button class="btn btn-link btn-outline">
+                    <i class="fa fa-mail-reply"></i>
+                    <span class="bold">返回</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <input id="fileuploads" type="file" name="icon" style="display:none">
+</body>
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.0/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.0/localization/messages_zh.min.js"></script>
+<script src="../../static/layer/layer.js"></script>
+<script src="../../static/layer/extend/layer.ext.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.0.0/js/bootstrap-colorpicker.min.js"></script>
+<script src="../../static/js/jquery.form.js?v=3.1.5"></script>
+<script src="../../static/js/demo/form-validate-demo.min.js"></script>
+<script src="../../static/js/plugins/toastr/toastr.min.js"></script>
+<script src="../../static/js/toastr.options.js"></script>
+<script src="../../static/js/mapgoo.js"></script>
+<script>
+    var url = "admin/iconUpdate";
+    var info = "admin/iconInfo";
+    $(document).on("click","#iconUrl",function(){
+        $("#fileuploads").click();
+    })
+    $("#fileuploads").wrap("<form id='myuploads' action='"+WEBHTTP+'admin/uploadFile'+"' method='post' enctype='multipart/form-data'></form>");
+    $("#fileuploads").change(function(){ //选择文件
+		if($(this)[0].files[0].size > 1048576){
+			toastr.error("文件大小不得超出1M");
+			return false;
+		}
+		var ext = "jpg|png";
+		var extName = $(this).eq(0).val().substring($(this).eq(0).val().lastIndexOf(".")+1).toLowerCase();
+		if(ext.indexOf(extName)==-1){
+			errMsg = "该文件类型不允许上传。请上传 "+ext+" 类型的文件，当前文件类型为"+extName;
+			toastr.error(errMsg);
+			return false;
+		}
+        $("#myuploads").ajaxSubmit({
+            dataType:  'json', //数据格式为json
+            beforeSend: function() { //开始上传
+                layer.msg('<div id="percentage">上传中..</div>', {time:0,icon: 16,shade: [0.5,'#000']});
+            },
+            uploadProgress: function(event, position, total, percentComplete) {
+                $("#percentage").html("正在上传 "+percentComplete.toFixed(2) + "%...");
+            },
+            success: function(resp) {
+                $("#percentage").html("上传成功 ! ");
+                if(resp.error == 0){
+                    $("#iconUrl").attr("src",resp.result.viewUrl);
+                    $("input[name='iconUrl']").val(resp.result.savePath);
+                    $("#iconUrl").load(function(){
+                        layer.closeAll();
+                    });
+                }else{
+                    layer.closeAll();
+                    toastr.error(resp.reason);
+                }
+            },
+            error:function(xhr){
+                layer.closeAll();
+                toastr.error("上传失败");
+            }
+        });
+    });
+</script>
+<script src="../../static/js/update.js"></script>
+<script>
+    getInfo(info, {iconId : parent.updateId}, function(resp){
+        $("input[name='name']").val(resp.name);
+        $("#iconUrl").attr("src",resp.viewUrl);
+        $("input[name='iconUrl']").val(resp.iconUrl);
+        $("input[name='iconId']").val(resp.iconId);
+    })
+</script>
