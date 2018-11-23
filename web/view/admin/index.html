@@ -115,11 +115,11 @@
 	$(document).on("click",".operation .btn-success",function(){
 		var id = $(this).attr("data-id");
 		var title = $(".ibox-title h5").text();
-		object.edit(update,id,'修改系统账号');
+		object.edit(update,id,' ');
 	})
 	$(document).on("click",".operation.btn-primary",function(){
 		var title = $(this).text();
-		object.add(add,title);
+		object.add(add,' ');
 	})
 	$(document).on("click","#search",function(){
 		var searchdata = {};

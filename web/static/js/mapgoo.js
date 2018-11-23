@@ -1,4 +1,4 @@
-var WEBHTTP = "https://app.51szxpg.com/api/";
+var WEBHTTP = "http://192.168.110.107/";
 (function(){
 	$.FormObject = function (title,table,ajaxUrl,object,option){
 		//编辑表名
@@ -74,7 +74,9 @@ var WEBHTTP = "https://app.51szxpg.com/api/";
                         html+='<td style="width: 15%;"><a class="fancybox" href="' + datas[v][table[i].name] + '" title=""><img src="' + datas[v][table[i].name] + '" class="attachments"/></a></td>'
                     }else if(table[i].type == "audio"){
                         html+="<td><audio src='" + datas[v][table[i].name] + "' controls='controls'></audio></td>"
-					}else if(table[i].type =="select"){
+					}else if(table[i].type == "onclick"){
+                        html+="<td><audio src='" + datas[v][table[i].name] + "' controls='controls'></audio></td>"
+                    }else if(table[i].type =="select"){
 						if(datas[v][table[i].name] == 0){
                             html +="<td><a href='javascript:;' class='publish' data-id="+datas[v].id+">" + table[i].select[datas[v][table[i].name]] + "</a></td>"
 						}else{
@@ -91,12 +93,10 @@ var WEBHTTP = "https://app.51szxpg.com/api/";
 				if(option.length > 0){
 				html+='<td class="operation">';
 					$.each(option,function(i){
-                    	if(option[i] == "view"){
-                            html+=' <button class="btn btn-white btn-sm" type="button"  data-id='+datas[v].id+' data-url="'+datas[v].url+'"><i class="fa fa-eye"></i><span class="bold"> 预览</span></button> '
-                        } else if(option[i] == "edit"){
-							html+=' <button class="btn btn-success btn-sm" type="button"  data-id='+datas[v].id+'><i class="fa fa-edit"></i><span class="bold"> 修改</span></button> '
+                    	if(option[i] == "edit"){
+							html+=' <button class="btn btn-success btn-sm" type="button"  data-id='+datas[v].id+' title="修改"><i class="fa fa-edit"></i></button> '
 						} else if(option[i] == "del"){
-							html+=' <button class="btn btn-danger btn-sm" type="button"  data-id='+datas[v].id+'><i class="fa fa-trash-o"></i><span class="bold"> 删除</span></button> '
+							html+=' <button class="btn btn-danger btn-sm" type="button"  data-id='+datas[v].id+' title="删除"><i class="fa fa-trash-o"></i></button> '
 						}
 					})
 					html+="</td>"

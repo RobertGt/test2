@@ -19,30 +19,38 @@ class UserServer
     public function userList($param = [])
     {
         $where = [];
-        if(!empty($param['seach']['nickname'])){
-            $where['nickname'] = ['like', '%' . $param['seach']['nickname'] . '%'];
+        if(!empty($param['seach']['email'])){
+            $where['email'] = ['like', '%' . $param['seach']['email'] . '%'];
         }
-        if(!empty($param['seach']['sex'])){
-            $where['sex'] = $param['seach']['sex'];
+        if(!empty($param['seach']['mobile'])){
+            $where['mobile'] = ['like', '%' . $param['seach']['mobile'] . '%'];
         }
-        if(!empty($param['seach']['platform'])){
-            $where['platform'] = $param['seach']['platform'];
+        if(!empty($param['seach']['state'])){
+            $where['state'] = ($param['seach']['state'] - 1);
+        }
+        if(!empty($param['seach']['realname'])){
+            $where['realname'] = ($param['seach']['realname'] - 1);
         }
         $adminModel = new UserModel();
         $total = $adminModel->where($where)->count();
-        $list = $adminModel->where($where)->field('uid id, nickname, avatar, sex, province, city, platform, createTime, updateTime')
+        $list = $adminModel->alias('u')
+            ->join('bas_package p', 'u.packageId = p.packageId', 'LEFT')
+            ->where($where)
+            ->field('u.uid id, u.email, u.mobile, u.state, u.realname, u.packageId, p.packageName, u.surplus, u.createTime, u.loginTime')
             ->page($param['pageNum'], $param['pageSize'])
             ->order("createTime desc")
             ->select();
         $response['row'] = [];
         $rowNum = ($param['pageNum'] - 1) * $param['pageSize'];
         $i = 1;
-        $sexArr = ['未知', '男', '女'];
         foreach ($list as $value){
             $info = $value->getData();
             $info['createTime'] = date('Y-m-d H:i:s', $info['createTime']);
-            $info['updateTime'] = date('Y-m-d H:i:s', $info['updateTime']);
-            $info['sex'] = isset($sexArr[$info['sex']]) ? $sexArr[$info['sex']] : '未知';
+            $info['loginTime'] = $info['loginTime'] ? date('Y-m-d H:i:s', $info['loginTime']) : '';
+            $info['packageName'] = $info['packageName'] ? $info['packageName'] : '';
+            $info['stateText'] = $info['state'] == 1 ? "<span class=\"label label-danger\">禁用</span>" : "<span class=\"label label-primary\">正常</span>";
+            $info['realnameText'] = $info['realname'] == 1 ? "<span class=\"label label-primary\">通过</span>" :
+                                            ($info['realname'] == 2 ? "<span class=\"label label-danger\">失败</span>" : "<span class=\"label label-success\">待审核</span>");
             $info['row'] = $i + $rowNum;
             $response['row'][] = $info;
             $i++;
