@@ -1,4 +1,4 @@
-var WEBHTTP = "http://192.168.110.107/";
+var WEBHTTP = "http://192.168.31.247:83/";
 (function(){
 	$.FormObject = function (title,table,ajaxUrl,object,option){
 		//编辑表名
@@ -75,7 +75,7 @@ var WEBHTTP = "http://192.168.110.107/";
                     }else if(table[i].type == "audio"){
                         html+="<td><audio src='" + datas[v][table[i].name] + "' controls='controls'></audio></td>"
 					}else if(table[i].type == "onclick"){
-                        html+="<td><audio src='" + datas[v][table[i].name] + "' controls='controls'></audio></td>"
+                        html+="<td><a href='javascript:;' title='点击查看详情' class='onclick' data-id=" + datas[v][table[i].id] + ">" + datas[v][table[i].name] + "</a></td>"
                     }else if(table[i].type =="select"){
 						if(datas[v][table[i].name] == 0){
                             html +="<td><a href='javascript:;' class='publish' data-id="+datas[v].id+">" + table[i].select[datas[v][table[i].name]] + "</a></td>"
@@ -97,7 +97,19 @@ var WEBHTTP = "http://192.168.110.107/";
 							html+=' <button class="btn btn-success btn-sm" type="button"  data-id='+datas[v].id+' title="修改"><i class="fa fa-edit"></i></button> '
 						} else if(option[i] == "del"){
 							html+=' <button class="btn btn-danger btn-sm" type="button"  data-id='+datas[v].id+' title="删除"><i class="fa fa-trash-o"></i></button> '
-						}
+						} else if(option[i] == "enable"){
+                    		if(datas[v]['state']){
+                                html+=' <button class="btn btn-primary btn-sm" type="button"  data-id='+datas[v].id+' title="启用"><i class="fa fa-circle-o"></i></button> '
+							}else{
+                                html+=' <button class="btn btn-danger btn-sm" type="button"  data-id='+datas[v].id+' title="禁用"><i class="fa fa-ban"></i></button> '
+							}
+                        } else if(option[i] == "info"){
+                            html+=' <button class="btn btn-info btn-sm" type="button"  data-id='+datas[v].id+' data-uid='+datas[v]['uid']+' title="查看"><i class="fa fa-eye"></i></button> '
+                        } else if(option[i] == "upload"){
+                            html+=' <button class="btn btn-success btn-sm" type="button"  data-id='+datas[v].id+' title="上传"><i class="fa fa-cloud-upload"></i></button> '
+                        } else if(option[i] == "down"){
+                            html+=' <button class="btn btn-info btn-sm" type="button"  title="下载" data-url='+datas[v].appUrl+' ><i class="fa fa-cloud-download"></i></button> '
+                        }
 					})
 					html+="</td>"
 				}
@@ -169,10 +181,10 @@ var WEBHTTP = "http://192.168.110.107/";
 		this.add = function(url,title){
 			layer.open({
 				  type: 2,
-				  title: title,
+				  title: false,
 				  shadeClose: true,
 				  shade: 0.8,
-				  area: ['100%', '100%'],
+				  area: ['70%', '70%'],
 				  content: url
 			});
 		}
@@ -218,14 +230,34 @@ var WEBHTTP = "http://192.168.110.107/";
 				})
 			})
 		}
+        this.start = function(url,id){
+            layer.confirm("是否确定启用?", {
+                btn: ["确定", "取消"]
+            }, function() {
+                postData = {id:id, state:0};
+                request(WEBHTTP + url, 'POST', postData, function(){
+                    getDatas(pageNum);
+                })
+            })
+        }
+        this.stop = function(url,id){
+            layer.confirm("是否确定禁用?", {
+                btn: ["确定", "取消"]
+            }, function() {
+                postData = {id:id, state:1};
+                request(WEBHTTP + url, 'POST', postData, function(){
+                    getDatas(pageNum);
+                })
+            })
+        }
 		this.edit = function(url,id,title){
             updateId = id;
 			layer.open({
 				  type: 2,
-				  title: title,
+				  title: false,
 				  shadeClose: true,
 				  shade: 0.8,
-				  area: ['100%', '100%'],
+				  area: ['70%', '70%'],
 				  content: url
 			});
 		}

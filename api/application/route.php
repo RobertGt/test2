@@ -28,24 +28,18 @@ Route::post([
     'admin/adminInsert'      => 'admin/Admin/adminInsert',
     'admin/adminUpdate'      => 'admin/Admin/adminUpdate',
 
-    'admin/themeInsert'      => 'admin/Theme/themeInsert',
-    'admin/themeUpdate'      => 'admin/Theme/themeUpdate',
+    'admin/userStateUpdate'     => 'admin/User/userStateUpdate',
+    'admin/userRealnameUpdate'  => 'admin/User/userRealnameUpdate',
+    'admin/userPasswordUpdate'  => 'admin/User/userPasswordUpdate',
+    'admin/appStateUpdate'      => 'admin/Application/appStateUpdate',
 
-    'admin/iconInsert'      => 'admin/Icon/iconInsert',
-    'admin/iconUpdate'      => 'admin/Icon/iconUpdate',
 
-    'admin/ringInsert'      => 'admin/Ring/ringInsert',
-    'admin/ringUpdate'      => 'admin/Ring/ringUpdate',
+    'admin/packageInsert'  => 'admin/Package/packageInsert',
+    'admin/packageUpdate'  => 'admin/Package/packageUpdate',
+    'admin/payUpdate'      => 'admin/Package/payUpdate',
 
-    'admin/noiseInsert'      => 'admin/Noise/noiseInsert',
-    'admin/noiseUpdate'      => 'admin/Noise/noiseUpdate',
-
-    'admin/articleInsert'      => 'admin/Article/articleInsert',
-    'admin/articleUpdate'      => 'admin/Article/articleUpdate',
-    'admin/articlePublish'     => 'admin/Article/articlePublish',
-    'admin/articleSort'        => 'admin/Article/articleSort',
-
-    'admin/uploadFile'         => 'admin/Index/uploadFile',
+    'admin/templetUpdateState'    => 'admin/Templet/templetUpdateState',
+    'admin/templetUpdate'    => 'admin/Templet/templetUpdate',
 
     'v1/login'                 => 'api/User/login',
 ]);
@@ -76,23 +70,18 @@ Route::get([
     'admin/userDelete'     => 'admin/User/userDelete',
 
 
-    'admin/themeList'      => 'admin/Theme/themeList',
-    'admin/themeDelete'    => 'admin/Theme/themeDelete',
-    'admin/themeInfo'      => 'admin/Theme/themeInfo',
+    'admin/packageInfo'    => 'admin/Package/packageInfo',
+    'admin/userInfo'       => 'admin/User/userInfo',
+    'admin/appListByUser'  => 'admin/Application/appListByUser',
+    'admin/appList'        => 'admin/Application/appList',
+    'admin/appInfo'        => 'admin/Application/appInfo',
+    'admin/updateList'     => 'admin/Application/updateList',
+    'admin/downList'       => 'admin/Application/downList',
 
-    'admin/iconList'      => 'admin/Icon/iconList',
-    'admin/iconDelete'    => 'admin/Icon/iconDelete',
-    'admin/iconInfo'      => 'admin/Icon/iconInfo',
+    'admin/packageList'    => 'admin/Package/packageList',
+    'admin/packageDelete'  => 'admin/Package/packageDelete',
+    'admin/payInfo'        => 'admin/Package/payInfo',
 
-    'admin/ringList'      => 'admin/Ring/ringList',
-    'admin/ringDelete'    => 'admin/Ring/ringDelete',
-    'admin/ringInfo'      => 'admin/Ring/ringInfo',
-
-    'admin/noiseList'      => 'admin/Noise/noiseList',
-    'admin/noiseDelete'    => 'admin/Noise/noiseDelete',
-    'admin/noiseInfo'      => 'admin/Noise/noiseInfo',
-
-    'admin/articleList'      => 'admin/Article/articleList',
-    'admin/articleDelete'    => 'admin/Article/articleDelete',
-    'admin/articleInfo'      => 'admin/Article/articleInfo',
+    'admin/templetList'    => 'admin/Templet/templetList',
+    'admin/templetInfo'    => 'admin/Templet/templetInfo',
 ]);

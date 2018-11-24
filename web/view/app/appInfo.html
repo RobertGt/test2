@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/form_validate.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:19:15 GMT -->
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  <title></title>
+  <meta name="keywords" content="后台">
+  <meta name="description" content="后台">
+
+  <link rel="shortcut icon" href="../../favicon.ico">
+  <link href="../../static/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+  <link href="../../static/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+  <link href="../../static/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+  <link href="../../static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+</head>
+<style>
+  .fixed-table-container {
+    border-bottom: none;
+    padding-bottom: 0px;
+  }
+
+  .attachments {
+    width: 243px;
+    height: 161px;
+    cursor: pointer;
+  }
+
+  .col-sm-2 .subnet {
+    width: 95%;
+    height: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .col-sm-2 .subnet {
+      width: 89%;
+    }
+  }
+
+  .col-sm-2 .subnet button {
+    margin-top: 27%;
+    display: none;
+  }
+
+  .progress {
+    height: 20px;
+    overflow: hidden;
+    background-color: #ECECEC;
+    -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
+    position: relative;
+    width: 70%;
+    margin-left: 15%;
+    padding: 1px;
+    margin-top: 27%;
+    display: none;
+  }
+
+  .bar {
+    background-color: green;
+    display: block;
+    width: 0%;
+    height: 20px;
+  }
+
+  .percent {
+    position: absolute;
+    height: 20px;
+    display: inline-block;
+    top: 3px;
+    left: 2%;
+    color: #FFFFFF;
+  }
+
+  .imglist {
+    float: left;
+  }
+
+  .imglist .tupian {
+    width: 77px;
+    height: 77px;
+    margin: 0px 5px;
+  }
+
+  .imglist .dels {
+    position: absolute;
+    width: 20px;
+    margin-left: 67px;
+    margin-top: -8px;
+    cursor: pointer;
+  }
+  .childreninput{
+    padding-left: 13%;
+  }
+  .form-group{
+    overflow: hidden;
+  }
+  .show-grid [class^=col-] {
+    border: 0px;
+  }
+  .attachments{
+    width: 30%;
+    height: auto;
+  }
+  .f-c{
+    color: #949494;
+  }
+</style>
+
+<body class="gray-bg">
+  <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox-content form-horizontal" style="margin-bottom: 50px;">
+        <div class="form-group">
+          <div class="col-sm-2 p-xs f-c text-right">应用ID</div>
+          <div class="col-sm-9 p-xs appId">
+
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-2 p-xs f-c text-right">应用名称</div>
+          <div class="col-sm-9 p-xs appName">
+
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-2 p-xs f-c text-right">短链接</div>
+          <div class="col-sm-9 p-xs sortUrl">
+
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-2 p-xs f-c text-right">应用图标</div>
+          <div class="col-sm-9 p-xs appIcon">
+
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-2 p-xs f-c text-right">应用描述</div>
+          <div class="col-sm-9 p-xs describe">
+
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-2 p-xs f-c text-right">应用截图</div>
+          <div class="col-sm-9 p-xs appImage">
+
+          </div>
+        </div>
+
+
+    </div>
+  </div>
+  <div class="col-sm-12 input-group text-center stateUpdate" style='background-color: #fff!important;position: fixed;bottom: 0px;padding: 15px 0;'>
+
+  </div>
+</body>
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/layer/layer.js"></script>
+<script src="../../static/layer/extend/layer.ext.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+<script src="../../static/js/plugins/toastr/toastr.min.js"></script>
+<script src="../../static/js/toastr.options.js"></script>
+<script src="../../static/js/mapgoo.js"></script>
+
+<script>
+    var state = 'admin/appStateUpdate';
+    var index = parent.layer.getFrameIndex(window.name);
+    $(".btn-outline").click(function() {
+        parent.layer.close(index); //执行关闭
+    })
+    function info(){
+        setTimeout(function(){
+            layer.load(0, {shade: [0.6,'#000000']});
+        },1);
+        $.ajax({
+            headers: {
+                token: $.cookie('login_token')
+            },
+            url: WEBHTTP + "admin/appInfo?id=" + parent.appId,
+            type: "GET",
+            dataType: "json",
+            success: function(response) {
+                if (response.error == 0) {
+                    $(".appId").html(response.result.appId);
+                    $(".appName").html(response.result.appName);
+                    $(".sortUrl").html("<a href='"+response.result.sortUrl+"' target='_blank'>"+response.result.sortUrl+"</a>");
+                    $(".describe").html(response.result.describe);
+                    var icon = "<a class=\"fancybox\" href="+ response.result.appIcon +" title=\"app icon\"> "+
+                               "<img src="+ response.result.appIcon +"  style='width:80px;height:80px'></a>"
+                    $(".appIcon").html(icon);
+                    var appImage = '';
+                    $.each(response.result.appImage, function(k, v){
+                        appImage += "<a class='fancybox m-r' href="+ v +" title=\"应用截图"+ (parseInt(k) + parseInt(1)) +"\"> "+
+                                    "<img src="+ v +" class='attachments'></a>"
+                    })
+                    $(".appImage").html(appImage);
+                    var fa = 'fa-ban',
+                        n = '禁用',
+                        b = 'btn-danger';
+                    if(response.result.state){
+                        fa = 'fa-circle-o';
+                        n = '启用';
+                        b = 'btn-primary';
+                    }
+                    var button = "<button class=\"btn "+ b +" m-r\" data-id="+ parent.appId +">" +
+                                  "<i class=\"fa "+ fa +"\"></i>" +
+                                  "<span class=\"bold\"> "+ n +"</span>" +
+                                  "</button>";
+                    $(".stateUpdate").html(button);
+                    $(".fancybox").fancybox({openEffect:"none",closeEffect:"none"});
+                    layer.closeAll();
+                } else if(response.error == 401){
+                    toastr.error(response.reason);
+                    setTimeout(function(){
+                        $.cookie('login_token', '', {path: '/', expires: -1});
+                        $.cookie('login_account', '', {path: '/', expires: -1});
+                        parent.parent.location.href = "../../index.html"
+                    },500);
+                }else {
+                    toastr.error(response.reason);
+                    setTimeout(function(){
+                        parent.layer.closeAll(); //执行关闭
+                    },2000);
+                }
+            }
+        });
+    }
+    info();
+    var request = function (ajaxUrl, method, data, callback) {
+        var loads = layer.load(0, {shade: [0.1,'#000']});
+        $.ajax({
+            headers: {
+                token: $.cookie('login_token')
+            },
+            type : method,
+            url : ajaxUrl,
+            data : data,
+            async : false,
+            success : function(response){
+                if(response.error == 0){
+                    callback(data, response);
+                }else if(response.error == 401){
+                    toastr.error(response.reason);
+                    setTimeout(function(){
+                        $.cookie('login_token', '', {path: '/', expires: -1});
+                        $.cookie('login_account', '', {path: '/', expires: -1});
+                        location.href = "../../index.html"
+                    },500);
+                }else {
+                    toastr.error(response.reason);
+                }
+                setTimeout(function(){layer.close(loads);},100);
+            },
+            error :function(response){
+                layer.closeAll();
+                toastr.error('加载失败');
+            }
+        });
+    }
+    $(document).on("click",".btn-danger",function() {
+        var id = $(this).attr("data-id");
+        layer.confirm("是否确定禁用?", {
+            btn: ["确定", "取消"]
+        }, function() {
+            postData = {id:id, state:1};
+            request(WEBHTTP + state, 'POST', postData, function(){
+                info();
+            })
+        })
+    });
+    $(document).on("click",".btn-primary",function() {
+        var id = $(this).attr("data-id");
+        layer.confirm("是否确定启用?", {
+            btn: ["确定", "取消"]
+        }, function() {
+            postData = {id:id, state:0};
+            request(WEBHTTP + state, 'POST', postData, function(){
+                info();
+            })
+        })
+    });
+    $(document).on("click",".onclick",function() {
+        packageId = $(this).attr("data-id");
+        layer.open({
+            type: 2,
+            title: false,
+            shadeClose: true,
+            shade: 0.8,
+            area: ['40%', '275px'],
+            content: "packageInfo.html"
+        });
+    });
+    $(document).on("click",".reset",function() {
+        var id = $(this).attr("data-id");
+        layer.prompt({title: '请输入不少于6位字符的密码', formType: 1}, function(pass, index){
+            postData = {id:id, password : pass};
+            request(WEBHTTP + updatePass, 'POST', postData, function(){
+                layer.close(index);
+            })
+        });
+    });
+</script>

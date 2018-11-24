@@ -59,20 +59,81 @@ class UserServer
         return $response;
     }
 
-    public function userDelete($uid)
+    public function userStateUpdate($uid = 0, $state = 0)
     {
         $userModel = new UserModel();
         try{
-            $userModel->startTrans();
             $where['uid'] = $uid;
-            (new UserModel())->where($where)->delete();
-            (new UserDevicesModel())->where($where)->delete();
+            $userModel->save(['state' => $state], $where);
             $userModel->commit();
         }catch (Exception $e){
-            $userModel->rollback();
-            Log::error("userDelete error:" . $e->getMessage());
+            Log::error("userStateUpdate error:" . $e->getMessage());
             return false;
         }
         return true;
+    }
+
+    public function userRealnameUpdate($uid = 0, $realname = 0)
+    {
+        $userModel = new UserModel();
+        try{
+            $where['uid'] = $uid;
+            $userModel->save(['realname' => $realname], $where);
+        }catch (Exception $e){
+            Log::error("userRealnameUpdate error:" . $e->getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public function userPasswordUpdate($uid = 0, $password = 0)
+    {
+        $userModel = new UserModel();
+        try{
+            $where['uid'] = $uid;
+            $save['salt'] = getRandStr();
+            $save['password'] = md5($password . $save['salt']);
+            $userModel->save($save, $where);
+        }catch (Exception $e){
+            Log::error("userPasswordUpdate error:" . $e->getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public function userInfo($uid = 0)
+    {
+        $where['u.uid'] = $uid;
+
+        $userInfo = (new UserModel())->alias('u')
+            ->join('bas_package p', 'u.packageId = p.packageId', 'LEFT')
+            ->where($where)
+            ->field('u.uid id, u.email, u.mobile, u.state, u.realname, u.packageId, p.packageName, u.surplus, 
+                        u.createTime, u.loginTime, u.identityCard, u.upload, u.download, u.surplus, u.wechat, u.imNumber, u.company, u.job, u.expireTime')
+            ->find();
+
+        if($userInfo){
+            $userInfo = $userInfo->getData();
+            $userInfo['wechat'] = $userInfo['wechat'] ? $userInfo['wechat'] : '未填写';
+            $userInfo['imNumber'] = $userInfo['imNumber'] ? $userInfo['imNumber'] : '未填写';
+            $userInfo['company'] = $userInfo['company'] ? $userInfo['company'] : '未填写';
+            $userInfo['job'] = $userInfo['job'] ? $userInfo['job'] : '未填写';
+            $userInfo['mobile'] = $userInfo['mobile'] ? $userInfo['mobile'] : '未绑定';
+            $userInfo['expireTime'] = $userInfo['expireTime'] ? date('Y-m-d H:i:s', $userInfo['expireTime']) : '';
+            $userInfo['realnameText'] = $userInfo['realname'] == 1 ? "审核通过" :
+                ($userInfo['realname'] == 2 ? "审核失败" : "待审核");
+            $identityCard = $userInfo['identityCard'] ? explode(',', $userInfo['identityCard']) : [];
+            $userInfo['image1'] = !empty($identityCard[0]) ? $identityCard[0] : '../../static/img/timg.png';
+            $userInfo['image2'] = !empty($identityCard[1]) ? $identityCard[1] : '../../static/img/timg.png';
+            $userInfo['image3'] = !empty($identityCard[2]) ? $identityCard[2] : '../../static/img/timg.png';
+            if(!empty($identityCard[0]) && !empty($identityCard[1]) && !empty($identityCard[2]) && $userInfo['realname'] == 0){
+                $userInfo['real'] = 1;
+            }else{
+                $userInfo['real'] = 0;
+            }
+        }else{
+            $userInfo = [];
+        }
+        return $userInfo;
     }
 }

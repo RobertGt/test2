@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>后台 - 账号管理</title>
+    <title>后台 - 更新记录</title>
     <meta name="keywords" content="后台">
     <meta name="description" content="后台">
 
@@ -21,41 +21,30 @@
 
 </head>
 <style>
-.fancybox img{
-	width: 30%;
-}
+    div,ul,li {
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing:content-box;
+    }
+    li{
+        list-style:none;
+        height: 517px;
+    }
+    ul{
+        padding: 0px;
+        margin: 0px;
+    }
+    .layui-layer-tabnow{
+        border-top: 3px solid #0095ff;
+    }
 </style>
 <body class="gray-bg">
-    <div class="wrapper wrapper-content animated fadeInRight">
-        <div class="row">
-            <div class="col-sm-12">
+        <div class="wrapper-content" style="margin: 0px">
+            <div class="col-sm-12 row">
                 <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>账号管理</h5>
-                        <div class="ibox-tools">
-							<a class="refresh-link" href="javascript:location.reload()">
-                                <i class="fa fa-refresh"></i>
-                            </a>
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-						<div class="row">
-              				<div class="col-sm-2 m-b-xs searchFrom">
-								<div class="input-group">
 
-									<input type="text" class="input-sm form-control" name="account" placeholder="请输入账号名称">
-									<span class="input-group-btn">
-										<button class="btn btn-sm btn-primary" id="search"> 搜索</button> </span>
-								</div>
-							</div>
-							<button class="operation btn btn-sm btn-primary" style="float: right;" type="button">
-								<i class="fa fa-plus"></i>
-								新建账号
-							</button>
-						</div>
+                    <div class="ibox-content">
+
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>
@@ -74,7 +63,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
 	</div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="../../static/js/bootstrap.min.js"></script>
@@ -90,41 +78,35 @@
 </html>
 
 <script>
-    var updateId = 0;
-	var list = 'admin/adminList';
-	var del = 'admin/adminDelete';
-	var add = 'insert.html';
-    var update = 'update.html';
-	var title = ['编号','账号名称','登陆IP','登陆次数','创建时间','登陆时间','备注','操作'];
+	var list = 'admin/updateList?appId=' + parent.appId;
+	var userId = 0;
+    var appId = 0;
+	var title = ['编号', '包名', '大小', '版本号', '平台', '状态', '更新说明','更新时间','操作'];
 	var table = [
 	    {"name":"row","type":"text"},
-		{"name":"account","type":"text"},
-		{"name":"loginIp","type":"text"},
-		{"name":"loginCount","type":"text"},
-		{"name":"createTime","type":"text"},
-		{"name":"loginTime","type":"text"},
-		{"name":"remark","type":"text", "width":"15%"}
+        {"name":"packageName","type":"text"},
+		{"name":"size","type":"text"},
+		{"name":"version","type":"text"},
+        {"name":"platform","type":"text"},
+        {"name":"stateText","type":"text"},
+		{"name":"remark","type":"text", "width":"15%"},
+        {"name":"createTime","type":"text"}
 	];
-	var object = new $.FormObject(title,table,list,".table-responsive",['edit','del']);
+	var object = new $.FormObject(title,table,list,".table-responsive",['down']);
 	object.run();
-	$(document).on("click",".operation .btn-danger",function() {
-		var id = $(this).attr("data-id");
-		object.del(del,id);
-
-	});
-	$(document).on("click",".operation .btn-success",function(){
-		var id = $(this).attr("data-id");
-		var title = $(".ibox-title h5").text();
-		object.edit(update,id,' ');
-	})
-	$(document).on("click",".operation.btn-primary",function(){
-		var title = $(this).text();
-		object.add(add,' ');
-	})
+    $(document).on("click",".operation .btn-info",function() {
+        var url = $(this).attr("data-url");
+        window.open(url);
+    });
 	$(document).on("click","#search",function(){
 		var searchdata = {};
 		var name,value;
 		$(".searchFrom input").each(function(){
+			name = $(this).attr("name");
+			value = $(this).val();
+			searchdata[name] = value;
+		})
+		$(".searchFrom select").each(function(){
 			name = $(this).attr("name");
 			value = $(this).val();
 			searchdata[name] = value;

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+
+    <title data-locale="index"></title>
+    <meta name="keywords" content="后台">
+    <meta name="description" content="后台">
+
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link href="../../static/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="../../static/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../../static/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
+    <link href="../../static/js/plugins/gritter/jquery.gritter.css">
+    <link href="../../static/css/animate.min.css" rel="stylesheet">
+    <link href="../../static/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <link href="../../static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <style>
+        .flot-chart {
+            display: block;
+            height: 400px;
+        }
+    </style>
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 data-locale="device">今日注册数</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 class="no-margins" id="userToday">0</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 data-locale="device">注册用户数</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 class="no-margins" id="userToday">0</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 data-locale="device">在线用户数</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 class="no-margins" id="userToday">0</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 data-locale="device">应用上传总数</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 class="no-margins" id="userToday">0</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 data-locale="user">应用下载总数</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 class="no-margins" id="userToday">0</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 data-locale="user">套餐累计金额</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 class="no-margins" id="userToday">0</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 data-locale="device">24小时趋势图</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="flot-chart">
+                                    <div class="flot-chart-content" id="flot-dashboard-chart"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 data-locale="user">套餐购买排行</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-sm-12">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 data-locale="user">应用下载排行</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-sm-12">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 data-locale="user">事件流</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-sm-12">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="../../static/js/jquery.i18n.properties-min-1.0.9.js"></script>
+    <script src="../../static/js/bootstrap.min.js"></script>
+    <script src="../../static/layer/layer.js"></script>
+    <script src="../../static/layer/extend/layer.ext.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="http://echarts.baidu.com/examples/vendors/echarts/echarts.min.js?_v_=1539619299314"></script>
+    <script src="../../static/js/plugins/toastr/toastr.min.js"></script>
+    <script src="../../static/js/toastr.options.js"></script>
+    <script src="../../static/js/jquery.cookie.js"></script>
+    <script src="../../static/js/mapgoo.js"></script>
+
+
+</body>
+
+</html>
+<script>
+    function echatInfo(object, total) {
+        $.ajax({
+            headers: {
+                token: $.cookie('login_token')
+            },
+            url: WEBHTTP + "admin/statistics?type=" + total,
+            type: "GET",
+            dataType: "json",
+            success: function(response) {
+                if (response.error == 0) {
+                    var option = {
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'cross',
+                                label: {
+                                    backgroundColor: '#283b56'
+                                }
+                            }
+                        },
+                        legend: {
+                            data:['Total', 'Increment']
+                        },
+                        xAxis: [
+                            {
+                                type: 'category',
+                                data: response.result.time
+                            }
+                        ],
+                        yAxis: [
+                            {
+                                type: 'value',
+                                scale: true,
+                                name: ''
+                            }
+                        ],
+                        grid: {
+                            left: '1%',
+                            right: '1%',
+                            bottom: '1%',
+                            containLabel: true
+                        },
+                        series: [
+                            {
+                                name:'Total',
+                                type:'bar',
+                                data: response.result.t
+                            },
+                            {
+                                name:'Increment',
+                                type:'line',
+                                data: response.result.u
+                            }
+                        ]
+                    };
+                    var e = echarts.init(document.getElementById(object));
+                    e.setOption(option);
+                    $(window).resize(e.resize);
+                } else if(response.error == 401){
+                    toastr.error(response.reason);
+                    setTimeout(function(){
+                        $.cookie('login_token', '', {path: '/', expires: -1});
+                        $.cookie('login_account', '', {path: '/', expires: -1});
+                        parent.parent.location.href = "../../index.html"
+                    },500);
+                }else {
+                    toastr.error(response.reason);
+                }
+            }
+        });
+    }
+    $(function(){
+        //echatInfo("flot-dashboard-chart", "device");
+        //echatInfo("flot-dashboard-chart2", "user")
+        $.ajax({
+            headers: {
+                token: $.cookie('login_token')
+            },
+            url: WEBHTTP + "admin/index",
+            type: "GET",
+            dataType: "json",
+            success: function(response) {
+                if (response.error == 0) {
+
+                    $("#deviceToday").text(response.result.deviceToday);
+                    $("#deviceTotal").text(response.result.deviceTotal);
+                    $("#userToday").text(response.result.userToday);
+                    $("#userTotal").text(response.result.userTotal);
+                    if(response.result.deviceIncrease > 0){
+                        $("#deviceIncrease span").next().addClass('fa-level-up');
+                        $("#deviceIncrease").addClass('text-info');
+                    }else if(response.result.deviceIncrease < 0){
+                        $("#deviceIncrease span").next().addClass('fa-level-down');
+                        $("#deviceIncrease").addClass('text-danger');
+                    }else{
+                        $("#deviceIncrease").addClass('text-navy');
+                    }
+
+                    if(response.result.userIncrease > 0){
+                        $("#userIncrease span").next().addClass('fa-level-up');
+                        $("#userIncrease").addClass('text-info');
+                    }else if(response.result.userIncrease < 0){
+                        $("#userIncrease span").next().addClass('fa-level-down');
+                        $("#userIncrease").addClass('text-danger');
+                    }else{
+                        $("#userIncrease").addClass('text-navy');
+                    }
+
+                    $("#deviceIncrease span").html(response.result.deviceIncrease);
+                    $("#userIncrease span").text(response.result.userIncrease);
+
+                } else if(response.error == 401){
+                    toastr.error(response.reason);
+                    setTimeout(function(){
+                        $.cookie('login_token', '', {path: '/', expires: -1});
+                        $.cookie('login_account', '', {path: '/', expires: -1});
+                        parent.parent.location.href = "../../index.html"
+                    },500);
+                }else {
+                    toastr.error(response.reason);
+                }
+            }
+        });
+    })
+</script>

@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>后台 - 账号管理</title>
+    <title>后台 - 套餐管理</title>
     <meta name="keywords" content="后台">
     <meta name="description" content="后台">
 
@@ -21,9 +21,14 @@
 
 </head>
 <style>
-.fancybox img{
-	width: 30%;
-}
+    .fancybox img{
+        width: 13%;
+    }
+    .themeInfo{
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+    }
 </style>
 <body class="gray-bg">
     <div class="wrapper wrapper-content animated fadeInRight">
@@ -31,7 +36,7 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>账号管理</h5>
+                        <h5>套餐管理</h5>
                         <div class="ibox-tools">
 							<a class="refresh-link" href="javascript:location.reload()">
                                 <i class="fa fa-refresh"></i>
@@ -43,18 +48,22 @@
                     </div>
                     <div class="ibox-content">
 						<div class="row">
-              				<div class="col-sm-2 m-b-xs searchFrom">
-								<div class="input-group">
+                            <div class="col-sm-2 m-b-xs searchFrom">
+                                <div class="input-group">
 
-									<input type="text" class="input-sm form-control" name="account" placeholder="请输入账号名称">
-									<span class="input-group-btn">
+                                    <input type="text" class="input-sm form-control" name="packageName" placeholder="请输入套餐名称">
+                                    <span class="input-group-btn">
 										<button class="btn btn-sm btn-primary" id="search"> 搜索</button> </span>
-								</div>
-							</div>
-							<button class="operation btn btn-sm btn-primary" style="float: right;" type="button">
+                                </div>
+                            </div>
+							<button class="operation btn btn-sm  btn-info m-r" style="float: right;" type="button">
 								<i class="fa fa-plus"></i>
-								新建账号
+                                支付配置
 							</button>
+                            <button class="operation btn btn-sm btn-primary  m-r" style="float: right;" type="button">
+                                <i class="fa fa-plus"></i>
+                                新建套餐
+                            </button>
 						</div>
                         <div class="table-responsive">
                             <table class="table table-striped">
@@ -79,31 +88,32 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="../../static/js/bootstrap.min.js"></script>
     <script src="../../static/layer/layer.js"></script>
-	<script src="../../static/layer/extend/layer.ext.js"></script>
+    <script src="../../static/layer/extend/layer.ext.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
     <script src="../../static/js/plugins/toastr/toastr.min.js"></script>
     <script src="../../static/js/toastr.options.js"></script>
     <script src="../../static/js/jquery.cookie.js"></script>
-	<script src="../../static/js/mapgoo.js"></script>
+    <script src="../../static/js/mapgoo.js"></script>
 </body>
 
 </html>
 
 <script>
     var updateId = 0;
-	var list = 'admin/adminList';
-	var del = 'admin/adminDelete';
+	var list = 'admin/packageList';
+	var del = 'admin/packageDelete';
 	var add = 'insert.html';
     var update = 'update.html';
-	var title = ['编号','账号名称','登陆IP','登陆次数','创建时间','登陆时间','备注','操作'];
+	var title = ['编号','套餐名','套餐类型','套餐内容', '费用', '购买量', '创建时间','操作'];
 	var table = [
 	    {"name":"row","type":"text"},
-		{"name":"account","type":"text"},
-		{"name":"loginIp","type":"text"},
-		{"name":"loginCount","type":"text"},
-		{"name":"createTime","type":"text"},
-		{"name":"loginTime","type":"text"},
-		{"name":"remark","type":"text", "width":"15%"}
+		{"name":"packageName","type":"text"},
+		{"name":"packageType","type":"text"},
+        {"name":"package","type":"text"},
+        {"name":"price","type":"text"},
+        {"name":"number","type":"text"},
+		{"name":"createTime","type":"text"}
 	];
 	var object = new $.FormObject(title,table,list,".table-responsive",['edit','del']);
 	object.run();
@@ -112,23 +122,34 @@
 		object.del(del,id);
 
 	});
+
 	$(document).on("click",".operation .btn-success",function(){
 		var id = $(this).attr("data-id");
 		var title = $(".ibox-title h5").text();
-		object.edit(update,id,' ');
+		object.edit(update,id,'');
 	})
 	$(document).on("click",".operation.btn-primary",function(){
 		var title = $(this).text();
-		object.add(add,' ');
+		object.add(add, ' ');
 	})
-	$(document).on("click","#search",function(){
-		var searchdata = {};
-		var name,value;
-		$(".searchFrom input").each(function(){
-			name = $(this).attr("name");
-			value = $(this).val();
-			searchdata[name] = value;
-		})
-		object.search(list, searchdata);
-	})
+    $(document).on("click","#search",function(){
+        var searchdata = {};
+        var name,value;
+        $(".searchFrom input").each(function(){
+            name = $(this).attr("name");
+            value = $(this).val();
+            searchdata[name] = value;
+        })
+        object.search(list, searchdata);
+    })
+    $(document).on("click",".operation.btn-info",function(){
+        layer.open({
+            type: 2,
+            title: false,
+            shadeClose: true,
+            shade: 0.8,
+            area: ['70%', '70%'],
+            content: 'pay.html'
+        });
+    })
 </script>

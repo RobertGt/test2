@@ -1,0 +1,95 @@
+ <!DOCTYPE html>
+<html>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/table_basic.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:01 GMT -->
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台 - 下载记录</title>
+    <meta name="keywords" content="后台">
+    <meta name="description" content="后台">
+
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link href="../../static/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="../../static/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../../static/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <link href="../../static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+</head>
+<style>
+    div,ul,li {
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing:content-box;
+    }
+    li{
+        list-style:none;
+        height: 517px;
+    }
+    ul{
+        padding: 0px;
+        margin: 0px;
+    }
+    .layui-layer-tabnow{
+        border-top: 3px solid #0095ff;
+    }
+</style>
+<body class="gray-bg">
+        <div class="wrapper-content" style="margin: 0px">
+            <div class="col-sm-12 row">
+                <div class="ibox float-e-margins">
+
+                    <div class="ibox-content">
+
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+							<div class="col-sm-6">
+								<div class="dataTables_paginate paging_simple_numbers" id="editable_paginate"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="../../static/js/bootstrap.min.js"></script>
+    <script src="../../static/layer/layer.js"></script>
+	<script src="../../static/layer/extend/layer.ext.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="../../static/js/plugins/toastr/toastr.min.js"></script>
+    <script src="../../static/js/toastr.options.js"></script>
+    <script src="../../static/js/jquery.cookie.js"></script>
+	<script src="../../static/js/mapgoo.js"></script>
+</body>
+
+</html>
+
+<script>
+	var list = 'admin/downList?appId=' + parent.appId;
+	var userId = 0;
+    var appId = 0;
+	var title = ['编号', '包名', '大小', '版本号', '平台', '下载时间'];
+	var table = [
+	    {"name":"row","type":"text"},
+        {"name":"packageName","type":"text"},
+		{"name":"size","type":"text"},
+		{"name":"version","type":"text"},
+        {"name":"platform","type":"text"},
+        {"name":"createTime","type":"text"}
+	];
+	var object = new $.FormObject(title,table,list,".table-responsive",[]);
+	object.run();
+</script>

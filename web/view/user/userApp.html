@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>后台 - 用户管理</title>
+    <title>后台 - 会员账号管理</title>
     <meta name="keywords" content="后台">
     <meta name="description" content="后台">
 
@@ -39,47 +39,16 @@
     }
 </style>
 <body class="gray-bg">
-    <div class="wrapper wrapper-content animated fadeInRight">
-        <div class="row">
-            <div class="col-sm-12">
+        <div class="wrapper-content" style="margin: 0px">
+            <div class="col-sm-12 row">
                 <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>用户管理</h5>
-                        <div class="ibox-tools">
-							<a class="refresh-link" href="javascript:location.reload()">
-                                <i class="fa fa-refresh"></i>
-                            </a>
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                        </div>
-                    </div>
+
                     <div class="ibox-content">
 						<div class="row">
-							<div class="col-sm-1 m-b-xs searchFrom">
-								<div class="input-group">
-									<select class="input-sm form-control" name="state" style="font-size: 12px;">
-										<option value=''>账号状态</option>
-                                        <option value=1>正常</option>
-                                        <option value=2>禁用</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-sm-1 m-b-xs searchFrom">
-								<div class="input-group">
-
-									<select class="input-sm form-control" name="realname" style="font-size: 12px;">
-										<option value=0>实名状态</option>
-										<option value=1>待审核</option>
-										<option value=2>通过</option>
-                                        <option value=3>失败</option>
-									</select>
-								</div>
-							</div>
               				<div class="col-sm-2 m-b-xs searchFrom">
 								<div class="input-group">
 
-									<input type="text" class="input-sm form-control" name="email" placeholder="请输入账号">
+									<input type="text" class="input-sm form-control" name="appName" placeholder="请输入应用名">
 									<span class="input-group-btn">
 										<button class="btn btn-sm btn-primary" id="search"> 搜索</button> </span>
 								</div>
@@ -103,7 +72,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
 	</div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="../../static/js/bootstrap.min.js"></script>
@@ -119,22 +87,19 @@
 </html>
 
 <script>
-	var list = 'admin/userList';
-	var state = 'admin/userStateUpdate';
-	var packageId = 0;
-    var userId = 0;
-	var title = ['编号', '账号', '账号状态', '实名状态', '套餐类型', '剩余增值点','注册时间','登陆时间','操作'];
+	var list = 'admin/appListByUser?uid=' + parent.userId;
+	var state = 'admin/appStateUpdate';
+	var title = ['编号', '应用名称', '包名', '大小', '下载次数', '应用状态','上传时间','操作'];
 	var table = [
 	    {"name":"row","type":"text"},
-		{"name":"email","type":"text"},
+		{"name":"appName","type":"text"},
+		{"name":"packageName","type":"text"},
+		{"name":"size","type":"text"},
+		{"name":"download","type":"text"},
 		{"name":"stateText","type":"text"},
-		{"name":"realnameText","type":"text"},
-		{"name":"packageName","type":"onclick", "id":"packageId"},
-		{"name":"surplus","type":"text"},
-        {"name":"createTime","type":"text"},
-		{"name":"loginTime","type":"text"}
+        {"name":"createTime","type":"text"}
 	];
-	var object = new $.FormObject(title,table,list,".table-responsive",['info', 'enable']);
+	var object = new $.FormObject(title,table,list,".table-responsive",['down', 'enable']);
 	object.run();
 	$(document).on("click",".operation .btn-danger",function() {
 		var id = $(this).attr("data-id");
@@ -144,31 +109,10 @@
         var id = $(this).attr("data-id");
         object.start(state,id);
     });
-    $(document).on("click",".onclick",function() {
-        packageId = $(this).attr("data-id");
-        layer.open({
-            type: 2,
-            title: false,
-            shadeClose: true,
-            shade: 0.8,
-            area: ['25%', '275px'],
-            content: "packageInfo.html"
-        });
-    });
+
     $(document).on("click",".operation .btn-info",function() {
-        userId = $(this).attr("data-id");
-        layer.tab({
-            shadeClose: true,
-            area: ['60%', '563px'],
-            shade: 0.8,
-            tab: [{
-                title: '用户信息',
-                content: '<iframe src="userInfo.html" scrolling="auto" allowtransparency="true" onload="this.className=\'\';" class="" frameborder="0" width="100%" height="517px"></iframe>'
-            }, {
-                title: '上传记录',
-                content: '<iframe src="userApp.html" scrolling="auto" allowtransparency="true" onload="this.className=\'\';" class="" frameborder="0" width="100%" height="517px"></iframe>'
-            }]
-        });
+        var url = $(this).attr("data-url");
+        window.open(url);
     });
 	$(document).on("click","#search",function(){
 		var searchdata = {};
