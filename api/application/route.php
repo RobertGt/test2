@@ -84,4 +84,10 @@ Route::get([
 
     'admin/templetList'    => 'admin/Templet/templetList',
     'admin/templetInfo'    => 'admin/Templet/templetInfo',
+
+    'admin/statistics'     => 'admin/Statistics/index',
+    'admin/chart'          => 'admin/Statistics/chart',
+
+    'admin/buyTop'         => 'admin/Statistics/buyTop',
+    'admin/downTop'        => 'admin/Statistics/downTop',
 ]);
