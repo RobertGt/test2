@@ -12,15 +12,6 @@
 use think\Route;
 
 Route::post([
-    'v1/taskCreate'        => 'api/Task/taskCreate',
-    'v1/taskDelete'        => 'api/Task/taskDelete',
-    'v1/taskUpdate'        => 'api/Task/taskUpdate',
-    'v1/taskSort'          => 'api/Task/taskSort',
-    'v1/taskUpload'        => 'api/Task/taskUpload',
-
-    'v1/articleShare'      => 'api/article/articleShare',
-
-    'v1/setting'           => 'api/Configure/setting',
 
     'admin/login'          => 'admin/Index/login',
     'admin/reset'          => 'admin/Index/reset',
@@ -41,26 +32,12 @@ Route::post([
     'admin/templetUpdateState'    => 'admin/Templet/templetUpdateState',
     'admin/templetUpdate'    => 'admin/Templet/templetUpdate',
 
-    'v1/login'                 => 'api/User/login',
+    'v1/register'           => 'api/User/register',
+    'v1/sendMail'           => 'api/User/sendMail',
+    'v1/login'              => 'api/User/login',
 ]);
 
 Route::get([
-    'v1/taskList'          => 'api/Task/taskList',
-    'v1/taskIcon'          => 'api/Task/taskIcon',
-    'v1/taskNext'          => 'api/Task/taskNext',
-
-    'v1/taskStatistic'     => 'api/Statistic/taskStatistic',
-    'v1/taskDistribution'  => 'api/Statistic/taskDistribution',
-    'v1/taskCurve'         => 'api/Statistic/taskCurve',
-    'v1/coveStatistic'     => 'api/Statistic/coveStatistic',
-    'v1/coveCurve'         => 'api/Statistic/coveCurve',
-
-    'v1/articleList'       => 'api/article/articleList',
-    'v1/articleInfo'       => 'api/article/articleInfo',
-
-    'v1/settingInfo'       => 'api/Configure/settingInfo',
-    'v1/theme'             => 'api/Configure/theme',
-    'v1/ring'              => 'api/Configure/ring',
 
     'admin/adminList'      => 'admin/Admin/adminList',
     'admin/adminDelete'    => 'admin/Admin/adminDelete',

@@ -205,3 +205,22 @@ function format_date($time){
         }
     }
 }
+
+/**
+ * 邮箱验证
+ *
+ * @return boolean
+ */
+function _checkemail($email=''){
+
+    if(strlen($email)<5){
+        return false;
+    }
+    $res="/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/";
+    if(preg_match($res,$email)){
+        return true;
+    }else{
+        return false;
+    }
+}
+

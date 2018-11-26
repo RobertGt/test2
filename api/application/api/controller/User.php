@@ -10,28 +10,65 @@ namespace app\api\controller;
 
 
 use app\api\server\LoginServer;
+use app\api\server\UserServer;
 use app\api\validate\UserValidate;
 use think\Request;
 
-class User extends Base
+class User
 {
+    public function register(Request $request)
+    {
+        $param = [
+            'email'      => $request->param('email',''),
+            'password'   => $request->param('password',''),
+            'code'       => $request->param('code',''),
+			'wechat'     => $request->param('wechat',''),
+			'imNumber'   => $request->param('imNumber', ''),
+			'company'    => $request->param('company',''),
+			'job'        => $request->param('job','')
+        ];
+        $validate = new UserValidate();
+        if(!$validate->scene('register')->check($param)){
+            ajax_info(1 , $validate->getError());
+        }
+        $response = (new UserServer())->register($param);
+        if($response){
+            ajax_info(0,'success', $response);
+        }else{
+            ajax_info(1,'注册失败');
+        }
+    }
+
+    public function sendMail(Request $request)
+    {
+        $param = [
+            'email'      => $request->param('email',''),
+            'find'       => $request->param('find','') ? 1 : 0,
+        ];
+        $validate = new UserValidate();
+        if(!$validate->scene('send')->check($param)){
+            ajax_info(1 , $validate->getError());
+        }
+        $response = (new UserServer())->sendMail($param);
+        if($response){
+            ajax_info(0,'success');
+        }else{
+            ajax_info(1,'发送失败');
+        }
+    }
+
     public function login(Request $request)
     {
         $param = [
-            'loginType'  => $request->param('loginType',''),
-            'imei'       => $request->param('imei',''),
-            'openid'     => $request->param('userId',''),
-			'avatar'     => $request->param('avatar',''),
-			'sex'        => $request->param('sex', 0, 'intval'),
-			'province'   => $request->param('province',''),
-			'city'       => $request->param('city',''),
-			'nickname'   => $request->param('nickname','')
+            'email'      => $request->param('email',''),
+            'password'   => $request->param('password',''),
+            'find'       => 1
         ];
         $validate = new UserValidate();
         if(!$validate->scene('login')->check($param)){
             ajax_info(1 , $validate->getError());
         }
-        $response = (new LoginServer())->login($param);
+        $response = (new UserServer())->login($validate->user);
         if($response){
             ajax_info(0,'success', $response);
         }else{
