@@ -167,12 +167,8 @@
                     <div class="ibox-title">
                         <h5 data-locale="user">事件流</h5>
                     </div>
-                    <div class="ibox-content">
-                        <div class="row">
-                            <div class="col-sm-12">
+                    <div class="ibox-content timeline eventTop">
 
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -378,5 +374,55 @@
                 }
             }
         });
+
+        $.ajax({
+            headers: {
+                token: $.cookie('login_token')
+            },
+            url: WEBHTTP + "admin/eventTop",
+            type: "GET",
+            dataType: "json",
+            success: function(response) {
+                if (response.error == 0) {
+                    var html = '';
+                    $.each(response.result, function(k, v){
+                        html += '<div class="timeline-item">' +
+                            '                            <div class="row">' +
+                            '                            <div class="col-xs-3 date">' +
+                            '                            <i class="fa fa-file-text"></i>' +
+                            '                            <small class="text-navy">'+v.format+'</small>' +
+                            '                        </div>' +
+                            '                        <div class="col-xs-7 content" style="min-height: 88px;">' +
+                            '                            <p style="color: #777777;">'+v.createTime+'</p>' +
+                            '                        <p class="m-b-xs"><strong><a href="javascript:;" data-id="'+v.uid+'" class="userInfo">'+v.email+'</a> 上传了一个应用：'+v.appName+'</strong></p>' +
+                            '                        </div>' +
+                            '                        </div>' +
+                            '                        </div>'
+                    })
+                    $(".eventTop").html(html);
+                } else if(response.error == 401){
+                    toastr.error(response.reason);
+                    setTimeout(function(){
+                        $.cookie('login_token', '', {path: '/', expires: -1});
+                        $.cookie('login_account', '', {path: '/', expires: -1});
+                        parent.parent.location.href = "../../index.html"
+                    },500);
+                }else {
+                    toastr.error(response.reason);
+                }
+            }
+        });
     })
+    var userId = 0;
+    $(document).on("click",".userInfo",function() {
+        userId = $(this).attr("data-id");
+        layer.open({
+            type: 2,
+            title: "用户详情",
+            shadeClose: true,
+            area: ['60%', '563px'],
+            shade: 0.8,
+            content: "userInfo.html"
+        });
+    });
 </script>

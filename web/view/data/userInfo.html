@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/form_validate.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:19:15 GMT -->
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  <title></title>
+  <meta name="keywords" content="后台">
+  <meta name="description" content="后台">
+
+  <link rel="shortcut icon" href="../../favicon.ico">
+  <link href="../../static/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+  <link href="../../static/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+  <link href="../../static/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+  <link href="../../static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+</head>
+<style>
+  .fixed-table-container {
+    border-bottom: none;
+    padding-bottom: 0px;
+  }
+
+  .attachments {
+    width: 243px;
+    height: 161px;
+    cursor: pointer;
+  }
+
+  .col-sm-2 .subnet {
+    width: 95%;
+    height: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .col-sm-2 .subnet {
+      width: 89%;
+    }
+  }
+
+  .col-sm-2 .subnet button {
+    margin-top: 27%;
+    display: none;
+  }
+
+  .progress {
+    height: 20px;
+    overflow: hidden;
+    background-color: #ECECEC;
+    -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
+    position: relative;
+    width: 70%;
+    margin-left: 15%;
+    padding: 1px;
+    margin-top: 27%;
+    display: none;
+  }
+
+  .bar {
+    background-color: green;
+    display: block;
+    width: 0%;
+    height: 20px;
+  }
+
+  .percent {
+    position: absolute;
+    height: 20px;
+    display: inline-block;
+    top: 3px;
+    left: 2%;
+    color: #FFFFFF;
+  }
+
+  .imglist {
+    float: left;
+  }
+
+  .imglist .tupian {
+    width: 77px;
+    height: 77px;
+    margin: 0px 5px;
+  }
+
+  .imglist .dels {
+    position: absolute;
+    width: 20px;
+    margin-left: 67px;
+    margin-top: -8px;
+    cursor: pointer;
+  }
+  .childreninput{
+    padding-left: 13%;
+  }
+  .form-group{
+    overflow: hidden;
+  }
+  .show-grid [class^=col-] {
+    border: 0px;
+  }
+  .attachments{
+    width: 90%;
+    height: auto;
+  }
+
+</style>
+
+<body class="gray-bg">
+  <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row diff-wrapper fun" style="display: none;margin-bottom: 50px;">
+
+    </div>
+  </div>
+
+</body>
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/layer/layer.js"></script>
+<script src="../../static/layer/extend/layer.ext.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+<script src="../../static/js/plugins/toastr/toastr.min.js"></script>
+<script src="../../static/js/toastr.options.js"></script>
+<script src="../../static/js/mapgoo.js"></script>
+
+<script>
+    var state = 'admin/userStateUpdate';
+    var realname = 'admin/userRealnameUpdate';
+    var updatePass = 'admin/userPasswordUpdate';
+    var index = parent.layer.getFrameIndex(window.name);
+    $(".btn-outline").click(function() {
+        parent.layer.close(index); //执行关闭
+    })
+    function info(){
+        setTimeout(function(){
+            layer.load(0, {shade: [0.6,'#000000']});
+        },1);
+        $.ajax({
+            headers: {
+                token: $.cookie('login_token')
+            },
+            url: WEBHTTP + "admin/userInfo?id=" + parent.userId,
+            type: "GET",
+            dataType: "json",
+            success: function(response) {
+                if (response.error == 0) {
+                    var html = "<div class=\"row show-grid col-sm-12\">" +
+                        "<div class=\"col-sm-12\"><span class='font-bold badge-info p-xxs m-r'> 基本信息</span></div>" +
+                        "<div class=\"col-sm-6\"><span class='font-bold m-r'> 微信：</span><span>" + response.result.wechat + "</span></div>" +
+                        "<div class=\"col-sm-6\"><span class='font-bold m-r'> Q Q：</span><span>" + response.result.imNumber + "</span></div>" +
+                        "<div class=\"col-sm-6\"><span class='font-bold m-r'> 公司：</span><span>" + response.result.company + "</span></div>" +
+                        "<div class=\"col-sm-6\"><span class='font-bold m-r'> 职位：</span><span>" + response.result.job + "</span></div>" +
+                        "</div>"
+                    html += "<div class=\"row show-grid col-sm-12\">" +
+                        "<div class=\"col-sm-12\"><span class='font-bold badge-info p-xxs m-r'> 账号信息</span></div>" +
+                        "<div class=\"col-sm-6\"><span class='font-bold m-r'> 登录账号：</span><span>" + response.result.email + "</span></div>" +
+                        "<div class=\"col-sm-6\"><span class='font-bold m-r'> 手机号码：</span><span>" + response.result.mobile + "</span></div>" +
+                        "<div class=\"col-sm-6\"><span class='font-bold m-r'> 登录密码：</span><span><a href='javascript:;' class='reset' data-id='" + response.result.id + "'>重置密码</a></span></div>" +
+                        "<div class=\"col-sm-6\"><span class='font-bold m-r'> 当前套餐：</span><span><a href='javascript:;' class='onclick' data-id='" + response.result.packageId + "'>" + response.result.packageName + "</a></span></div>" +
+                        "<div class=\"col-sm-6\"><span class='font-bold m-r'> 套餐到期：</span><span>" + response.result.expireTime + "</span></div>" +
+                        "<div class=\"col-sm-6\"><span class='font-bold m-r'> 上传次数：</span><span>" + response.result.upload + " (次)</span></div>" +
+                        "<div class=\"col-sm-6\"><span class='font-bold m-r'> 每日下载：</span><span>" + response.result.download + " (次)</span></div>" +
+                        "<div class=\"col-sm-6\"><span class='font-bold m-r'> 剩余点数：</span><span>" + response.result.surplus + " (次)</span></div>" +
+                        "</div>"
+                    html += "<div class=\"row show-grid col-sm-12\">" +
+                        "<div class=\"col-sm-12\"><span class='font-bold badge-info p-xxs m-r'> 实名信息</span>("+ response.result.realnameText +")</div>" +
+                        "<div class=\"col-sm-4 text-center\"><a class=\"fancybox\" href="+ response.result.image1 +" title=\"身份证正面\"> "+
+                        "<img src="+ response.result.image1 +" class=\"attachments\"></a></div>" +
+                        "<div class=\"col-sm-4 text-center\"><a class=\"fancybox\" href="+ response.result.image2 +" title=\"身份证反面\"> "+
+                        "<img src="+ response.result.image2 +" class=\"attachments\"></a></div>" +
+                        "<div class=\"col-sm-4 text-center\"><a class=\"fancybox\" href="+ response.result.image3 +" title=\"手持身份证\"> "+
+                        "<img src="+ response.result.image3 +" class=\"attachments\"></a></div>" +
+                        "</div>"
+                    var fa = 'fa-ban',
+                        n = '禁用',
+                        b = 'btn-danger';
+                    if(response.result.state){
+                        fa = 'fa-circle-o';
+                        n = '启用';
+                        b = 'btn-primary';
+                    }
+                    html += "<div class=\"col-sm-12 input-group text-center\" style='background-color: #fff!important;position: fixed;bottom: 0px;padding: 15px 0;'>" +
+                        "<button class=\"btn "+ b +" m-r\" data-id="+ response.result.id +">" +
+                        "<i class=\"fa "+ fa +"\"></i>" +
+                        "<span class=\"bold\"> "+ n +"</span>" +
+                        "</button>";
+                    if(response.result.real){
+                        html += "<button class=\"btn btn-info m-r\" data-id="+ response.result.id +">" +
+                        "<i class=\"fa fa-check\"></i>" +
+                        "<span class=\"bold\"> 实名成功</span>" +
+                        "</button>"
+                        html += "<button class=\"btn btn-warning m-r\"  data-id="+ response.result.id +">" +
+                        "<i class=\"fa fa-user-times\"></i>" +
+                        "<span class=\"bold\"> 实名失败</span>" +
+                        "</button>"
+                    }
+                    html += "</div>"
+                    $(".fun").html(html);
+                    $(".fun").show();
+                    $(".fancybox").fancybox({openEffect:"none",closeEffect:"none"});
+                    layer.closeAll();
+                } else if(response.error == 401){
+                    toastr.error(response.reason);
+                    setTimeout(function(){
+                        $.cookie('login_token', '', {path: '/', expires: -1});
+                        $.cookie('login_account', '', {path: '/', expires: -1});
+                        parent.parent.location.href = "../../index.html"
+                    },500);
+                }else {
+                    toastr.error(response.reason);
+                    setTimeout(function(){
+                        parent.layer.closeAll(); //执行关闭
+                    },2000);
+                }
+            }
+        });
+    }
+    info();
+    var request = function (ajaxUrl, method, data, callback) {
+        var loads = layer.load(0, {shade: [0.1,'#000']});
+        $.ajax({
+            headers: {
+                token: $.cookie('login_token')
+            },
+            type : method,
+            url : ajaxUrl,
+            data : data,
+            async : false,
+            success : function(response){
+                if(response.error == 0){
+                    callback(data, response);
+                }else if(response.error == 401){
+                    toastr.error(response.reason);
+                    setTimeout(function(){
+                        $.cookie('login_token', '', {path: '/', expires: -1});
+                        $.cookie('login_account', '', {path: '/', expires: -1});
+                        location.href = "../../index.html"
+                    },500);
+                }else {
+                    toastr.error(response.reason);
+                }
+                setTimeout(function(){layer.close(loads);},100);
+            },
+            error :function(response){
+                layer.closeAll();
+                toastr.error('加载失败');
+            }
+        });
+    }
+    $(document).on("click",".btn-danger",function() {
+        var id = $(this).attr("data-id");
+        layer.confirm("是否确定禁用用户?", {
+            btn: ["确定", "取消"]
+        }, function() {
+            postData = {id:id, state:1};
+            request(WEBHTTP + state, 'POST', postData, function(){
+                info();
+            })
+        })
+    });
+    $(document).on("click",".btn-primary",function() {
+        var id = $(this).attr("data-id");
+        layer.confirm("是否确定启用用户?", {
+            btn: ["确定", "取消"]
+        }, function() {
+            postData = {id:id, state:0};
+            request(WEBHTTP + state, 'POST', postData, function(){
+                info();
+            })
+        })
+    });
+    $(document).on("click",".btn-info",function() {
+        var id = $(this).attr("data-id");
+        layer.confirm("是否确定通过审核?", {
+            btn: ["确定", "取消"]
+        }, function() {
+            postData = {id:id, realname:1};
+            request(WEBHTTP + realname, 'POST', postData, function(){
+                info();
+            })
+        })
+    });
+    $(document).on("click",".btn-warning",function() {
+        var id = $(this).attr("data-id");
+        layer.confirm("是否确定审核失败?", {
+            btn: ["确定", "取消"]
+        }, function() {
+            postData = {id:id, realname:2};
+            request(WEBHTTP + realname, 'POST', postData, function(){
+                info();
+            })
+        })
+    });
+    $(document).on("click",".onclick",function() {
+        packageId = $(this).attr("data-id");
+        layer.open({
+            type: 2,
+            title: false,
+            shadeClose: true,
+            shade: 0.8,
+            area: ['40%', '275px'],
+            content: "packageInfo.html"
+        });
+    });
+    $(document).on("click",".reset",function() {
+        var id = $(this).attr("data-id");
+        layer.prompt({title: '请输入不少于6位字符的密码', formType: 1}, function(pass, index){
+            postData = {id:id, password : pass};
+            request(WEBHTTP + updatePass, 'POST', postData, function(){
+                layer.close(index);
+            })
+        });
+    });
+</script>

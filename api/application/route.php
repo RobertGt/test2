@@ -90,4 +90,5 @@ Route::get([
 
     'admin/buyTop'         => 'admin/Statistics/buyTop',
     'admin/downTop'        => 'admin/Statistics/downTop',
+    'admin/eventTop'       => 'admin/Statistics/eventTop',
 ]);

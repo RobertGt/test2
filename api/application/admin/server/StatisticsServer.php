@@ -119,4 +119,17 @@ class StatisticsServer
         }
         return $response;
     }
+
+    public function eventTop()
+    {
+        $sql = "select u.uid,u.email,a.appName,a.createTime from bas_application a JOIN bas_user u on a.uid = u.uid ORDER BY createTime desc limit 10";
+        $top10 = (new ApplicationModel())->query($sql);
+        $response = [];
+        foreach ($top10 as $value){
+            $value['format'] = format_date($value['createTime']);
+            $value['createTime'] = date("Y-m-d H:i:s", $value['createTime']);
+            $response[] = $value;
+        }
+        return $response;
+    }
 }

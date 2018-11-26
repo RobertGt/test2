@@ -41,4 +41,11 @@ class Statistics extends Base
 
         ajax_info(0,'success', $response);
     }
+
+    public function eventTop()
+    {
+        $response = (new StatisticsServer())->eventTop();
+
+        ajax_info(0,'success', $response);
+    }
 }
