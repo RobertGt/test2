@@ -66,7 +66,7 @@ class UserValidate extends Validate
             $sendCode = Cache::get('reg_' . $data['email']);
         }
         if($sendCode != $code){
-            return "验证码不正确,请重新输入";
+            //return "验证码不正确,请重新输入";
         }
         return true;
     }
