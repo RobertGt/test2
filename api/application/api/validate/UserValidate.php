@@ -49,7 +49,7 @@ class UserValidate extends Validate
 
         if(!empty($data['find'])){
             if($count <= 0){
-                return "邮箱已经还未注册";
+                return "邮箱还未注册";
             }
         }else{
             if($count > 0){
