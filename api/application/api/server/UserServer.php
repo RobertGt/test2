@@ -43,14 +43,14 @@ class UserServer
     public function sendMail($param = [])
     {
         $exp = 60 * 10;
-        $code = round(100000,999999);
+        $code = rand(100000,999999);
         if(!empty($param['find'])){
             $state = Cache::set('find_' . $param['email'], $code, $exp);
         }else{
             $state = Cache::set('reg_' . $param['email'], $code, $exp);
         }
         if($state){
-            $content = "您的验证码是：<span style='font-weight: bold;font-size: 18px'>" . $code . "</span>" . "有效期10分钟。";
+            $content = "您的验证码是：<span style='font-weight: bold;font-size: 18px'>" . $code . "</span>, " . "有效期10分钟。";
             $send = think_send_mail($param['email'], $param['email'], $content, "验证码");
         }
         return $send === true ? true : $send;

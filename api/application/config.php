@@ -50,9 +50,9 @@ return [
     /* 邮件 */
     'email' => [
         'SMTP_HOST'   => 'smtp.qq.com', //SMTP服务器
-        'SMTP_PORT'   => '25', //SMTP服务器端口
+        'SMTP_PORT'   => '465', //SMTP服务器端口
         'SMTP_USER'   => '603003294@qq.com', //SMTP服务器用户名
-        'SMTP_PASS'   => 'ettjdcgmhtafbbbf', //SMTP服务器密码
+        'SMTP_PASS'   => 'ruwuzhntwdesbdgi', //SMTP服务器密码
         'FROM_EMAIL'  => '603003294@qq.com', //发件人EMAIL
         'FROM_NAME'   => 'XXX官方', //发件人名称
         'REPLY_EMAIL' => '', //回复EMAIL（留空则为发件人EMAIL）
