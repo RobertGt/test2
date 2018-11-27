@@ -50,9 +50,10 @@ class UserServer
             $state = Cache::set('reg_' . $param['email'], $code, $exp);
         }
         if($state){
-
+            $content = "您的验证码是：<span style='font-weight: bold;font-size: 18px'>" . $code . "</span>" . "有效期10分钟。";
+            $send = think_send_mail($param['email'], $param['email'], $content, "验证码");
         }
-        return true;
+        return $send === true ? true : $send;
     }
 
     public function login($user = [])

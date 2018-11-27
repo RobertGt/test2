@@ -50,10 +50,10 @@ class User
             ajax_info(1 , $validate->getError());
         }
         $response = (new UserServer())->sendMail($param);
-        if($response){
-            ajax_info(0,'success');
+        if($response === true){
+            ajax_info(0, 'success');
         }else{
-            ajax_info(1,'发送失败');
+            ajax_info(1, $response);
         }
     }
 

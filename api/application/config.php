@@ -47,13 +47,15 @@ return [
     //app请求密钥
     'app_key'   =>  '7c6fe563abc91f43be71d5bc9072329f',
 
-    'third_party'  =>  [
-        'wechat'  => [
-            'appid'  =>  'xxxxxxx',
-            'secret' => 'xxxxxxxxxxxxxxxxxxxx'
-        ],
-        'qq'      => [
-            'appid'  =>  'xxxxxxx'
-        ]
+    /* 邮件 */
+    'email' => [
+        'SMTP_HOST'   => 'smtp.qq.com', //SMTP服务器
+        'SMTP_PORT'   => '25', //SMTP服务器端口
+        'SMTP_USER'   => '603003294@qq.com', //SMTP服务器用户名
+        'SMTP_PASS'   => 'ettjdcgmhtafbbbf', //SMTP服务器密码
+        'FROM_EMAIL'  => '603003294@qq.com', //发件人EMAIL
+        'FROM_NAME'   => 'XXX官方', //发件人名称
+        'REPLY_EMAIL' => '', //回复EMAIL（留空则为发件人EMAIL）
+        'REPLY_NAME'  => '', //回复名称（留空则为发件人名称）
     ],
 ];
