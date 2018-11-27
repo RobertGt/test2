@@ -75,4 +75,24 @@ class User
             ajax_info(1,'登录失败');
         }
     }
+
+    public function passwordFind(Request $request)
+    {
+        $param = [
+            'email'      => $request->param('email',''),
+            'password'   => $request->param('password',''),
+            'code'       => $request->param('code',''),
+            'find'       => 1
+        ];
+        $validate = new UserValidate();
+        if(!$validate->scene('find')->check($param)){
+            ajax_info(1 , $validate->getError());
+        }
+        $response = (new UserServer())->find($param);
+        if($response){
+            ajax_info(0,'success');
+        }else{
+            ajax_info(1,'设置失败');
+        }
+    }
 }

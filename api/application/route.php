@@ -35,6 +35,7 @@ Route::post([
     'v1/register'           => 'api/User/register',
     'v1/sendMail'           => 'api/User/sendMail',
     'v1/login'              => 'api/User/login',
+    'v1/find'               => 'api/User/passwordFind',
 ]);
 
 Route::get([

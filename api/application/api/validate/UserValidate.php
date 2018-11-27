@@ -35,7 +35,8 @@ class UserValidate extends Validate
     protected $scene = [
         'register'       =>  ['email', 'password', 'code', 'imNumber'],
         'send'           =>  ['email'],
-        'login'          =>  ['email', 'password' => 'require|min:6|checkUser']
+        'login'          =>  ['email', 'password' => 'require|min:6|checkUser'],
+        'find'           =>  ['email', 'password', 'code'],
     ];
 
     public function checkEmail($email, $rule, $data)
@@ -66,7 +67,7 @@ class UserValidate extends Validate
             $sendCode = Cache::get('reg_' . $data['email']);
         }
         if($sendCode != $code){
-            //return "验证码不正确,请重新输入";
+            return "验证码不正确,请重新输入";
         }
         return true;
     }

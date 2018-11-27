@@ -39,6 +39,20 @@ class UserServer
         }
         return $create;
     }
+    
+    public function find($param = [])
+    {
+        $save['salt']     = getRandStr();
+        $save['password'] = md5($param['password'] . $save['salt']);
+        $save['token']     = md5(time() . rand(1000, 9999).$param['email']);
+        try{
+            (new UserModel())->save($save, ['email' => $param['email']]);
+        }catch (Exception $e){
+            Log::error("find error:" . $e->getMessage());
+            return false;
+        }
+        return true;
+    }
 
     public function sendMail($param = [])
     {
