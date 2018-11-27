@@ -126,7 +126,8 @@ class UserServer
             $userInfo['image1'] = !empty($identityCard[0]) ? $identityCard[0] : '../../static/img/timg.png';
             $userInfo['image2'] = !empty($identityCard[1]) ? $identityCard[1] : '../../static/img/timg.png';
             $userInfo['image3'] = !empty($identityCard[2]) ? $identityCard[2] : '../../static/img/timg.png';
-            if(!empty($identityCard[0]) && !empty($identityCard[1]) && !empty($identityCard[2]) && $userInfo['realname'] == 0){
+            //!empty($identityCard[0]) && !empty($identityCard[1]) && !empty($identityCard[2]) &&
+            if($userInfo['realname'] == 0){
                 $userInfo['real'] = 1;
             }else{
                 $userInfo['real'] = 0;
