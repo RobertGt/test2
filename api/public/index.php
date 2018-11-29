@@ -16,7 +16,6 @@ header("Access-Control-Allow-Origin:*");
 header('Access-Control-Allow-Headers:x-requested-with, content-type, token');
 
 define('APP_PATH', __DIR__ . '/../application/');
-define('WEB_HTTP', 'http://' . $_SERVER['HTTP_HOST'] . '/api');
-define('WEB_HTTPS', 'https://' . $_SERVER['HTTP_HOST'] . '/api');
+define('WEB_HTTP', $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']);
 // 加载框架引导文件
 require __DIR__ . '/../thinkphp/start.php';

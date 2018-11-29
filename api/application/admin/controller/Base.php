@@ -33,7 +33,7 @@ class Base
         $admin = (new AdminServer())->adminInfo(0, $token);
 
         if (!$admin){
-           // ajax_info(401, 'failure of authentication');
+            ajax_info(401, 'failure of authentication');
         }
 
         $this->adminInfo = $admin;

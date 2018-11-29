@@ -123,9 +123,9 @@ class UserServer
             $userInfo['realnameText'] = $userInfo['realname'] == 1 ? "审核通过" :
                 ($userInfo['realname'] == 2 ? "审核失败" : "待审核");
             $identityCard = $userInfo['identityCard'] ? explode(',', $userInfo['identityCard']) : [];
-            $userInfo['image1'] = !empty($identityCard[0]) ? $identityCard[0] : '../../static/img/timg.png';
-            $userInfo['image2'] = !empty($identityCard[1]) ? $identityCard[1] : '../../static/img/timg.png';
-            $userInfo['image3'] = !empty($identityCard[2]) ? $identityCard[2] : '../../static/img/timg.png';
+            $userInfo['image1'] = !empty($identityCard[0]) ? urlCompletion($identityCard[0]) : '../../static/img/timg.png';
+            $userInfo['image2'] = !empty($identityCard[1]) ? urlCompletion($identityCard[1]) : '../../static/img/timg.png';
+            $userInfo['image3'] = !empty($identityCard[2]) ? urlCompletion($identityCard[2]) : '../../static/img/timg.png';
             //!empty($identityCard[0]) && !empty($identityCard[1]) && !empty($identityCard[2]) &&
             if($userInfo['realname'] == 0){
                 $userInfo['real'] = 1;

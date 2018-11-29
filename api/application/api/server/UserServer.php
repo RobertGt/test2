@@ -86,4 +86,20 @@ class UserServer
         }
         return $user;
     }
+
+    public function real($param = [])
+    {
+        $identityCard[] = $param['front'];
+        $identityCard[] = $param['contrary'];
+        $identityCard[] = $param['hand'];
+        $save['identityCard'] = implode(',', $identityCard);
+        $save['realname'] = 0;
+        try{
+            (new UserModel())->save($save, ['uid' => $param['uid']]);
+        }catch (Exception $e){
+            Log::error("real error:" . $e->getMessage());
+            return false;
+        }
+        return true;
+    }
 }

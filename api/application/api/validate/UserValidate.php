@@ -20,7 +20,11 @@ class UserValidate extends Validate
         'email'       => 'require|checkEmail',
         'password'    => 'require|min:6',
 		'code'        => 'require|length:6|checkCode',
-		'imNumber'    => 'number'
+		'imNumber'    => 'number',
+        'front'       => 'require',
+        'contrary'    => 'require',
+        'hand'        => 'require',
+        'realname'    => 'in:0,2',
     ];
 
     protected $message  =   [
@@ -29,7 +33,11 @@ class UserValidate extends Validate
         "password.min"       =>  '请输入不少于6位字符的密码',
         "code.require"       =>  '请输入验证码',
         "code.length"        =>  '验证码为6位字符',
-        'imNumber.number'    =>  '请输入正确的QQ号'
+        'imNumber.number'    =>  '请输入正确的QQ号',
+        'front.require'      =>  '请上传身份证正面',
+        'contrary.require'   =>  '请上传身份证反面',
+        'hand.require'       =>  '请上传手持身份证',
+        'realname.in'        =>  '你的账号已经审核通过,无限重复验证',
     ];
 
     protected $scene = [
@@ -37,6 +45,7 @@ class UserValidate extends Validate
         'send'           =>  ['email'],
         'login'          =>  ['email', 'password' => 'require|min:6|checkUser'],
         'find'           =>  ['email', 'password', 'code'],
+        'real'           =>  ['front', 'contrary', 'hand', 'realname']
     ];
 
     public function checkEmail($email, $rule, $data)
@@ -74,9 +83,12 @@ class UserValidate extends Validate
 
     public function checkUser($password, $rule, $data)
     {
-        $user = (new UserModel())->where(['email' => $data['email']])->field('uid, email, password, salt, wechat, imNumber, company, job')->find()->toArray();
+        $user = (new UserModel())->where(['email' => $data['email']])->field('uid, email, password, salt, wechat, imNumber, company, job, state')->find()->toArray();
         if($user['password'] != md5($password . $user['salt'])){
             return "登录密码错误";
+        }
+        if($user['state'] == 1){
+            return "你的账号已经被禁用";
         }
         $this->user = $user;
         return true;
