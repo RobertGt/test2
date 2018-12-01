@@ -36,8 +36,11 @@ Route::post([
     'v1/sendMail'           => 'api/User/sendMail',
     'v1/login'              => 'api/User/login',
     'v1/find'               => 'api/User/passwordFind',
-    'v1/imageUpload'        => 'api/Index/imageUpload',
     'v1/realName'           => 'api/Login/realName'
+]);
+
+Route::any([
+    'v1/imageUpload'        => 'api/Index/imageUpload',
 ]);
 
 Route::get([
