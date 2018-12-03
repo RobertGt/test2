@@ -60,8 +60,9 @@ class Login extends Base
         if($file){
             $info = $file->validate($validate)->move($root . $path);
             if($info){
-                $response['savePath'] = str_replace('\\', '/', $path . DS . $info->getSaveName());
-                $response['viewUrl'] = urlCompletion($response['savePath']);
+                $appPath = str_replace('\\', '/', $path . DS . $info->getSaveName());
+                $apk = apkParseInfo($root . $appPath);
+                print_R ($apk);exit;
                 ajax_info(0, 'success', $response);
             }else{
                 ajax_info(1,$file->getError());

@@ -257,3 +257,97 @@ function think_send_mail($to, $name, $body = '', $subject = '测试邮件'){
     return $mail->Send() ? true : $mail->ErrorInfo;
 }
 
+function apkParseInfo($apk) {
+
+    $aapt = 'aapt';// 这里其实是aapt的路径，不过我已经ln到/usr/local/aapt了。就不用了。
+    $temp_save_path='/var/www/apks/temp/';
+
+    exec("{$aapt} d badging {$apk}", $output, $return);
+
+    // 解析错误
+    if ( $return !== 0 ) {
+        return FALSE;
+    }
+
+    $output = implode(PHP_EOL, $output);
+
+    $apkinfo = new \stdClass;
+
+    // 对外显示名称
+    $pattern = "/application: label='(.*)'/isU";
+    $results = preg_match($pattern, $output, $res);
+    $apkinfo->label = $results ? $res[1] : '';
+
+    // 内部名称，软件唯一的
+    $pattern = "/package: name='(.*)'/isU";
+    $results = preg_match($pattern, $output, $res);
+    $apkinfo->sys_name = $results ? $res[1] : '';
+
+    // 内部版本名称，用于检查升级
+    $pattern = "/versionCode='(.*)'/isU";
+    $results = preg_match($pattern, $output, $res);
+    $apkinfo->version_code = $results ? $res[1] : 0;
+
+    // 对外显示的版本名称
+    $pattern = "/versionName='(.*)'/isU";
+    $results = preg_match($pattern, $output, $res);
+    $apkinfo->version = $results ? $res[1] : '';
+
+    // 系统支持
+    $pattern = "/sdkVersion:'(.*)'/isU";
+    $results = preg_match($pattern, $output, $res);
+    $apkinfo->sdk_version = $results ? $res[1] : 0;
+
+    // 分辨率支持
+    $densities = array(
+        "/densities: '(.*)'/isU",
+        "/densities: '120' '(.*)'/isU",
+        "/densities: '160' '(.*)'/isU",
+        "/densities: '240' '(.*)'/isU",
+        "/densities: '120' '160' '(.*)'/isU",
+        "/densities: '160' '240' '(.*)'/isU",
+        "/densities: '120' '160' '240' '(.*)'/isU"
+    );
+
+    foreach($densities AS $k=>$v) {
+        if( preg_match($v, $output, $res) ) {
+            $apkinfo->densities[] = $res[1];
+        }
+    }
+
+    // 应用权限
+    $pattern = "/uses-permission: name='(.*)'/isU";
+    $results = preg_match_all($pattern, $output, $res);
+    $apkinfo->permissions = $results ? $res[1] : '';
+
+    // 需要的功能（硬件支持）
+    $pattern = "/uses-feature: name='(.*)'/isU";
+    $results = preg_match_all($pattern, $output, $res);
+    $apkinfo->features = $results ? $res[1] : '';
+
+    // 应用图标路径
+    if( preg_match("/icon='(.+)'/isU", $output, $res) ) {
+
+        $icon_draw = trim( $res[1] );
+        $icon_hdpi = 'res/drawable-hdpi/' . basename($icon_draw);
+
+        $temp =$temp_save_path.basename($apk, '.apk') . DIRECTORY_SEPARATOR;
+
+        if( @is_dir($temp) === FALSE ) {
+            mkdir($temp,0777,true);
+        }
+
+        exec("unzip {$apk} {$icon_draw} -d " . $temp);
+        exec("unzip {$apk} {$icon_hdpi} -d " . $temp);
+
+        $apkinfo->icon = $icon_draw;
+
+        $icon_draw_abs = $temp . $icon_draw;
+        $icon_hdpi_abs = $temp . $icon_hdpi;
+
+        $apkinfo->icon = @is_file($icon_hdpi_abs) ? $icon_hdpi_abs : $icon_draw_abs;
+    }
+
+    return $apkinfo;
+}
+

@@ -1,6 +1,5 @@
 {
     "require": {
-        "phpmailer/phpmailer": "^6.0",
-	"tufanbarisyildirim/php-apk-parser":"dev-master"
+        "phpmailer/phpmailer": "^6.0"
     }
 }
