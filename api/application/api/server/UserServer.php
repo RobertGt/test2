@@ -29,6 +29,8 @@ class UserServer
         $create['company']  = $param['company'];
         $create['job']      = $param['job'];
         $create['token']    = md5(time() . rand(1000, 9999));
+        $create['realName'] = S('realName', 1);
+        $create['realState'] = 0;
         try{
             (new UserModel())->create($create);
             unset($create['salt']);
@@ -84,6 +86,7 @@ class UserServer
             Log::error("login error:" . $e->getMessage());
             return false;
         }
+        $user['realname'] = S('realName', 1);
         return $user;
     }
 

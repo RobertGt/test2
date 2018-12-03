@@ -83,7 +83,7 @@ class UserValidate extends Validate
 
     public function checkUser($password, $rule, $data)
     {
-        $user = (new UserModel())->where(['email' => $data['email']])->field('uid, email, password, salt, wechat, imNumber, company, job, state')->find()->toArray();
+        $user = (new UserModel())->where(['email' => $data['email']])->field('uid, email, password, salt, wechat, imNumber, company, job, state, realname realState')->find()->toArray();
         if($user['password'] != md5($password . $user['salt'])){
             return "登录密码错误";
         }
