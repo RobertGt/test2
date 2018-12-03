@@ -260,7 +260,7 @@ function think_send_mail($to, $name, $body = '', $subject = '测试邮件'){
 function apkParseInfo($apk) {
 
     $aapt = 'aapt';// 这里其实是aapt的路径，不过我已经ln到/usr/local/aapt了。就不用了。
-    $temp_save_path='/var/www/apks/temp/';
+    $temp_save_path = ROOT_PATH . 'public/uploads/tmp/';
 
     exec("{$aapt} d badging {$apk}", $output, $return);
 
