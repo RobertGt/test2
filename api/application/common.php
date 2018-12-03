@@ -260,39 +260,40 @@ function think_send_mail($to, $name, $body = '', $subject = '测试邮件'){
 function apkParseInfo($apk) {
 
     $aapt = 'aapt';// 这里其实是aapt的路径，不过我已经ln到/usr/local/aapt了。就不用了。
-    $temp_save_path = ROOT_PATH . 'public/uploads/tmp/';
+    $root = ROOT_PATH . 'public';
+    $temp_save_path = $root . '/uploads/tmp/';
 
     exec("{$aapt} d badging {$apk}", $output, $return);
 
     // 解析错误
     if ( $return !== 0 ) {
-        return FALSE;
+        return false;
     }
 
     $output = implode(PHP_EOL, $output);
 
-    $apkinfo = new \stdClass;
+    //$apkinfo = new \stdClass;
 
     // 对外显示名称
     $pattern = "/application: label='(.*)'/isU";
     $results = preg_match($pattern, $output, $res);
-    $apkinfo->label = $results ? $res[1] : '';
+    $apkinfo['label'] = $results ? $res[1] : '';
 
     // 内部名称，软件唯一的
     $pattern = "/package: name='(.*)'/isU";
     $results = preg_match($pattern, $output, $res);
-    $apkinfo->sys_name = $results ? $res[1] : '';
+    $apkinfo['sysName'] = $results ? $res[1] : '';
 
     // 内部版本名称，用于检查升级
-    $pattern = "/versionCode='(.*)'/isU";
+    /*$pattern = "/versionCode='(.*)'/isU";
     $results = preg_match($pattern, $output, $res);
-    $apkinfo->version_code = $results ? $res[1] : 0;
+    $apkinfo->version_code = $results ? $res[1] : 0;*/
 
     // 对外显示的版本名称
     $pattern = "/versionName='(.*)'/isU";
     $results = preg_match($pattern, $output, $res);
-    $apkinfo->version = $results ? $res[1] : '';
-
+    $apkinfo['version'] = $results ? $res[1] : '';
+    /*
     // 系统支持
     $pattern = "/sdkVersion:'(.*)'/isU";
     $results = preg_match($pattern, $output, $res);
@@ -324,7 +325,7 @@ function apkParseInfo($apk) {
     $pattern = "/uses-feature: name='(.*)'/isU";
     $results = preg_match_all($pattern, $output, $res);
     $apkinfo->features = $results ? $res[1] : '';
-
+    */
     // 应用图标路径
     if( preg_match("/icon='(.+)'/isU", $output, $res) ) {
 
@@ -340,12 +341,13 @@ function apkParseInfo($apk) {
         exec("unzip {$apk} {$icon_draw} -d " . $temp);
         exec("unzip {$apk} {$icon_hdpi} -d " . $temp);
 
-        $apkinfo->icon = $icon_draw;
+        //$apkinfo->icon = $icon_draw;
 
         $icon_draw_abs = $temp . $icon_draw;
         $icon_hdpi_abs = $temp . $icon_hdpi;
 
-        $apkinfo->icon = @is_file($icon_hdpi_abs) ? $icon_hdpi_abs : $icon_draw_abs;
+        $apkinfo['icon'] = @is_file($icon_hdpi_abs) ? str_replace($root, '', $icon_hdpi_abs) :
+                                                        (@is_file($icon_draw_abs) ? str_replace($root, '', $icon_draw_abs) : 'uploads/tmp/icon.png');
     }
 
     return $apkinfo;
