@@ -1,4 +1,4 @@
-var WEBHTTP = "http://192.168.31.247:83/";
+var WEBHTTP = "http://api.ublog.top/";
 (function(){
 	$.FormObject = function (title,table,ajaxUrl,object,option){
 		//编辑表名

@@ -20,11 +20,22 @@ class ComposerStaticInitf1790b36ec56881081fc5340ed380d58
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'A' => 
+        array (
+            'ApkParser' => 
+            array (
+                0 => __DIR__ . '/..' . '/tufanbarisyildirim/php-apk-parser/lib',
+            ),
+        ),
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitf1790b36ec56881081fc5340ed380d58::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitf1790b36ec56881081fc5340ed380d58::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitf1790b36ec56881081fc5340ed380d58::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }
