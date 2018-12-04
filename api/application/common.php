@@ -271,7 +271,7 @@ function apkParseInfo($apk) {
     }
 
     $output = implode(PHP_EOL, $output);
-
+    print_R ($output);exit;
     //$apkinfo = new \stdClass;
 
     // 对外显示名称
@@ -340,8 +340,6 @@ function apkParseInfo($apk) {
 
         exec("unzip {$apk} {$icon_draw} -d " . $temp);
         exec("unzip {$apk} {$icon_hdpi} -d " . $temp);
-
-        //$apkinfo->icon = $icon_draw;
 
         $icon_draw_abs = $temp . $icon_draw;
         $icon_hdpi_abs = $temp . $icon_hdpi;
