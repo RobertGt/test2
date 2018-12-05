@@ -16,7 +16,6 @@ use think\Log;
 class Http extends Handle
 {
     public function render(Exception $e){
-
         if ($e instanceof HttpException) {
             ajax_info($e->getStatusCode(), $e->getMessage());
         }

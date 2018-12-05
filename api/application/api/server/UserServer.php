@@ -29,8 +29,6 @@ class UserServer
         $create['company']  = $param['company'];
         $create['job']      = $param['job'];
         $create['token']    = md5(time() . rand(1000, 9999));
-        $create['realName'] = Cache::get('realName', 1);
-        $create['realState'] = 0;
         try{
             (new UserModel())->create($create);
             unset($create['salt']);
@@ -39,6 +37,8 @@ class UserServer
             Log::error("register error:" . $e->getMessage());
             return false;
         }
+		$create['realName'] = Cache::get('realName', 1);
+        $create['realState'] = 0;
         return $create;
     }
     
