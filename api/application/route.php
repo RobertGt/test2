@@ -39,6 +39,9 @@ Route::post([
     'v1/imageUpload'        => 'api/Index/imageUpload',
     'v1/realName'           => 'api/Login/realName',
     'v1/appUpload'          => 'api/Login/appUpload',
+
+    'v1/appVersionRemark'   => 'api/App/appVersionRemark',
+    'v1/appDelete'          => 'api/App/appDelete',
 ]);
 
 Route::get([
@@ -72,4 +75,9 @@ Route::get([
     'admin/buyTop'         => 'admin/Statistics/buyTop',
     'admin/downTop'        => 'admin/Statistics/downTop',
     'admin/eventTop'       => 'admin/Statistics/eventTop',
+
+    'v1/appList'           => 'api/App/appList',
+    'v1/appInfo'           => 'api/App/appInfo',
+
+    'v1/userInfo'          => 'api/Login/userInfo',
 ]);

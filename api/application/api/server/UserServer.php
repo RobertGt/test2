@@ -105,4 +105,34 @@ class UserServer
         }
         return true;
     }
+
+    public function userInfo($uid = 0)
+    {
+        $where['uid'] = $uid;
+        $field = "u.email, u.mobile, u.wechat, u.imNumber, u.company, u.job, u.upload, u.download, u.surplus,
+                    u.state, u.realname realState, u.packageId, p.packageName, u.identityCard, u.expireTime";
+        $userInfo = (new UserModel())->alias('u')
+                    ->join('bas_package p', 'p.packageId = u.packageId', 'LEFT')
+                    ->where($where)->field($field)->find();
+        if(!$userInfo){
+            return false;
+        }
+        $userInfo = $userInfo->getData();
+        $userInfo['mobile'] = $userInfo['mobile'] ? $userInfo['mobile'] : '';
+        $userInfo['wechat'] = $userInfo['wechat'] ? $userInfo['wechat'] : '';
+        $userInfo['imNumber'] = $userInfo['imNumber'] ? $userInfo['imNumber'] : '';
+        $userInfo['company'] = $userInfo['company'] ? $userInfo['company'] : '';
+        $userInfo['job'] = $userInfo['job'] ? $userInfo['job'] : '';
+        $userInfo['packageId'] = authcode($userInfo['packageId'], 'ENCODE');
+        $userInfo['packageName'] = $userInfo['packageName'] ? $userInfo['packageName'] : '';
+        $userInfo['expireTime'] = $userInfo['expireTime'] ? date('Y-m-d H:i', $userInfo['expireTime']) : '';
+        $userInfo['realName'] = Cache::get('realName', 1);
+        $identityCard = $userInfo['identityCard'] ? explode(',', $userInfo['identityCard']) : [];
+        $userInfo['front'] = !empty($identityCard[0]) ? urlCompletion($identityCard[0]) : '';
+        $userInfo['contrary'] = !empty($identityCard[1]) ? urlCompletion($identityCard[1]) : '';
+        $userInfo['hand'] = !empty($identityCard[2]) ? urlCompletion($identityCard[2]) : '';
+        unset($userInfo['identityCard']);
+
+        return $userInfo;
+    }
 }

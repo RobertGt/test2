@@ -156,6 +156,11 @@ function urlCompletion($url)
     return $url;
 }
 
+function byteToMb($size)
+{
+    return round($size / 1024 / 1024, 2) . 'MB';
+}
+
 /**
  * 字符串截取，支持中文和其他编码
  * static
@@ -262,7 +267,8 @@ function ipaParseInfo($apk) {
     $zipper = new \Chumper\Zipper\Zipper();
     $zipFiles = $zipper->make($apk)->listFiles('/Info\.plist$/i');
     $root = ROOT_PATH . 'public';
-    $temp_save_path = $root . '/uploads/tmp/' . basename($apk, '.ipa');
+    $path = '/uploads/tmp/' . basename($apk, '.ipa');
+    $temp_save_path = $root . $path;
     $matched = 0;
     if ($zipFiles) {
         foreach ($zipFiles as $k => $filePath) {
@@ -291,7 +297,7 @@ function ipaParseInfo($apk) {
                         $icon = array_pop($f);
                     }
                     exec("unzip {$apk} {$icon} -d " . $temp_save_path);
-                    $apkinfo['icon'] = $temp_save_path . $icon;
+                    $apkinfo['icon'] = $path . $icon;
                 }
                 // 包名
                 $apkinfo['package'] = $ipaInfo['CFBundleIdentifier'];
@@ -299,7 +305,7 @@ function ipaParseInfo($apk) {
                 $apkinfo['version'] = $ipaInfo['CFBundleShortVersionString'];
                 $apkinfo['code'] = str_replace('.', '', $ipaInfo['CFBundleShortVersionString']);
                 // 别名
-                $apkinfo['appName'] = !empty($ipaInfo['CFBundleDisplayName']) ? $ipaInfo['CFBundleDisplayName'] : $ipaInfo['CFBundleName'];
+                $apkinfo['appName'] = $ipaInfo['CFBundleName'];//!empty($ipaInfo['CFBundleDisplayName']) ? $ipaInfo['CFBundleDisplayName'] : $ipaInfo['CFBundleName'];
             }
         }
     }

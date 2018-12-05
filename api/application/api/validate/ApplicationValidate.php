@@ -16,6 +16,7 @@ use think\Validate;
 class ApplicationValidate extends Validate
 {
     protected $rule = [
+        'appId'       => 'require',
         'appName'     => 'require',
         'version'     => 'require',
         'package'     => 'require',
@@ -31,6 +32,7 @@ class ApplicationValidate extends Validate
 
     protected $scene = [
         'upload'         =>  ['appName', 'version', 'package'],
+        'checkId'        =>  ['appId'],
     ];
 
     public function checkState($state, $rule, $data)

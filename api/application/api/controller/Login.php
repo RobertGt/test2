@@ -38,6 +38,16 @@ class Login extends Base
         }
     }
 
+    public function userInfo(Request $request)
+    {
+        $response = (new UserServer())->userInfo($this->userInfo['uid']);
+        if($response){
+            ajax_info(0,'success', $response);
+        }else{
+            ajax_info(1,'获取失败');
+        }
+    }
+
     public function appUpload(Request $request)
     {
         $fileConfig = [
