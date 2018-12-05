@@ -9,7 +9,9 @@
 namespace app\api\controller;
 
 
+use app\api\server\ApplicationServer;
 use app\api\server\UserServer;
+use app\api\validate\ApplicationValidate;
 use app\api\validate\UserValidate;
 use think\Request;
 
@@ -39,7 +41,7 @@ class Login extends Base
     public function appUpload(Request $request)
     {
         $fileConfig = [
-            'app'  =>  [
+            'file'  =>  [
                 'size'   =>  104857600,
                 'ext'    =>  'apk,ipa'
             ]
@@ -63,15 +65,30 @@ class Login extends Base
                 $extension = strtolower(pathinfo($file->getInfo('name'), PATHINFO_EXTENSION));
                 $appPath = str_replace('\\', '/', $path . DS . $info->getSaveName());
                 if($extension == 'apk'){
-                    $app = apkParseInfo($root . $appPath);
-                    print_r ($app);exit;
+                    $param = apkParseInfo($root . $appPath);
                 }else{
-                    $app = ipaParseInfo($root . $appPath);
-                    print_r ($app);exit;
+                    $param = ipaParseInfo($root . $appPath);
                 }
-                $app['path'] = $appPath;
+                if(!$param){
+                    ajax_info(1, "上传包无法识别,请重新打包");
+                }
+                $param['path'] = $appPath;
+                $param['ext'] = $extension;
+                $param['uid'] = $this->userInfo['uid'];
+                $param['state'] = $this->userInfo['state'];
+                $param['upload'] = $this->userInfo['upload'];
+                $param['size'] = $file->getInfo('size');
+                $validate = new ApplicationValidate();
+                if(!$validate->scene('upload')->check($param)){
+                    ajax_info(1 , $validate->getError());
+                }
+                $response = (new ApplicationServer())->upload($param);
+                if($response){
+                    ajax_info(0, 'Success');
+                }else{
+                    ajax_info(1, '操作失败');
+                }
             }else{
-
                 ajax_info(1,$file->getError());
             }
         }

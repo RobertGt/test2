@@ -282,6 +282,7 @@ function ipaParseInfo($apk) {
                 $ipa = new \CFPropertyList\CFPropertyList();
                 $ipa->parse($content);
                 $ipaInfo = $ipa->toArray();
+                $apkinfo['icon'] = '/uploads/tmp/icon.png';
                 $icon = !empty($ipaInfo['CFBundleIcons']['CFBundlePrimaryIcon']['CFBundleIconFiles']) ? $ipaInfo['CFBundleIcons']['CFBundlePrimaryIcon']['CFBundleIconFiles'] : [];
                 if(count($icon) > 0){
                     $iconName = array_pop($icon);
@@ -290,11 +291,13 @@ function ipaParseInfo($apk) {
                         $icon = array_pop($f);
                     }
                     exec("unzip {$apk} {$icon} -d " . $temp_save_path);
+                    $apkinfo['icon'] = $temp_save_path . $icon;
                 }
                 // 包名
-                $apkinfo['ios'] = $ipaInfo['CFBundleIdentifier'];
+                $apkinfo['package'] = $ipaInfo['CFBundleIdentifier'];
                 // 版本名
                 $apkinfo['version'] = $ipaInfo['CFBundleShortVersionString'];
+                $apkinfo['code'] = str_replace('.', '', $ipaInfo['CFBundleShortVersionString']);
                 // 别名
                 $apkinfo['appName'] = !empty($ipaInfo['CFBundleDisplayName']) ? $ipaInfo['CFBundleDisplayName'] : $ipaInfo['CFBundleName'];
             }
@@ -328,12 +331,12 @@ function apkParseInfo($apk) {
     // 内部名称，软件唯一的
     $pattern = "/package: name='(.*)'/isU";
     $results = preg_match($pattern, $output, $res);
-    $apkinfo['android'] = $results ? $res[1] : '';
+    $apkinfo['package'] = $results ? $res[1] : '';
 
     // 内部版本名称，用于检查升级
-    /*$pattern = "/versionCode='(.*)'/isU";
+    $pattern = "/versionCode='(.*)'/isU";
     $results = preg_match($pattern, $output, $res);
-    $apkinfo->version_code = $results ? $res[1] : 0;*/
+    $apkinfo['code'] = $results ? $res[1] : 0;
 
     // 对外显示的版本名称
     $pattern = "/versionName='(.*)'/isU";
@@ -372,6 +375,7 @@ function apkParseInfo($apk) {
     $results = preg_match_all($pattern, $output, $res);
     $apkinfo->features = $results ? $res[1] : '';
     */
+    $apkinfo['icon'] = '/uploads/tmp/icon.png';
     // 应用图标路径
     if( preg_match("/icon='(.+)'/isU", $output, $res) ) {
 
@@ -391,7 +395,7 @@ function apkParseInfo($apk) {
         $icon_hdpi_abs = $temp . $icon_hdpi;
 
         $apkinfo['icon'] = @is_file($icon_hdpi_abs) ? str_replace($root, '', $icon_hdpi_abs) :
-                                                        (@is_file($icon_draw_abs) ? str_replace($root, '', $icon_draw_abs) : 'uploads/tmp/icon.png');
+            (@is_file($icon_draw_abs) ? str_replace($root, '', $icon_draw_abs) : '/uploads/tmp/icon.png');
     }
 
     return $apkinfo;

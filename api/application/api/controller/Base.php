@@ -33,7 +33,7 @@ class Base
             ajax_info(401, 'failure of authentication');
         }
         //$userInfo = Cache::get($token);
-        $field = "uid, email, state, realname";
+        $field = "uid, email, state, realname, upload";
         $userInfo = (new UserModel())->where(['token' => $token])->field($field)->find();
 
         if (!$userInfo){
