@@ -257,6 +257,53 @@ function think_send_mail($to, $name, $body = '', $subject = '测试邮件'){
     return $mail->Send() ? true : $mail->ErrorInfo;
 }
 
+function ipaParseInfo($apk) {
+    $apkinfo = [];
+    $zipper = new \Chumper\Zipper\Zipper();
+    $zipFiles = $zipper->make($apk)->listFiles('/Info\.plist$/i');
+    $root = ROOT_PATH . 'public';
+    $temp_save_path = $root . '/uploads/tmp/' . basename($apk, '.ipa');
+    $matched = 0;
+    if ($zipFiles) {
+        foreach ($zipFiles as $k => $filePath) {
+            // 正则匹配包根目录中的Info.plist文件
+            if (preg_match("/Payload\/([^\/]*)\/Info\.plist$/i", $filePath, $matches)) {
+                $matched = 1;
+                $appFolder = $matches[1];
+                // 将plist文件解压到ipa目录中的对应包名目录中
+                (new \Chumper\Zipper\Zipper())->make($apk)
+                    ->folder('Payload/' . $appFolder)
+                    ->extractMatchingRegex($temp_save_path , "/Info\.plist$/i");
+                // 拼接plist文件完整路径
+                $fp = $temp_save_path . '/Info.plist';
+                // 获取plist文件内容
+                $content = file_get_contents($fp);
+                // 解析plist成数组
+                $ipa = new \CFPropertyList\CFPropertyList();
+                $ipa->parse($content);
+                $ipaInfo = $ipa->toArray();
+                $icon = !empty($ipaInfo['CFBundleIcons']['CFBundlePrimaryIcon']['CFBundleIconFiles']) ? $ipaInfo['CFBundleIcons']['CFBundlePrimaryIcon']['CFBundleIconFiles'] : [];
+                if(count($icon) > 0){
+                    $iconName = array_pop($icon);
+                    $f = (new \Chumper\Zipper\Zipper)->make($apk)->listFiles("/{$iconName}/i");
+                    if(!empty($f)){
+                        $icon = array_pop($f);
+                    }
+                    exec("unzip {$apk} {$icon} -d " . $temp_save_path);
+                }
+                // 包名
+                $apkinfo['ios'] = $ipaInfo['CFBundleIdentifier'];
+                // 版本名
+                $apkinfo['version'] = $ipaInfo['CFBundleShortVersionString'];
+                // 别名
+                $apkinfo['appName'] = !empty($ipaInfo['CFBundleDisplayName']) ? $ipaInfo['CFBundleDisplayName'] : $ipaInfo['CFBundleName'];
+            }
+        }
+    }
+    if(!$matched)return false;
+    return $apkinfo;
+}
+
 function apkParseInfo($apk) {
 
     $aapt = 'aapt';// 这里其实是aapt的路径，不过我已经ln到/usr/local/aapt了。就不用了。
@@ -271,18 +318,17 @@ function apkParseInfo($apk) {
     }
 
     $output = implode(PHP_EOL, $output);
-    print_R ($output);exit;
     //$apkinfo = new \stdClass;
 
     // 对外显示名称
     $pattern = "/application: label='(.*)'/isU";
     $results = preg_match($pattern, $output, $res);
-    $apkinfo['label'] = $results ? $res[1] : '';
+    $apkinfo['appName'] = $results ? $res[1] : '';
 
     // 内部名称，软件唯一的
     $pattern = "/package: name='(.*)'/isU";
     $results = preg_match($pattern, $output, $res);
-    $apkinfo['sysName'] = $results ? $res[1] : '';
+    $apkinfo['android'] = $results ? $res[1] : '';
 
     // 内部版本名称，用于检查升级
     /*$pattern = "/versionCode='(.*)'/isU";
