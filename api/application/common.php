@@ -267,7 +267,7 @@ function ipaParseInfo($apk) {
     $zipper = new \Chumper\Zipper\Zipper();
     $zipFiles = $zipper->make($apk)->listFiles('/Info\.plist$/i');
     $root = ROOT_PATH . 'public';
-    $path = '/uploads/tmp/' . basename($apk, '.ipa');
+    $path = '/uploads/tmp/' . basename($apk, '.ipa') . "/";
     $temp_save_path = $root . $path;
     $matched = 0;
     if ($zipFiles) {
@@ -281,7 +281,7 @@ function ipaParseInfo($apk) {
                     ->folder('Payload/' . $appFolder)
                     ->extractMatchingRegex($temp_save_path , "/Info\.plist$/i");
                 // 拼接plist文件完整路径
-                $fp = $temp_save_path . '/Info.plist';
+                $fp = $temp_save_path . 'Info.plist';
                 // 获取plist文件内容
                 $content = file_get_contents($fp);
                 // 解析plist成数组
@@ -299,8 +299,8 @@ function ipaParseInfo($apk) {
                     exec("unzip {$apk} /{$icon} -d " . $temp_save_path);
                     $apkinfo['icon'] = $path . $icon;
                     $parser = new \app\api\server\ParserServer();
-                    $ipaFilePath = $temp_save_path . "/{$icon}";
-                    $pngImgName = $temp_save_path . '/icon.png';
+                    $ipaFilePath = $temp_save_path . "{$icon}";
+                    $pngImgName = $temp_save_path . 'icon.png';
                     $parser::fix($ipaFilePath, $pngImgName);
                 }
                 // 包名
