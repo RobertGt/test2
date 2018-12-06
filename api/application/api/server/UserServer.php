@@ -9,6 +9,8 @@
 namespace app\api\server;
 
 
+use app\api\model\ApplicationDownModel;
+use app\api\model\ApplicationModel;
 use app\api\model\UserModel;
 use think\Cache;
 use think\Exception;
@@ -40,6 +42,28 @@ class UserServer
 		$create['realName'] = Cache::get('realName', 1);
         $create['realState'] = 0;
         return $create;
+    }
+
+    public function userUpdate($param = [], $uid)
+    {
+        $save = [];
+        foreach ($param as $k => $v){
+            if($v){
+                $save[$k] = $v;
+            }
+        }
+        if($param['password']){
+            $save['salt']     = getRandStr();
+            $save['password'] = md5($param['password'] . $save['salt']);
+        }
+
+        try{
+            if($save)(new UserModel())->save($save, ['uid' => $uid]);
+        }catch (Exception $e){
+            Log::error("userEdit error:" . $e->getMessage());
+            return false;
+        }
+        return true;
     }
     
     public function find($param = [])
@@ -118,6 +142,16 @@ class UserServer
             return false;
         }
         $userInfo = $userInfo->getData();
+        $where['createTime'] = ['egt', strtotime(date('Y-m-d'))];
+        $upload = (new ApplicationModel())->where($where)->count();
+        $w['b.uid'] = $uid;
+        $w['d.createTime'] = ['egt', strtotime(date('Y-m-d'))];
+        $surplus = (new ApplicationDownModel())->alias('d')
+                                                ->join('bas_application b', 'd.appId = b.appId')
+                                                ->where($w)
+                                                ->count();
+        $userInfo['upload'] = $userInfo['upload'] - $upload;
+        $userInfo['surplus'] = $userInfo['surplus'] - $surplus;
         $userInfo['mobile'] = $userInfo['mobile'] ? $userInfo['mobile'] : '';
         $userInfo['wechat'] = $userInfo['wechat'] ? $userInfo['wechat'] : '';
         $userInfo['imNumber'] = $userInfo['imNumber'] ? $userInfo['imNumber'] : '';

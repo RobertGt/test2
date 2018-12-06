@@ -48,6 +48,30 @@ class Login extends Base
         }
     }
 
+    public function userUpdate(Request $request)
+    {
+        $param = [
+            'password'   => $request->param('password',''),
+            'wechat'     => $request->param('wechat',''),
+            'imNumber'   => $request->param('imNumber', ''),
+            'company'    => $request->param('company',''),
+            'job'        => $request->param('job',''),
+            'mobile'     => $request->param('mobile',''),
+        ];
+        $validate = new UserValidate();
+        if(!$validate->scene('edit')->check($param)){
+            ajax_info(1 , $validate->getError());
+        }
+        $response = (new UserServer())->userUpdate($param, $this->userInfo['uid']);
+        if($response){
+            ajax_info(0,'success');
+        }else{
+            ajax_info(1,'修改失败');
+        }
+    }
+
+    
+
     public function appUpload(Request $request)
     {
         $fileConfig = [

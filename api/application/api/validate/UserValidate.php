@@ -25,6 +25,7 @@ class UserValidate extends Validate
         'contrary'    => 'require',
         'hand'        => 'require',
         'realname'    => 'in:0,2',
+        'mobile'      => 'length:11'
     ];
 
     protected $message  =   [
@@ -38,6 +39,7 @@ class UserValidate extends Validate
         'contrary.require'   =>  '请上传身份证反面',
         'hand.require'       =>  '请上传手持身份证',
         'realname.in'        =>  '你的账号已经审核通过,无限重复验证',
+        'mobile.length'      =>  '请输入正确的手机号码'
     ];
 
     protected $scene = [
@@ -45,7 +47,8 @@ class UserValidate extends Validate
         'send'           =>  ['email'],
         'login'          =>  ['email', 'password' => 'require|min:6|checkUser'],
         'find'           =>  ['email', 'password', 'code'],
-        'real'           =>  ['front', 'contrary', 'hand', 'realname']
+        'real'           =>  ['front', 'contrary', 'hand', 'realname'],
+        'edit'           =>  ['password' => 'min:6', 'imNumber', 'mobile'],
     ];
 
     public function checkEmail($email, $rule, $data)

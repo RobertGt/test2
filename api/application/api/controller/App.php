@@ -79,4 +79,76 @@ class App extends Base
             ajax_info(1,'修改失败');
         }
     }
+
+    public function appStateUpdate(Request $request)
+    {
+        $param = [
+            'appId'    => authcode($request->param('apkId', '')),
+            'state'    => $request->param('state', '') ? 1 : 0
+        ];
+        $validate = new ApplicationValidate();
+        if(!$validate->scene('checkId')->check($param)){
+            ajax_info(1 , $validate->getError());
+        }
+        $response = (new ApplicationServer())->appStateUpdate($param);
+        if($response){
+            ajax_info(0,'success');
+        }else{
+            ajax_info(1,'修改失败');
+        }
+    }
+
+    public function appUrlUpdate(Request $request)
+    {
+        $param = [
+            'appId'    => authcode($request->param('appId', '')),
+            'appUrl'   => $request->param('appUrl', '')
+        ];
+        $validate = new ApplicationValidate();
+        if(!$validate->scene('appUrlUpdate')->check($param)){
+            ajax_info(1 , $validate->getError());
+        }
+        $response = (new ApplicationServer())->appUrlUpdate($param, $this->userInfo['uid']);
+        if($response){
+            ajax_info(0,'success');
+        }else{
+            ajax_info(1,'修改失败');
+        }
+    }
+
+    public function appUpdate(Request $request)
+    {
+        $param = [
+            'appId'    => authcode($request->param('appId', '')),
+            'appName'  => $request->param('appName', ''),
+            'sortUrl'  => $request->param('sortUrl', ''),
+            'appIcon'  => $request->param('appIcon', ''),
+            'describe' => $request->param('describe', ''),
+            'appImage' => $request->param('appImage', ''),
+        ];
+        $validate = new ApplicationValidate();
+        if(!$validate->scene('appUpdate')->check($param)){
+            ajax_info(1 , $validate->getError());
+        }
+        $response = (new ApplicationServer())->appUpdate($param, $this->userInfo['uid']);
+        if($response){
+            ajax_info(0,'success');
+        }else{
+            ajax_info(1,'修改失败');
+        }
+    }
+
+    public function userAppList(Request $request)
+    {
+        $param = [
+            'appId'    => authcode($request->param('appId', ''))
+        ];
+        $validate = new ApplicationValidate();
+        if(!$validate->scene('checkId')->check($param)){
+            ajax_info(1 , $validate->getError());
+        }
+
+        $response = (new ApplicationServer())->userAppList($param['appId'], $this->userInfo['uid']);
+        ajax_info(0,'success', $response);
+    }
 }

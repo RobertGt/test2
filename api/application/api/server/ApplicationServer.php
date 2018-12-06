@@ -91,6 +91,28 @@ class ApplicationServer
         return $response;
     }
 
+    public function userAppList($appId, $uid)
+    {
+        $where['appId'] = ['neq', $appId];
+        $where['uid'] = $uid;
+        $appList = (new ApplicationModel())->where($where)
+            ->field("appName, appIcon, sortUrl, android, ios")
+            ->order("createTime desc")
+            ->select();
+        $response = [];
+        foreach ($appList as $row){
+            $value = $row->getData();
+            $info['appName'] = $value['appName'] ? $value['appName'] : "";
+            $info['appIcon'] = urlCompletion($value['appIcon']);
+            $info['sortUrl'] = $value['sortUrl'];
+            $info['platform'] = [];
+            if($value['android'])$info['platform'][] = 'android';
+            if($value['ios'])$info['platform'][] = 'ios';
+            $response[] = $info;
+        }
+        return $response;
+    }
+
     public function appDelete($appId, $uid)
     {
         try{
@@ -120,7 +142,7 @@ class ApplicationServer
             $appInfo['sortUrl'] = $appInfo['sortUrl'] ? $appInfo['sortUrl'] : '';
             $appInfo['describe'] = $appInfo['describe'] ? $appInfo['describe'] : '';
             $appInfo['size'] = byteToMb($appInfo['size']);
-            $appInfo['baseUrl'] = WEB_HTTP . '/g/';
+            $appInfo['baseUrl'] = WEB_HTTP . '/';
             $appImage = [];
             $appInfo['appImage'] = $appInfo['appImage'] ? explode(',', $appInfo['appImage']) : [];
             foreach ($appInfo['appImage'] as &$val){
@@ -154,6 +176,51 @@ class ApplicationServer
             (new ApplicationVersionModel())->save($save, $where);
         }catch (Exception $e){
             Log::error("appVersionRemark error:" . $e->getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public function appStateUpdate($param = [])
+    {
+        $where['apkId'] = $param['appId'];
+        try{
+            $save['state'] = $param['state'];
+            (new ApplicationVersionModel())->save($save, $where);
+        }catch (Exception $e){
+            Log::error("appStateUpdate error:" . $e->getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public function appUrlUpdate($param = [], $uid)
+    {
+        $where['appId'] = $param['appId'];
+        $where['uid'] = $uid;
+        try{
+            $save['appUrl'] = $param['appUrl'];
+            (new ApplicationModel())->save($save, $where);
+        }catch (Exception $e){
+            Log::error("appUrlUpdate error:" . $e->getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public function appUpdate($param = [], $uid)
+    {
+        $where['appId'] = $param['appId'];
+        $where['uid'] = $uid;
+        $save['appName'] = $param['appName'];
+        $save['sortUrl'] = $param['sortUrl'];
+        if($param['appIcon'])$save['appIcon'] = $param['appIcon'];
+        $save['describe'] = $param['describe'];
+        $save['appImage'] = trim($param['appImage'], ",");
+        try{
+            (new ApplicationModel())->save($save, $where);
+        }catch (Exception $e){
+            Log::error("appUpdate error:" . $e->getMessage());
             return false;
         }
         return true;

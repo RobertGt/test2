@@ -39,9 +39,13 @@ Route::post([
     'v1/imageUpload'        => 'api/Index/imageUpload',
     'v1/realName'           => 'api/Login/realName',
     'v1/appUpload'          => 'api/Login/appUpload',
+    'v1/userUpdate'         => 'api/Login/userUpdate',
 
     'v1/appVersionRemark'   => 'api/App/appVersionRemark',
     'v1/appDelete'          => 'api/App/appDelete',
+    'v1/appStateUpdate'     => 'api/App/appStateUpdate',
+    'v1/appUrlUpdate'       => 'api/App/appUrlUpdate',
+    'v1/appUpdate'          => 'api/App/appUpdate',
 ]);
 
 Route::get([
@@ -78,6 +82,10 @@ Route::get([
 
     'v1/appList'           => 'api/App/appList',
     'v1/appInfo'           => 'api/App/appInfo',
+    'v1/userApp'           => 'api/App/userAppList',
 
     'v1/userInfo'          => 'api/Login/userInfo',
+
+    'g/:id'                => 'api/Index/imageUpload',
+    ':id'                  => 'api/Index/imageUpload'
 ]);
