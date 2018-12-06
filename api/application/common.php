@@ -267,8 +267,8 @@ function ipaParseInfo($apk) {
     $zipper = new \Chumper\Zipper\Zipper();
     $zipFiles = $zipper->make($apk)->listFiles('/Info\.plist$/i');
     $root = ROOT_PATH . 'public';
-    $path = '/uploads/tmp/' . basename($apk, '.ipa') . "/";
-    $temp_save_path = $root . $path;
+    $path = '/uploads/tmp/' . basename($apk, '.ipa');
+    $temp_save_path = $root . $path . "/";
     $matched = 0;
     if ($zipFiles) {
         foreach ($zipFiles as $k => $filePath) {
@@ -296,7 +296,7 @@ function ipaParseInfo($apk) {
                     if(!empty($f)){
                         $icon = array_pop($f);
                     }
-                    exec("unzip {$apk} /{$icon} -d " . $temp_save_path);
+                    exec("unzip {$apk} {$icon} -d " . $temp_save_path);
                     $apkinfo['icon'] = $path . $icon;
                     $parser = new \app\api\server\ParserServer();
                     $ipaFilePath = $temp_save_path . "{$icon}";
