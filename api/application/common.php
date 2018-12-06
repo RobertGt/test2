@@ -297,10 +297,11 @@ function ipaParseInfo($apk) {
                         $icon = array_pop($f);
                     }
                     exec("unzip {$apk} {$icon} -d " . $temp_save_path);
-                    $apkinfo['icon'] = $path . $icon;
+
                     $parser = new \app\api\server\ParserServer();
                     $ipaFilePath = $temp_save_path . "{$icon}";
                     $pngImgName = $temp_save_path . 'icon.png';
+                    $apkinfo['icon'] = $path . '/' . 'icon.png';
                     $parser::fix($ipaFilePath, $pngImgName);
                 }
                 // 包名
