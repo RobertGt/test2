@@ -9,10 +9,12 @@
 namespace app\api\controller;
 
 
+use app\api\model\UserModel;
 use app\api\server\ApplicationServer;
 use app\api\server\UserServer;
 use app\api\validate\ApplicationValidate;
 use app\api\validate\UserValidate;
+use think\Cache;
 use think\Request;
 
 class Login extends Base
@@ -52,17 +54,20 @@ class Login extends Base
     {
         $param = [
             'password'   => $request->param('password',''),
+            'oldPassword'=> $request->param('oldPassword',''),
             'wechat'     => $request->param('wechat',''),
             'imNumber'   => $request->param('imNumber', ''),
             'company'    => $request->param('company',''),
             'job'        => $request->param('job',''),
             'mobile'     => $request->param('mobile',''),
+            'uid'        => $this->userInfo['uid']
         ];
         $validate = new UserValidate();
         if(!$validate->scene('edit')->check($param)){
             ajax_info(1 , $validate->getError());
         }
-        $response = (new UserServer())->userUpdate($param, $this->userInfo['uid']);
+        unset($param['oldPassword']);
+        $response = (new UserServer())->userUpdate($param, $param['uid']);
         if($response){
             ajax_info(0,'success');
         }else{
@@ -70,7 +75,50 @@ class Login extends Base
         }
     }
 
-    
+    public function sendMailUpdate(Request $request){
+        $response = (new UserServer())->sendMailUpdate($this->userInfo['uid']);
+        if($response === true){
+            ajax_info(0, 'success');
+        }else{
+            ajax_info(1, $response);
+        }
+    }
+
+    public function checkCode(Request $request)
+    {
+        $param = [
+            'code'      => $request->param('code',''),
+            'find'      => 1
+        ];
+        $userInfo = (new UserModel())->where(['uid' => $this->userInfo['uid']])->field('email')->find()->toArray();
+        $param['email'] = $userInfo['email'];
+        $validate = new UserValidate();
+        if(!$validate->scene('checkCode')->check($param)){
+            ajax_info(1 , $validate->getError());
+        }
+        $key = md5($this->userInfo['uid'] . time());
+        Cache::set($key, $this->userInfo['uid'], 60 * 10);
+        ajax_info(0, 'success', ['updateKey' => $key]);
+    }
+
+    public function emailUpdate(Request $request)
+    {
+        $param = [
+            'email'      => $request->param('email',''),
+            'code'       => $request->param('code',''),
+            'updateKey'  => $request->param('updateKey','')
+        ];
+        $validate = new UserValidate();
+        if(!$validate->scene('emailUpdate')->check($param)){
+            ajax_info(1 , $validate->getError());
+        }
+        $response = (new UserServer())->emailUpdate($param, $this->userInfo['uid']);
+        if($response){
+            ajax_info(0,'success');
+        }else{
+            ajax_info(1,'修改失败');
+        }
+    }
 
     public function appUpload(Request $request)
     {

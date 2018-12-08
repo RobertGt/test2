@@ -40,12 +40,16 @@ Route::post([
     'v1/realName'           => 'api/Login/realName',
     'v1/appUpload'          => 'api/Login/appUpload',
     'v1/userUpdate'         => 'api/Login/userUpdate',
+    'v1/sendMailUpdate'     => 'api/Login/sendMailUpdate',
+    'v1/checkCode'          => 'api/Login/checkCode',
+    'v1/emailUpdate'        => 'api/Login/emailUpdate',
 
     'v1/appVersionRemark'   => 'api/App/appVersionRemark',
     'v1/appDelete'          => 'api/App/appDelete',
     'v1/appStateUpdate'     => 'api/App/appStateUpdate',
     'v1/appUrlUpdate'       => 'api/App/appUrlUpdate',
     'v1/appUpdate'          => 'api/App/appUpdate',
+    'v1/appMerge'           => 'api/App/appMerge',
 ]);
 
 Route::get([

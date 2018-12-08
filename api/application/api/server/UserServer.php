@@ -96,6 +96,31 @@ class UserServer
         return $send === true ? true : $send;
     }
 
+    public function sendMailUpdate($uid)
+    {
+        $userInfo = (new UserModel())->where(['uid' => $uid])->field('email')->find()->toArray();
+        $p['find'] = 1;
+        $p['email'] = $userInfo['email'];
+        return $this->sendMail($p);
+    }
+
+    public function emailUpdate($param = [], $uid)
+    {
+        $key = Cache::get($param['updateKey']);
+        Cache::rm($param['updateKey']);
+        if($key != $uid){
+            return false;
+        }
+        $save['email']     =  $param['email'];
+        try{
+            (new UserModel())->save($save, ['uid' => $uid]);
+        }catch (Exception $e){
+            Log::error("emailUpdate error:" . $e->getMessage());
+            return false;
+        }
+        return true;
+    }
+
     public function login($user = [])
     {
         $save['token']     = md5(time() . rand(1000, 9999).$user['uid']);

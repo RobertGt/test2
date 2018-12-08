@@ -25,7 +25,8 @@ class UserValidate extends Validate
         'contrary'    => 'require',
         'hand'        => 'require',
         'realname'    => 'in:0,2',
-        'mobile'      => 'length:11'
+        'mobile'      => 'length:11',
+        'updateKey'   => 'require',
     ];
 
     protected $message  =   [
@@ -39,7 +40,8 @@ class UserValidate extends Validate
         'contrary.require'   =>  '请上传身份证反面',
         'hand.require'       =>  '请上传手持身份证',
         'realname.in'        =>  '你的账号已经审核通过,无限重复验证',
-        'mobile.length'      =>  '请输入正确的手机号码'
+        'mobile.length'      =>  '请输入正确的手机号码',
+        'updateKey.require'  =>  '修改失败，无权修改'
     ];
 
     protected $scene = [
@@ -48,7 +50,9 @@ class UserValidate extends Validate
         'login'          =>  ['email', 'password' => 'require|min:6|checkUser'],
         'find'           =>  ['email', 'password', 'code'],
         'real'           =>  ['front', 'contrary', 'hand', 'realname'],
-        'edit'           =>  ['password' => 'min:6', 'imNumber', 'mobile'],
+        'edit'           =>  ['password' => 'min:6|checkPass', 'imNumber', 'mobile'],
+        'checkCode'      =>  ['code'],
+        'emailUpdate'    =>  ['email', 'code', 'updateKey'],
     ];
 
     public function checkEmail($email, $rule, $data)
@@ -75,8 +79,10 @@ class UserValidate extends Validate
     {
         if(!empty($data['find'])){
             $sendCode = Cache::get('find_' . $data['email']);
+            Cache::rm('find_' . $data['email']);
         }else{
             $sendCode = Cache::get('reg_' . $data['email']);
+            Cache::rm('reg_' . $data['email']);
         }
         if($sendCode != $code){
             return "验证码不正确,请重新输入";
@@ -94,6 +100,18 @@ class UserValidate extends Validate
             return "你的账号已经被禁用";
         }
         $this->user = $user;
+        return true;
+    }
+
+    public function checkPass($password, $rule, $data)
+    {
+        if(!$data['oldPassword']){
+            return "请输入旧密码";
+        }
+        $user = (new UserModel())->where(['uid' => $data['uid']])->field('password, salt')->find()->toArray();
+        if($user['password'] != md5($data['oldPassword'] . $user['salt'])){
+            return "旧密码错误";
+        }
         return true;
     }
 }

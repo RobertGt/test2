@@ -143,7 +143,7 @@ class ApplicationServer
             $info['appUrl'] = urlCompletion($info['appUrl']);
             $info['createTime'] = date('Y-m-d H:i:s', $info['createTime']);
             $info['packageName'] = $info['packageName'] ? $info['packageName']  : '' ;
-            $info['stateText'] = $info['state'] == 1 ? "<span class=\"label label-danger\">未上线</span>" : "<span class=\"label label-primary\">上线</span>";
+            $info['stateText'] = $info['state'] == 1 ? "<span class=\"label label-danger\">上线</span>" : "<span class=\"label label-primary\">未上线</span>";
             $info['size'] = $info['size'] ? round($info['size'] / 1024 / 1024, 2) . "MB" : "OMB";
             $info['row'] = $i + $rowNum;
             $response['row'][] = $info;

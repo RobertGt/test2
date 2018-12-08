@@ -15,16 +15,18 @@ use think\Validate;
 
 class ApplicationValidate extends Validate
 {
+    public $merge = [];
     protected $rule = [
         'appId'       => 'require',
         'appName'     => 'require',
         'version'     => 'require',
         'package'     => 'require',
         'state'       => 'checkState',
-        'upload'      => 'checkUpload',
+        'upload'      => 'require|checkUpload',
         'appUrl'      => 'require|url',
         'appName'     => 'require',
         'sortUrl'     => 'require|checkSort',
+        'mergeApp'    => 'require|checkMerge',
     ];
 
     protected $message  =   [
@@ -34,15 +36,38 @@ class ApplicationValidate extends Validate
         'appUrl.require'    =>  '请输入商店地址',
         'appUrl.url'        =>  '请输入正确的商店地址',
         'appName.require'   =>  '请输入APP名称',
-        'sortUrl.require'   =>  '请输入APP短链接'
+        'sortUrl.require'   =>  '请输入APP短链接',
+        'mergeApp.require'  =>  '请输入需要合并的应用'
     ];
 
     protected $scene = [
-        'upload'         =>  ['appName', 'version', 'package'],
+        'upload'         =>  ['appName', 'version', 'package', 'upload', 'state'],
         'checkId'        =>  ['appId'],
         'appUrlUpdate'   =>  ['appId', 'appUrl'],
         'appUpdate'      =>  ['appId', 'appName', 'sortUrl'],
+        'appMerge'       =>  ['appId', 'mergeApp'],
     ];
+
+    public function checkMerge($sort, $rule, $data)
+    {
+        $where['uid'] = $data['uid'];
+        $appModel = new ApplicationModel();
+        $field = 'appId, android, ios, defaultPlatform';
+        $default = $appModel->where($where)->where(['appId' => $data['appId']])->field($field)->find();
+        if(!$default || ($default['android'] && $default['ios'])){
+            return '非法合并:合并应用无法进行合并';
+        }
+        $merge = $appModel->where($where)->where(['sortUrl' => $sort])->field($field)->find();
+        if(!$merge || ($merge['android'] && $merge['ios'])){
+            return '非法合并:被合并应用无法进行合并';
+        }
+        if($merge['defaultPlatform'] == $default['defaultPlatform']){
+            return '非法合并:应用平台一致';
+        }
+        $merge = $merge->toArray();
+        $this->merge = $merge;
+        return true;
+    }
 
     public function checkState($state, $rule, $data)
     {

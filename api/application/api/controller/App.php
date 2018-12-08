@@ -151,4 +151,23 @@ class App extends Base
         $response = (new ApplicationServer())->userAppList($param['appId'], $this->userInfo['uid']);
         ajax_info(0,'success', $response);
     }
+
+    public function appMerge(Request $request)
+    {
+        $param = [
+            'appId'    => authcode($request->param('appId', '')),
+            'uid'      => $this->userInfo['uid'],
+            'mergeApp' => $request->param('sort', '')
+        ];
+        $validate = new ApplicationValidate();
+        if(!$validate->scene('appMerge')->check($param)){
+            ajax_info(1 , $validate->getError());
+        }
+        $response = (new ApplicationServer())->appMerge($param, $validate->merge);
+        if($response){
+            ajax_info(0, 'success');
+        }else{
+            ajax_info(1, '合并失败');
+        }
+    }
 }

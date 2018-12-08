@@ -20,9 +20,9 @@ class ApplicationServer
     public function upload($param = [])
     {
         $where['uid'] = $param['uid'];
-        $where['appkey'] = md5($param['uid'] . $param['package']);
-        $sort = getRandStr(5) . $where['uid'];
         $package = $param['ext'] == 'apk' ? 'android' : 'ios';
+        $where['appkey'] = md5($param['uid'] . $param['package'] . $package);
+        $sort = getRandStr(5) . $where['uid'];
         $where[$package] = $param['package'];
         $applicationModel = new ApplicationModel();
         $appInfo = $applicationModel->where($where)->field('appId')->find();
@@ -37,6 +37,7 @@ class ApplicationServer
                 $create['sortUrl'] = $sort;
                 $create[$package] = $param['package'];
                 $create['size'] = $param['size'];
+                $create['defaultPlatform'] = $package;
                 $app = $applicationModel->create($create);
                 $appInfo['appId'] = $app->appId;
             }
@@ -69,7 +70,7 @@ class ApplicationServer
         }
         $appList = (new ApplicationModel())->alias('a')->where($where)
                     ->join('bas_application_version v', 'v.appId = a.appId')
-                    ->field("a.appId, a.appName, a.appIcon, a.android, a.ios, a.size, max(v.version) version")
+                    ->field("a.appId, a.appName, a.appIcon, a.android, a.ios, a.size, max(v.version) version, a.defaultPlatform")
                     ->page($param['pageNum'], $param['pageSize'])
                     ->group('a.appId')
                     ->order("a.createTime desc")
@@ -85,7 +86,7 @@ class ApplicationServer
             $info['platform'] = [];
             if($value['android'])$info['platform'][] = 'android';
             if($value['ios'])$info['platform'][] = 'ios';
-            $info['package'] = $value['android'] ? $value['android'] : $value['ios'];
+            $info['package'] = $value[$value['defaultPlatform']];
             $response[] = $info;
         }
         return $response;
@@ -132,7 +133,7 @@ class ApplicationServer
         $where['appId'] = $appId;
         $version = (new ApplicationVersionModel())->where($where)->field('apkId, version, createTime, remark, state')->order('version desc')->select();
         $where['uid'] = $uid;
-        $appInfo = (new ApplicationModel())->field('appId, appkey, appName, appUrl, sortUrl, appIcon, size, describe, android, ios,appImage, state')->where($where)->find();
+        $appInfo = (new ApplicationModel())->field('appId, appkey, appName, appUrl, sortUrl, appIcon, size, describe, android, ios,appImage, state, defaultPlatform')->where($where)->find();
 
 
         if($appInfo){
@@ -148,7 +149,7 @@ class ApplicationServer
             foreach ($appInfo['appImage'] as &$val){
                 $appImage[] = urlCompletion($val);
             }
-            $appInfo['package'] = $appInfo['android'] ? $appInfo['android'] : $appInfo['ios'];
+            $appInfo['package'] = $appInfo[$appInfo['defaultPlatform']];
             unset($appInfo['android']);
             unset($appInfo['ios']);
             $appInfo['appImage'] = $appImage;
@@ -221,6 +222,31 @@ class ApplicationServer
             (new ApplicationModel())->save($save, $where);
         }catch (Exception $e){
             Log::error("appUpdate error:" . $e->getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public function appMerge($param = [], $merge = [])
+    {
+        $where['uid'] = $param['uid'];
+        $where['appId'] = $param['appId'];
+        $appModel = new ApplicationModel();
+        try{
+            $appModel->startTrans();
+            $save[$merge['defaultPlatform']] = $merge[$merge['defaultPlatform']];
+            $default = $appModel->save($save, $where);
+            $where['appId'] = $merge['appId'];
+            $mergeDel = (new ApplicationModel())->where($where)->delete();
+            $mergeUpdate = (new ApplicationVersionModel())->save(['appId' => $param['appId']], ['appId' => $merge['appId']]);
+            if($default && $mergeDel && $mergeUpdate){
+                $appModel->commit();
+            }else{
+                $appModel->startTrans();
+                return false;
+            }
+        }catch (Exception $e){
+            Log::error("appMerge error:" . $e->getMessage());
             return false;
         }
         return true;
