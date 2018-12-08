@@ -412,3 +412,38 @@ function apkParseInfo($apk) {
     return $apkinfo;
 }
 
+function qrCode($url)
+{
+    import('kairos.phpqrcode.qrlib');
+    $root = ROOT_PATH . 'public';
+    $path = DS . 'uploads/code/' . date('Y-m-d') . "/";
+    if(!file_exists($root . $path)){
+        mkdir($root . $path, 0700,true);
+    }
+    $fileName = md5($url) . '.png';
+    $filePath = $root . $path . $fileName;
+    $object = new \Qrcode();
+    $errorCorrectionLevel = 4;//容错级别
+    $matrixPointSize = 12;//生成图片大小
+    ob_end_clean();//清空缓冲区
+    $object->png($url, $filePath, $errorCorrectionLevel, $matrixPointSize, 2);
+    return $path . $fileName;
+}
+
+//微信支付数组转xml
+function arrayToXml($arr)
+{
+    header('Content-Type:text/xml; charset=utf-8');
+    $xml = "<xml>";
+    foreach ($arr as $key => $val) {
+        if (is_numeric($val)) {
+            $xml .= "<" . $key . ">" . $val . "</" . $key . ">";
+
+        } else
+            $xml .= "<" . $key . "><![CDATA[" . $val . "]]></" . $key . ">";
+    }
+    $xml .= "</xml>";
+    echo $xml;
+    exit;
+}
+

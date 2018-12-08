@@ -50,6 +50,12 @@ Route::post([
     'v1/appUrlUpdate'       => 'api/App/appUrlUpdate',
     'v1/appUpdate'          => 'api/App/appUpdate',
     'v1/appMerge'           => 'api/App/appMerge',
+
+    'v1/appDownUrl'        => 'api/Index/appDownUrl',
+    'v1/messageUpdate'      => 'api/Login/messageUpdate',
+
+    'wechatNotify'          => 'api/Notify/wechatNotify',
+
 ]);
 
 Route::get([
@@ -87,9 +93,16 @@ Route::get([
     'v1/appList'           => 'api/App/appList',
     'v1/appInfo'           => 'api/App/appInfo',
     'v1/userApp'           => 'api/App/userAppList',
+    'v1/appStatistics'     => 'api/App/appStatistics',
+    'v1/packages'          => 'api/Package/packageList',
+    'v1/messageList'       => 'api/Login/messageList',
+    'v1/messageFind'       => 'api/Login/messageFind',
+    'v1/appDownInfo'       => 'api/Index/appDownInfo',
 
     'v1/userInfo'          => 'api/Login/userInfo',
+    'v1/buyPackage'        => 'api/Package/buyPackage',
 
-    'g/:id'                => 'api/Index/imageUpload',
-    ':id'                  => 'api/Index/imageUpload'
+
+    //'g/:id'                => 'api/Index/imageUpload',
+    //':id'                  => 'api/Index/imageUpload'
 ]);

@@ -28,12 +28,12 @@ class Base
     private function checkToken()
     {
         $request = Request::instance();
-        $token     = $request->header('token', '');
+        $token   = $request->header('token', '');
         if(!$token){
             ajax_info(401, 'failure of authentication');
         }
         //$userInfo = Cache::get($token);
-        $field = "uid, email, state, realname, upload";
+        $field = "uid, email, state, realname, upload, packageId, expireTime";
         $userInfo = (new UserModel())->where(['token' => $token])->field($field)->find();
 
         if (!$userInfo){

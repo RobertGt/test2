@@ -11,6 +11,7 @@ namespace app\api\controller;
 
 use app\api\model\UserModel;
 use app\api\server\ApplicationServer;
+use app\api\server\MessageServer;
 use app\api\server\UserServer;
 use app\api\validate\ApplicationValidate;
 use app\api\validate\UserValidate;
@@ -117,6 +118,41 @@ class Login extends Base
             ajax_info(0,'success');
         }else{
             ajax_info(1,'修改失败');
+        }
+    }
+
+    public function messageList(Request $request)
+    {
+        $param = [
+            'pageNum'  => $request->param('pageNum',1,'intval'),
+            'pageSize' => $request->param('pageSize',10,'intval')
+        ];
+        $response = (new MessageServer())->messageList($param, $this->userInfo['uid']);
+
+        ajax_info(0,'success', $response);
+    }
+
+    public function messageUpdate(Request $request)
+    {
+        $param = [
+            'recId'  => $request->param('recId', '')
+        ];
+        $response = (new MessageServer())->messageUpdate($param['recId'], $this->userInfo['uid']);
+
+        if($response){
+            ajax_info(0,'success');
+        }else{
+            ajax_info(1,'操作失败');
+        }
+    }
+
+    public function messageFind(Request $request)
+    {
+        $response = (new MessageServer())->messageFind($this->userInfo['uid']);
+        if($response){
+            ajax_info(0, 'success', $response);
+        }else{
+            ajax_info(1, '无新消息');
         }
     }
 

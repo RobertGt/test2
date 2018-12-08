@@ -47,6 +47,17 @@ return [
     //app请求密钥
     'app_key'   =>  '7c6fe563abc91f43be71d5bc9072329f',
 
+    //支付配置
+    'pay'                   => [
+        //支付宝、微信回调地址
+        //正式地址如下
+        'alipayNotifyUrl' => 'http://api.ublog.top/alipayNotify',
+        'wechatNotifyUrl' => 'http://api.ublog.top/wechatNotify',
+    ] ,
+
+    //百度地址Api
+    'baidu_map_url'          => "http://api.map.baidu.com/geocoder/v2/?location=%s&output=json&ak=TS87N9vSz0b1YRxs6bhXxti9PtvK70vY" ,
+
     /* 邮件 */
     'email' => [
         'SMTP_HOST'   => 'smtp.qq.com', //SMTP服务器

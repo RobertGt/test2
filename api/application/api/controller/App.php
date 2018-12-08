@@ -170,4 +170,18 @@ class App extends Base
             ajax_info(1, '合并失败');
         }
     }
+
+    public function appStatistics(Request $request)
+    {
+        $param = [
+            'appId'    => authcode($request->param('appId', '')),
+            'type'     => $request->param('type', '')
+        ];
+        $validate = new ApplicationValidate();
+        if(!$validate->scene('checkId')->check($param)){
+            ajax_info(1 , $validate->getError());
+        }
+        $response = (new ApplicationServer())->appStatistics($param);
+        ajax_info(0,'success', $response);
+    }
 }

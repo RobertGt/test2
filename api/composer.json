@@ -2,6 +2,7 @@
     "require": {
         "phpmailer/phpmailer": "^6.0",
         "rodneyrehm/plist": "^2.0",
-        "chumper/zipper": "^1.0"
+        "chumper/zipper": "^1.0",
+        "kairos/phpqrcode": "^1.0"
     }
 }

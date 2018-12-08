@@ -84,10 +84,10 @@ class ApplicationValidate extends Validate
             return "上传应用已到达上限";
         }
         $where['uid'] = $data['uid'];
-        $where['createTime'] = ['egt', strtotime(date('Y-m-d'))];
+        //$where['createTime'] = ['egt', strtotime(date('Y-m-d'))];
         $num = (new ApplicationModel())->where($where)->count();
         if($num >= $upload){
-            return "已经超过今日上传限制";
+            return "上传应用已到达上限, 请升级套餐";
         }
         return true;
     }

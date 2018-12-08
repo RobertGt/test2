@@ -8,4 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => $vendorDir . '/symfony/polyfill-mbstring/bootstrap.php',
     '72579e7bd17821bb1321b87411366eae' => $vendorDir . '/illuminate/support/helpers.php',
+    '1031b91e017487137a717f6d17f42584' => $vendorDir . '/kairos/phpqrcode/qrlib.php',
 );

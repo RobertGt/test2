@@ -1,0 +1,1 @@
+2018-12-09 02:21:50: imagepng(C:\word\test2\api\public\uploads/code/2018-12-09/be72cfbe938d31c083d41ba0eb543fea.png): failed to open stream: No such file or directory

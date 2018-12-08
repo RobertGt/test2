@@ -9,6 +9,7 @@ class ComposerStaticInitf1790b36ec56881081fc5340ed380d58
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '72579e7bd17821bb1321b87411366eae' => __DIR__ . '/..' . '/illuminate/support/helpers.php',
+        '1031b91e017487137a717f6d17f42584' => __DIR__ . '/..' . '/kairos/phpqrcode/qrlib.php',
     );
 
     public static $prefixLengthsPsr4 = array (

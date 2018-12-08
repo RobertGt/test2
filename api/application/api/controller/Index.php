@@ -1,13 +1,53 @@
 <?php
 namespace app\api\controller;
 
+use app\api\server\ApplicationServer;
+use app\api\validate\ApplicationValidate;
 use think\Request;
 
 class Index
 {
     public function index()
     {
+        qrCode('weixin://wxpay/bizpayurl?pr=7SFe5uc');
         return 'v1';
+    }
+
+    public function appDownInfo(Request $request)
+    {
+        $param = [
+            'appId'  => $request->param('appId','')
+        ];
+        $validate = new ApplicationValidate();
+        if(!$validate->scene('checkId')->check($param)){
+            ajax_info(1 , $validate->getError());
+        }
+        $response = (new ApplicationServer())->appDownInfo($param['appId']);
+        if($response){
+            ajax_info(0,'success', $response);
+        }else{
+            ajax_info(1,'获取详情失败');
+        }
+    }
+
+    public function appDownUrl(Request $request)
+    {
+        $param = [
+            'appId'    => authcode($request->param('appId','')),
+            'lat'      => $request->param('lat',''),
+            'lng'      => $request->param('lng',''),
+            'platform' => $request->param('platform',''),
+        ];
+        $validate = new ApplicationValidate();
+        if(!$validate->scene('checkId')->check($param)){
+            ajax_info(1 , $validate->getError());
+        }
+        $response = (new ApplicationServer())->appDownUrl($param);
+        if($response){
+            ajax_info(0,'success', $response);
+        }else{
+            ajax_info(1,'获取Url失败');
+        }
     }
 
     public function imageUpload(Request $request)
