@@ -412,7 +412,7 @@ function apkParseInfo($apk) {
     return $apkinfo;
 }
 
-function qrCode($url, $logo = '')
+function qrCode($url, $logo = '', $platform)
 {
     import('kairos.phpqrcode.qrlib');
     $root = ROOT_PATH . 'public';
@@ -428,7 +428,7 @@ function qrCode($url, $logo = '')
     ob_end_clean();//清空缓冲区
     $object->png($url, $filePath, $errorCorrectionLevel, $matrixPointSize, 2);
 
-    if ($logo && file_exists($root . $logo)) {
+    if ($logo && file_exists($root . $logo) && $platform != 'ios') {
         $QR = imagecreatefromstring(file_get_contents($filePath));  //目标图象连接资源。
         $logo = imagecreatefromstring(file_get_contents($root . $logo));    //源图象连接资源。
         if (imageistruecolor($logo)) imagetruecolortopalette($logo, false, 65535);//解决logo失真问题

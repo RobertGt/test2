@@ -147,7 +147,7 @@ class ApplicationServer
             $appInfo['describe'] = $appInfo['describe'] ? $appInfo['describe'] : '';
             $appInfo['size'] = byteToMb($appInfo['size']);
             $appInfo['baseUrl'] = WEB_HTTP . '/';
-            $appInfo['qrCode'] = urlCompletion(qrCode($appInfo['baseUrl'] . $appInfo['sortUrl'], $appInfo['appIcon']));
+            $appInfo['qrCode'] = urlCompletion(qrCode($appInfo['baseUrl'] . $appInfo['sortUrl'], $appInfo['appIcon'], $appInfo['defaultPlatform']));
             $appInfo['appIcon'] = $appInfo['appIcon'] ? urlCompletion($appInfo['appIcon']) : '';
             $appImage = [];
             $appInfo['appImage'] = $appInfo['appImage'] ? explode(',', $appInfo['appImage']) : [];
@@ -194,7 +194,7 @@ class ApplicationServer
             $appInfo['describe'] = $appInfo['describe'] ? $appInfo['describe'] : '';
             $appInfo['size'] = byteToMb($appInfo['size']);
             $appInfo['baseUrl'] = WEB_HTTP . '/';
-            $appInfo['qrCode'] = urlCompletion(qrCode($appInfo['baseUrl'] . $appInfo['sortUrl'], $appInfo['appIcon']));
+            $appInfo['qrCode'] = urlCompletion(qrCode($appInfo['baseUrl'] . $appInfo['sortUrl'], $appInfo['appIcon'], $appInfo['defaultPlatform']));
             $appInfo['appIcon'] = $appInfo['appIcon'] ? urlCompletion($appInfo['appIcon']) : '';
             $appInfo['platform'] = [];
             if($appInfo['android'])$appInfo['platform'][] = 'android';
