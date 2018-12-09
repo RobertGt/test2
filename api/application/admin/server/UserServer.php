@@ -132,6 +132,7 @@ class UserServer
             $userInfo['imNumber'] = $userInfo['imNumber'] ? $userInfo['imNumber'] : '未填写';
             $userInfo['company'] = $userInfo['company'] ? $userInfo['company'] : '未填写';
             $userInfo['job'] = $userInfo['job'] ? $userInfo['job'] : '未填写';
+            $userInfo['packageName'] = $userInfo['packageName'] ? $userInfo['packageName'] : '';
             $userInfo['mobile'] = $userInfo['mobile'] ? $userInfo['mobile'] : '未绑定';
             $userInfo['expireTime'] = $userInfo['expireTime'] ? date('Y-m-d H:i:s', $userInfo['expireTime']) : '';
             $userInfo['realnameText'] = $userInfo['realname'] == 1 ? "审核通过" :
