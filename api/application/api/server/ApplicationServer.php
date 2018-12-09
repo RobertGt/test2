@@ -221,6 +221,8 @@ class ApplicationServer
             $this->errMsg = '下载应用已被禁用或者不存在';
             return false;
         }
+        unset($where['sortUrl']);
+        $where['appId'] = $appInfo['appId'];
         $userInfo = (new UserModel())
             ->where(['uid' => $appInfo['uid']])->field('download, surplus, expireTime')->find();
         if(!$userInfo){
