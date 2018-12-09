@@ -13,6 +13,7 @@ use app\api\model\ApplicationDownModel;
 use app\api\model\ApplicationModel;
 use app\api\model\UserModel;
 use think\Cache;
+use think\Config;
 use think\Exception;
 use think\Log;
 
@@ -175,6 +176,10 @@ class UserServer
                                                 ->join('bas_application b', 'd.appId = b.appId')
                                                 ->where($w)
                                                 ->count();
+        if($userInfo['expireTime'] < time()){
+            $userInfo['upload'] = Config::get('default.upload');
+            $userInfo['surplus'] = Config::get('default.surplus');
+        }
         $userInfo['upload'] = $userInfo['upload'] - $upload;
         $userInfo['surplus'] = $userInfo['surplus'] - $surplus;
         $userInfo['mobile'] = $userInfo['mobile'] ? $userInfo['mobile'] : '';

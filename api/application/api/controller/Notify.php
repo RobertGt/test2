@@ -66,7 +66,7 @@ class Notify
                 $q1 = $userRecCharge->save($save , $where);
                 $u['packageId'] = $info['packageId'];
                 $time = 31 * 60 * 60 * 24;
-                $u['expireTime'] = $userInfo['packageId'] == $u['packageId'] ?
+                $u['expireTime'] = $userInfo['packageId'] == $u['packageId'] && $userInfo['expireTime'] < time() ?
                     $userInfo['expireTime'] + $info['number']  * $time : time() + $info['number']  * $time;
                 if($package['packageType'] == 1){
                     $u['surplus'] = ['inc', $package['download']];

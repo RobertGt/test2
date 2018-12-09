@@ -218,10 +218,13 @@ class ApplicationServer
             return false;
         }
         $userInfo = (new UserModel())
-            ->where(['uid' => $appInfo['uid']])->field('download, surplus')->find();
+            ->where(['uid' => $appInfo['uid']])->field('download, surplus, expireTime')->find();
         if(!$userInfo){
             $this->errMsg = '下载应用已被禁用或者不存在';
             return false;
+        }
+        if($userInfo['expireTime'] < time()){
+            $userInfo = Config::get('default');
         }
         $w['appId'] = $param['appId'];
         $w['createTime'] = ['egt', strtotime(date('Y-m-d'))];

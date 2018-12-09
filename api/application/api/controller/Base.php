@@ -12,6 +12,7 @@ namespace app\api\controller;
 use app\api\model\UserModel;
 use think\Cache;
 use think\cache\driver\Redis;
+use think\Config;
 use think\Request;
 
 class Base
@@ -38,6 +39,10 @@ class Base
 
         if (!$userInfo){
             ajax_info(401, 'failure of authentication');
+        }
+        if($userInfo['expireTime'] < time()){
+            $userInfo['upload'] = Config::get('default.upload');
+            $userInfo['surplus'] = Config::get('default.surplus');
         }
         $this->userInfo = $userInfo->getData();
         if($this->userInfo['state'] == 1){
