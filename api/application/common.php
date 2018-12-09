@@ -412,7 +412,7 @@ function apkParseInfo($apk) {
     return $apkinfo;
 }
 
-function qrCode($url)
+function qrCode($url, $logo = '')
 {
     import('kairos.phpqrcode.qrlib');
     $root = ROOT_PATH . 'public';
@@ -423,10 +423,31 @@ function qrCode($url)
     $fileName = md5($url) . '.png';
     $filePath = $root . $path . $fileName;
     $object = new \Qrcode();
-    $errorCorrectionLevel = 4;//容错级别
-    $matrixPointSize = 12;//生成图片大小
+    $errorCorrectionLevel = 12;//容错级别
+    $matrixPointSize = 13;//生成图片大小
     ob_end_clean();//清空缓冲区
     $object->png($url, $filePath, $errorCorrectionLevel, $matrixPointSize, 2);
+
+    if ($logo && file_exists($root . $logo)) {
+        $QR = imagecreatefromstring(file_get_contents($filePath));  //目标图象连接资源。
+        $logo = imagecreatefromstring(file_get_contents($root . $logo));    //源图象连接资源。
+        if (imageistruecolor($logo)) imagetruecolortopalette($logo, false, 65535);//解决logo失真问题
+        $QR_width = imagesx($QR);           //二维码图片宽度
+        $QR_height = imagesy($QR);  //二维码图片高度
+        $logo_width = imagesx($logo);       //logo图片宽度
+        $logo_height = imagesy($logo);      //logo图片高度
+        $logo_qr_width = $QR_width / 5;     //组合之后logo的宽度(占二维码的1/5)
+        $scale = $logo_width/$logo_qr_width;    //logo的宽度缩放比(本身宽度/组合后的宽度)
+        $logo_qr_height = $logo_height/$scale;  //组合之后logo的高度
+        $from_width = ($QR_width - $logo_qr_width) / 2;   //组合之后logo左上角所在坐标点
+
+        imagecopyresampled($QR, $logo, $from_width, $from_width, 0, 0,   $logo_qr_width,$logo_qr_height, $logo_width, $logo_height);
+        imagepng($QR, $filePath);
+        imagedestroy($QR);
+        imagedestroy($logo);
+    }
+
+
     return $path . $fileName;
 }
 

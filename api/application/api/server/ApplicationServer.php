@@ -143,12 +143,12 @@ class ApplicationServer
         if($appInfo){
             $appInfo = $appInfo->getData();
             $appInfo['appId'] = authcode($appInfo['appId'], 'ENCODE');
-            $appInfo['appIcon'] = $appInfo['appIcon'] ? urlCompletion($appInfo['appIcon']) : '';
             $appInfo['sortUrl'] = $appInfo['sortUrl'] ? $appInfo['sortUrl'] : '';
             $appInfo['describe'] = $appInfo['describe'] ? $appInfo['describe'] : '';
             $appInfo['size'] = byteToMb($appInfo['size']);
             $appInfo['baseUrl'] = WEB_HTTP . '/';
-            $appInfo['qrCode'] = urlCompletion(qrCode($appInfo['baseUrl'] . $appInfo['sortUrl']));
+            $appInfo['qrCode'] = urlCompletion(qrCode($appInfo['baseUrl'] . $appInfo['sortUrl'], $appInfo['appIcon']));
+            $appInfo['appIcon'] = $appInfo['appIcon'] ? urlCompletion($appInfo['appIcon']) : '';
             $appImage = [];
             $appInfo['appImage'] = $appInfo['appImage'] ? explode(',', $appInfo['appImage']) : [];
             foreach ($appInfo['appImage'] as &$val){
@@ -189,12 +189,12 @@ class ApplicationServer
             $appInfo = $appInfo->getData();
             $version = (new ApplicationVersionModel())->where(['appId' => $appInfo['appId']])->field('apkId, version, createTime, remark, state')->order('version desc')->find()->getData();
             $appInfo['appId'] = authcode($appInfo['appId'], 'ENCODE');
-            $appInfo['appIcon'] = $appInfo['appIcon'] ? urlCompletion($appInfo['appIcon']) : '';
             $appInfo['sortUrl'] = $appInfo['sortUrl'] ? $appInfo['sortUrl'] : '';
             $appInfo['describe'] = $appInfo['describe'] ? $appInfo['describe'] : '';
             $appInfo['size'] = byteToMb($appInfo['size']);
             $appInfo['baseUrl'] = WEB_HTTP . '/';
-            $appInfo['qrCode'] = urlCompletion(qrCode($appInfo['baseUrl'] . $appInfo['sortUrl']));
+            $appInfo['qrCode'] = urlCompletion(qrCode($appInfo['baseUrl'] . $appInfo['sortUrl'], $appInfo['appIcon']));
+            $appInfo['appIcon'] = $appInfo['appIcon'] ? urlCompletion($appInfo['appIcon']) : '';
             $appInfo['platform'] = [];
             if($appInfo['android'])$appInfo['platform'][] = 'android';
             if($appInfo['ios'])$appInfo['platform'][] = 'ios';
