@@ -32,14 +32,14 @@ class Base
         $request = Request::instance();
         $token   = $request->header('token', '');
         if(!$token){
-            ajax_info(401, 'failure of authentication');
+            ajax_info(401, '登录状态失效');
         }
 
         $field = "uid, email, state, realname, upload, download, packageId, expireTime";
         $userInfo = (new UserModel())->where(['token' => $token])->field($field)->find();
 
         if (!$userInfo){
-            ajax_info(401, 'failure of authentication');
+            ajax_info(401, '登录状态失效');
         }
 
         $redis = new Redis();
