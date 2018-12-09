@@ -232,7 +232,7 @@ class ApplicationServer
         if($userInfo['expireTime'] < time()){
             $userInfo['download'] = Config::get('default.download');
         }
-        $w['appId'] = $param['appId'];
+        $w['appId'] = $appInfo['appId'];
         $w['createTime'] = ['egt', strtotime(date('Y-m-d'))];
         $surplus = (new ApplicationDownModel())
             ->where($w)
@@ -249,7 +249,7 @@ class ApplicationServer
             $this->errMsg = '下载平台不存在';
             return false;
         }
-        $create['appId'] = $param['appId'];
+        $create['appId'] = $appInfo['appId'];
         $create['apkId'] = $version['apkId'];
         $create['version'] = $version['version'];
         $create['lng'] = $param['lng'];
@@ -276,6 +276,7 @@ class ApplicationServer
             $response['url'] = urlCompletion($version['appUrl']);
         }catch (Exception $e){
             Log::error("appDownUrl error:" . $e->getMessage());
+            $this->errMsg = '未知错误';
             return false;
         }
         return $response;
