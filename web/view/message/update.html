@@ -116,10 +116,12 @@
           <div class="ibox-content">
             <form class="form-horizontal m-t" id="signupForm" action="">
               <input type="hidden" name="id" value="0">
+              <input type="hidden" name="send" value="0"/>
+              <input type="hidden" name="templetType" value="0"/>
               <div class="form-group">
                 <label class="col-sm-2 control-label">通知场景：</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" placeholder="" name="title" disabled/>
+                  <input type="text" class="form-control" placeholder="" name="title" readonly="readonly"/>
                 </div>
               </div>
               <div class="form-group">
@@ -133,6 +135,10 @@
                   <button class="btn btn-primary">
                     <i class="fa fa-check"></i>
                     <span class="bold">修改</span>
+                  </button>
+                  <button class="btn btn-info" style="display: none">
+                    <i class="fa fa-send"></i>
+                    <span class="bold">保存并发送</span>
                   </button>
                   <button class="btn btn-link btn-outline">
                     <i class="fa fa-mail-reply"></i>
@@ -162,6 +168,11 @@
 <script src="../../static/js/toastr.options.js"></script>
 <script src="../../static/js/mapgoo.js"></script>
 <script>
+    $(document).on("click", ".btn-info", function() {
+        $("input[name='send']").val(1);
+    });
+</script>
+<script>
     var url = "admin/templetUpdate";
     var info = "admin/templetInfo";
 </script>
@@ -170,6 +181,10 @@
     getInfo(info, {id : parent.updateId}, function(resp){
         $("input[name='title']").val(resp.title);
         $("input[name='id']").val(resp.id);
+        $("input[name='templetType']").val(resp.templetType);
         $("textarea[name='message']").val(resp.message);
+        if(resp.templetType == 3){
+            $(".btn-info").show();
+        }
     })
 </script>

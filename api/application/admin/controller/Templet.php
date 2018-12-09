@@ -70,8 +70,11 @@ class Templet extends Base
     public function templetUpdate(Request $request)
     {
         $param = [
-            'id'      => $request->param('id',0, 'intval'),
-            'message' => $request->param('message','')
+            'id'          => $request->param('id',0, 'intval'),
+            'message'     => $request->param('message',''),
+            'templetType' => $request->param('templetType',''),
+            'title'       => $request->param('title',''),
+            'send'        => $request->param('send') ? 1 : 0
         ];
 
         $validate = new ApplicationValidate();

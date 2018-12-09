@@ -10,6 +10,8 @@ namespace app\admin\server;
 
 
 use app\admin\model\TempletModel;
+use app\admin\model\UserModel;
+use app\api\model\UserMessageModel;
 use think\Exception;
 use think\Log;
 
@@ -72,6 +74,18 @@ class TempletServer
         $save['message'] = $param['message'];
         try{
             (new TempletModel())->save($save, ['templetId' => $param['id']]);
+            if($param['templetType'] == 3 && $param['send'] == 1){
+                $users = (new UserModel())->where(['state' => 0])->field('uid')->select();
+                $message = [];
+                foreach ($users as $k => $v){
+                    $c['uid'] = $v['uid'];
+                    $c['title'] = $param['title'];
+                    $c['type'] = 3;
+                    $c['message'] = $save['message'];
+                    $message[] = $c;
+                }
+                if($message)(new UserMessageModel())->saveAll($message);
+            }
         }catch (Exception $e){
             Log::error("templetUpdate error:" . $e->getMessage());
             return false;
