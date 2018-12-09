@@ -101,7 +101,7 @@ class ApplicationServer
                         $create['uid'] = $info['uid'];
                         $create['title'] = $templet['title'];
                         $create['type'] = 1;
-                        $create['message'] = str_replace("{app}", $info['$info'], $templet['message']);
+                        $create['message'] = str_replace("{app}", $info['appName'], $templet['message']);
                         (new UserMessageModel())->create($create);
                     }
                 }
