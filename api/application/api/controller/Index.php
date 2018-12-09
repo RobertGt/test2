@@ -3,14 +3,21 @@ namespace app\api\controller;
 
 use app\api\server\ApplicationServer;
 use app\api\validate\ApplicationValidate;
+use think\Controller;
 use think\Request;
 
-class Index
+class Index extends Controller
 {
     public function index()
     {
-        qrCode('weixin://wxpay/bizpayurl?pr=7SFe5uc');
         return 'v1';
+    }
+
+    public function rotation(Request $request)
+    {
+        $appId  =  $request->param('id','');
+        if(!$appId)return '';
+        $this->redirect('http://51zhangzhen.cn/#/' . $appId,302);
     }
 
     public function appDownInfo(Request $request)

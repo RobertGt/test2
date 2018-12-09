@@ -105,6 +105,6 @@ Route::get([
     'v1/checkOrderState'   => 'api/Package/checkOrderState',
 
 
-    //'g/:id'                => 'api/Index/imageUpload',
-    //':id'                  => 'api/Index/imageUpload'
+    'g/:id'                => 'api/Index/rotation',
+    ':id'                  => 'api/Index/rotation'
 ]);
