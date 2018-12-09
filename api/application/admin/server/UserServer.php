@@ -11,6 +11,7 @@ namespace app\admin\server;
 
 use app\admin\model\UserModel;
 use app\api\model\UserDevicesModel;
+use think\Cache;
 use think\Exception;
 use think\Log;
 
@@ -56,6 +57,7 @@ class UserServer
             $i++;
         }
         $response['total'] = (int)$total;
+        $response['realname'] = Cache::get('realName', 1);
         return $response;
     }
 

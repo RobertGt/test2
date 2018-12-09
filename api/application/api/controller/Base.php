@@ -11,6 +11,7 @@ namespace app\api\controller;
 
 use app\api\model\UserModel;
 use think\Cache;
+use think\cache\driver\Redis;
 use think\Request;
 
 class Base
@@ -32,7 +33,6 @@ class Base
         if(!$token){
             ajax_info(401, 'failure of authentication');
         }
-        //$userInfo = Cache::get($token);
         $field = "uid, email, state, realname, upload, packageId, expireTime";
         $userInfo = (new UserModel())->where(['token' => $token])->field($field)->find();
 
@@ -43,6 +43,9 @@ class Base
         if($this->userInfo['state'] == 1){
             ajax_info(403, '你的账号已经被禁用');
         }
+        $redis = new Redis();
+        $redis->handler()->select(1);
+        $redis->handler()->set('token_' . $token, 1, 5 * 60);
         return true;
     }
 }

@@ -11,6 +11,7 @@ namespace app\admin\controller;
 
 use app\admin\server\UserServer;
 use app\admin\validate\UserValidate;
+use think\Cache;
 use think\Request;
 
 class User extends Base
@@ -107,5 +108,12 @@ class User extends Base
         }else{
             ajax_info(1,'获取详情失败');
         }
+    }
+
+    public function realName(Request $request)
+    {
+        $realName  = $request->param('realName') ? 1 : 0;
+        Cache::set('realName', $realName);
+        ajax_info(0,'success');
     }
 }

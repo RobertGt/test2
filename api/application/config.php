@@ -54,7 +54,11 @@ return [
         'alipayNotifyUrl' => 'http://api.ublog.top/alipayNotify',
         'wechatNotifyUrl' => 'http://api.ublog.top/wechatNotify',
     ] ,
-
+    'cache'                  => [
+        'type'       => 'redis',
+        'host'       => '127.0.0.1',
+        'port'       => 6379
+    ],
     //百度地址Api
     'baidu_map_url'          => "http://api.map.baidu.com/geocoder/v2/?location=%s&output=json&ak=TS87N9vSz0b1YRxs6bhXxti9PtvK70vY" ,
 

@@ -26,14 +26,14 @@ class PackageServer
         $now = time();
         $response['expireTime'] = $userInfo['expireTime'] ? date('Y-m-d H:i:s', $userInfo['expireTime']) : '';
         $response['packageName'] = '';
-        if($userInfo['expireTime'] && $userInfo['expireTime'] > $now){
-            $packageInfo = $packageModel->where(['packageId' => $userInfo['packageId']])->field('packageId, packageName, price, day')->find();
-            if($packageInfo){
-                $dayPrice = round($packageInfo['price'] / $packageInfo['day'], 2);
-                $response['packageName'] = $packageInfo['packageName'];
-                $userPrice = $packageInfo['price'];
-                $day = floor(($userInfo['expireTime'] - $now) / 86400);
-                $price = $dayPrice * $day;
+        $packageInfo = $packageModel->where(['packageId' => $userInfo['packageId']])->field('packageId, packageName, price, day')->find();
+        if($packageInfo){
+            $response['packageName'] = $packageInfo['packageName'];
+            if($userInfo['expireTime'] && $userInfo['expireTime'] > $now){
+                    $dayPrice = round($packageInfo['price'] / $packageInfo['day'], 2);
+                    $userPrice = $packageInfo['price'];
+                    $day = floor(($userInfo['expireTime'] - $now) / 86400);
+                    $price = $dayPrice * $day;
             }
         }
         $packageList = $packageModel->field('packageId, packageName, packageType, upload, download, price, 1 num')->where(['isDelete' => 0])->order('price asc')->select();

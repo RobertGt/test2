@@ -37,6 +37,10 @@
     .layui-layer-tabnow{
         border-top: 3px solid #0095ff;
     }
+    .onoffswitch-label, .onoffswitch-inner, .onoffswitch-inner:before, .onoffswitch-inner:after{
+        height: 30px;
+        line-height: 28px;
+    }
 </style>
 <body class="gray-bg">
     <div class="wrapper wrapper-content animated fadeInRight">
@@ -84,6 +88,18 @@
 										<button class="btn btn-sm btn-primary" id="search"> 搜索</button> </span>
 								</div>
 							</div>
+                            <div class="col-sm-1 m-b-xs" style="float: right">
+                                <div class="onoffswitch">
+                                    <input type="checkbox" class="onoffswitch-checkbox" name="realName" value="1" id="realName">
+                                    <label class="onoffswitch-label" for="realName">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-1 m-b-xs text-right font-bold" style="float: right;line-height: 30px;">
+                                是否需要实名
+                            </div>
 						</div>
                         <div class="table-responsive">
                             <table class="table table-striped">
@@ -155,6 +171,42 @@
             content: "packageInfo.html"
         });
     });
+    $(document).on('click', '#realName', function(){
+        var realName = 0;
+        if($('#realName').is(':checked')){
+            realName = 1;
+        }else{
+            realName = 0;
+        }
+        setTimeout(function(){
+            layer.load(0, {shade: [0.6,'#000000']});
+        },1);
+        $.ajax({
+            headers: {
+                token: $.cookie('login_token')
+            },
+            url: WEBHTTP + "admin/realName?realName=" + realName,
+            type: "GET",
+            dataType: "json",
+            success: function(response) {
+                if (response.error == 0) {
+                    layer.closeAll();
+                } else if(response.error == 401){
+                    toastr.error(response.reason);
+                    setTimeout(function(){
+                        $.cookie('login_token', '', {path: '/', expires: -1});
+                        $.cookie('login_account', '', {path: '/', expires: -1});
+                        parent.parent.location.href = "../../index.html"
+                    },500);
+                }else {
+                    toastr.error(response.reason);
+                    setTimeout(function(){
+                        parent.layer.close(index); //执行关闭
+                    },2000);
+                }
+            }
+        });
+    })
     $(document).on("click",".operation .btn-info",function() {
         userId = $(this).attr("data-id");
         layer.tab({

@@ -1,4 +1,4 @@
-var WEBHTTP = "http://192.168.31.247:83/";
+var WEBHTTP = "http://api.ublog.top/";
 (function(){
 	$.FormObject = function (title,table,ajaxUrl,object,option){
 		//编辑表名
@@ -15,6 +15,13 @@ var WEBHTTP = "http://192.168.31.247:83/";
 			getDatas(pageNum);
 		}
         var lists =  function(data, response){
+			if(typeof response.result.realname != "undefined"){
+				if(response.result.realname == 1){
+                    $("#realName").attr('checked', true);
+				}else{
+                    $("#realName").attr('checked', false);
+				}
+			}
             setTable(response.result.row);
             setPage(pageNum,pageSize,response.result.total);
         }

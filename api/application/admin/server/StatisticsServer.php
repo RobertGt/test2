@@ -13,6 +13,7 @@ use app\admin\model\ApplicationModel;
 use app\admin\model\DownloadModel;
 use app\admin\model\RenewalModel;
 use app\admin\model\UserModel;
+use think\cache\driver\Redis;
 
 class StatisticsServer
 {
@@ -22,7 +23,14 @@ class StatisticsServer
         $user = (new UserModel())->field("count(*) total, sum(createTime >= {$time}) day")->find()->toArray();
         $response['dayUser'] = (int)$user['day'];
         $response['totalUser'] = (int)$user['total'];
-        $response['online'] = 0;
+        $redis = new Redis();
+        $redis->handler()->select(1);
+        $keyWithUserPrefix = $redis->handler()->keys('token_*');
+        $online = 0;
+        foreach ($keyWithUserPrefix as $val){
+            $online += 1;
+        }
+        $response['online'] = $online;
         $response['upload'] = (new ApplicationModel())->count();
         $response['download'] =  (new DownloadModel())->count();
         $price = (new RenewalModel())->where(['state' => 1])->sum('price');
