@@ -412,7 +412,7 @@ function apkParseInfo($apk) {
     return $apkinfo;
 }
 
-function qrCode($url, $logo = '', $platform)
+function qrCode($url, $logo = '', $platform = '')
 {
     import('kairos.phpqrcode.qrlib');
     $root = ROOT_PATH . 'public';
