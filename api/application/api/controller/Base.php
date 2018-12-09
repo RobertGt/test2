@@ -48,9 +48,9 @@ class Base
         if($this->userInfo['state'] == 1){
             ajax_info(403, '你的账号已经被禁用');
         }
-        //$redis = new Redis();
-        //$redis->handler()->select(1);
-        //$redis->handler()->set('token_' . $token, 1, 5 * 60);
+        $redis = new Redis();
+        $redis->handler()->select(1);
+        $redis->handler()->set('token_' . $token, 1, 5 * 60);
         return true;
     }
 }
