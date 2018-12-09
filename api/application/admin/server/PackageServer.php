@@ -94,16 +94,16 @@ class PackageServer
             if($param['message'] == 1){
                 $templet = (new TempletModel())->where(['templetType' => 2, 'state' => 0])->find();
                 if($templet){
-                    $userId = (new UserModel())->where(['state' => 0])->field('uid')->select();
+                    $users = (new UserModel())->where(['state' => 0])->field('uid')->select();
                     $message = [];
-                    foreach ($userId as $k => $v){
+                    foreach ($users as $k => $v){
                         $c['uid'] = $v['uid'];
                         $c['title'] = $templet['title'];
                         $c['type'] = 2;
-                        $c['message'] = str_replace("{package}", $create['packageName'], $templet['message']);
+                        $c['message'] = str_replace("{package}", $param['packageName'], $templet['message']);
                         $message[] = $c;
                     }
-                    if($message)(new UserMessageModel())->saveAll($create);
+                    if($message)(new UserMessageModel())->saveAll($message);
                 }
             }
         }catch (Exception $e){
