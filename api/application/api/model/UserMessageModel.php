@@ -14,7 +14,7 @@ use think\Model;
 class UserMessageModel extends Model
 {
     protected $table = 'bas_user_message';
-    protected $pk = 'recId';
+    protected $pk = 'templetId';
     protected $autoWriteTimestamp = true;
     protected $createTime = 'createTime';
     protected $updateTime = '';

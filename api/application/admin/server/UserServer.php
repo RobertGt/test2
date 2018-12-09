@@ -9,8 +9,10 @@
 namespace app\admin\server;
 
 
+use app\admin\model\TempletModel;
 use app\admin\model\UserModel;
 use app\api\model\UserDevicesModel;
+use app\api\model\UserMessageModel;
 use think\Cache;
 use think\Exception;
 use think\Log;
@@ -81,6 +83,16 @@ class UserServer
         try{
             $where['uid'] = $uid;
             $userModel->save(['realname' => $realname], $where);
+            if($realname == 1){
+                $templet = (new TempletModel())->where(['templetType' => 0, 'state' => 0])->find();
+                if($templet){
+                    $create['uid'] = $uid;
+                    $create['title'] = $templet['title'];
+                    $create['type'] = 0;
+                    $create['message'] = $templet['message'];
+                    (new UserMessageModel())->create($create);
+                }
+            }
         }catch (Exception $e){
             Log::error("userRealnameUpdate error:" . $e->getMessage());
             return false;
