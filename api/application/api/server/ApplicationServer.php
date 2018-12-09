@@ -208,7 +208,11 @@ class ApplicationServer
 
     public function appDownUrl($param = [])
     {
-        $where['appId'] = $param['appId'];
+        if(authcode($param['appId'])){
+            $where['appId'] = authcode($param['appId']);
+        }else{
+            $where['sortUrl'] = $param['appId'];
+        }
         $where['state'] = 0;
         $appInfo = (new ApplicationModel())
             ->field('appId, uid')

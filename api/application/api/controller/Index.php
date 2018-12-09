@@ -33,7 +33,7 @@ class Index
     public function appDownUrl(Request $request)
     {
         $param = [
-            'appId'    => authcode($request->param('appId','')),
+            'appId'    => $request->param('appId',''),
             'lat'      => $request->param('lat',''),
             'lng'      => $request->param('lng',''),
             'platform' => $request->param('platform',''),
