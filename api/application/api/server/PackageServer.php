@@ -61,9 +61,9 @@ class PackageServer
         return $response;
     }
 
-    public function buyPackage($packageInfo = [], $param)
+    public function buyPackage($packageInfo = [], $param, $orderNum)
     {
-        $create['orderNum'] = date('YmdHis') . round(1000, 9999);
+        $create['orderNum'] = $orderNum;
         $create['uid'] = $param['uid'];
         $create['oldPackage'] = $param['userPackage'];
         $create['packageId'] = $packageInfo['packageId'];
@@ -85,5 +85,15 @@ class PackageServer
             return false;
         }
         return $result;
+    }
+
+    public function checkOrderState($orderNum, $uid)
+    {
+        $state = (new UserRenewalsModel())->where(['uid' => $uid, 'orderNum' => $orderNum, 'state' => 1])->count();
+        if($state){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

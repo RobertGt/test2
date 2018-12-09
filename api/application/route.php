@@ -101,6 +101,7 @@ Route::get([
 
     'v1/userInfo'          => 'api/Login/userInfo',
     'v1/buyPackage'        => 'api/Package/buyPackage',
+    'v1/checkOrderState'   => 'api/Package/checkOrderState',
 
 
     //'g/:id'                => 'api/Index/imageUpload',

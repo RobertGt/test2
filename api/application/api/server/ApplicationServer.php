@@ -187,7 +187,7 @@ class ApplicationServer
 
         if($appInfo){
             $appInfo = $appInfo->getData();
-            $version = (new ApplicationVersionModel())->where(['appId' => $appInfo['appId']])->field('apkId, version, createTime, remark, state')->order('version desc')->find();
+            $version = (new ApplicationVersionModel())->where(['appId' => $appInfo['appId']])->field('apkId, version, createTime, remark, state')->order('version desc')->find()->getData();
             $appInfo['appId'] = authcode($appInfo['appId'], 'ENCODE');
             $appInfo['appIcon'] = $appInfo['appIcon'] ? urlCompletion($appInfo['appIcon']) : '';
             $appInfo['sortUrl'] = $appInfo['sortUrl'] ? $appInfo['sortUrl'] : '';

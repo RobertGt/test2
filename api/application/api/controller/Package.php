@@ -43,7 +43,8 @@ class Package extends Base
         if($packageInfo['num'] > $param['num']){
             ajax_info(1, '续费数量不得少于' . $packageInfo['num']);
         }
-        $resp = (new PackageServer())->buyPackage($packageInfo, $param);
+        $orderNum = date('YmdHis') . round(1000, 9999);
+        $resp = (new PackageServer())->buyPackage($packageInfo, $param, $orderNum);
         if($resp){
             if($param['payType'] == 1){
                 if(isset($resp['wechat']['code_url'])){
@@ -52,9 +53,25 @@ class Package extends Base
                     ajax_info(1, $resp['wechat']);
                 }
             }
-            ajax_info(0, 'Success', ['qrCode' => urlCompletion($qrCode)]);
+            ajax_info(0, 'Success', ['qrCode' => urlCompletion($qrCode), 'orderNum' => $orderNum]);
         }else{
             ajax_info(1, '订单生成失败');
+        }
+    }
+
+    public function checkOrderState(Request $request)
+    {
+        $param = [
+            'orderNum'     => $request->param('orderNum', ''),
+        ];
+        if(!$param['orderNum']){
+            ajax_info(1, 'error');
+        }
+        $resp = (new PackageServer())->checkOrderState($param['orderNum'], $this->userInfo['uid']);
+        if($resp){
+            ajax_info(0, 'success');
+        }else{
+            ajax_info(1, 'error');
         }
     }
 }
