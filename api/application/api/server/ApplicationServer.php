@@ -199,6 +199,7 @@ class ApplicationServer
             if($appInfo['android'])$appInfo['platform'][] = 'android';
             if($appInfo['ios'])$appInfo['platform'][] = 'ios';
             $appInfo['version'] = $version['version'];
+            $appInfo['createTime'] = date('Y-m-d H:i:s', $version['createTime']);
         }else{
             $appInfo = [];
         }
@@ -213,11 +214,13 @@ class ApplicationServer
             ->field('appId, uid')
             ->where($where)->find();
         if(!$appInfo){
+            $this->errMsg = '下载应用已被禁用或者不存在';
             return false;
         }
         $userInfo = (new UserModel())
             ->where(['uid' => $appInfo['uid']])->field('download, surplus')->find();
         if(!$userInfo){
+            $this->errMsg = '下载应用已被禁用或者不存在';
             return false;
         }
         $w['appId'] = $param['appId'];
@@ -226,6 +229,7 @@ class ApplicationServer
             ->where($w)
             ->count();
         if($surplus >= $userInfo['download'] + $userInfo['surplus']){
+            $this->errMsg = '下载点数不足';
             return false;
         }
         $where['platform'] = $param['platform'];
@@ -233,6 +237,7 @@ class ApplicationServer
 
         $version = (new ApplicationVersionModel())->where($where)->field('apkId, version, appUrl')->order('version desc')->find();
         if(!$version){
+            $this->errMsg = '下载平台不存在';
             return false;
         }
         $create['appId'] = $param['appId'];
@@ -240,14 +245,19 @@ class ApplicationServer
         $create['version'] = $version['version'];
         $create['lng'] = $param['lng'];
         $create['lat'] = $param['lat'];
-        $url = sprintf(Config::get('baidu_map_url'), $create['lat'] . ',' . $create['lng']);
-        $http = new HttpClient();
-        $rep = $http->Request($url);
-        $rep = json_decode($rep, true);
-        if($rep && $rep['status'] == 0 && isset($rep['result']['location']['lat']) && isset($rep['result']['location']['lng']) && isset($rep['result']['addressComponent'])){
-            $create['prov'] = $rep['result']['addressComponent']['province'] ? $rep['result']['addressComponent']['province'] : '';
-            $create['city'] = $rep['result']['addressComponent']['city'] ? $rep['result']['addressComponent']['city'] : '';
-            $create['region'] = $rep['result']['addressComponent']['district'] ? $rep['result']['addressComponent']['district'] : '';
+        $create['prov'] = '未知';
+        $create['city'] = '未知';
+        $create['region'] = '未知';
+        if($create['lat'] && $create['lng']){
+            $url = sprintf(Config::get('baidu_map_url'), $create['lat'] . ',' . $create['lng']);
+            $http = new HttpClient();
+            $rep = $http->Request($url);
+            $rep = json_decode($rep, true);
+            if($rep && $rep['status'] == 0 && isset($rep['result']['location']['lat']) && isset($rep['result']['location']['lng']) && isset($rep['result']['addressComponent'])){
+                $create['prov'] = $rep['result']['addressComponent']['province'] ? $rep['result']['addressComponent']['province'] : '';
+                $create['city'] = $rep['result']['addressComponent']['city'] ? $rep['result']['addressComponent']['city'] : '';
+                $create['region'] = $rep['result']['addressComponent']['district'] ? $rep['result']['addressComponent']['district'] : '';
+            }
         }
         try{
             (new ApplicationDownModel())->create($create);

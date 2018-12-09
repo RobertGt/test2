@@ -42,11 +42,12 @@ class Index
         if(!$validate->scene('checkId')->check($param)){
             ajax_info(1 , $validate->getError());
         }
-        $response = (new ApplicationServer())->appDownUrl($param);
+        $appModel = new ApplicationServer();
+        $response = $appModel->appDownUrl($param);
         if($response){
             ajax_info(0,'success', $response);
         }else{
-            ajax_info(1,'获取Url失败');
+            ajax_info(1, $appModel->errMsg);
         }
     }
 

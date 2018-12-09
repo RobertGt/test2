@@ -25,7 +25,8 @@ class Package extends Base
         $param = [
             'packageId'    => $request->param('packageId', 0, 'intval'),
             'payType'      => $request->param('payType', 0),
-            'packageId'    => $this->userInfo['packageId'],
+            'num'          => $request->param('num', 0),
+            'userPackage'  => $this->userInfo['packageId'],
             'uid'          => $this->userInfo['uid'],
         ];
         $packageList = (new PackageServer())->packageList($this->userInfo);
@@ -39,10 +40,17 @@ class Package extends Base
         if(!$packageInfo){
             ajax_info(1, '无法续费此套餐');
         }
+        if($packageInfo['num'] > $param['num']){
+            ajax_info(1, '续费数量不得少于' . $packageInfo['num']);
+        }
         $resp = (new PackageServer())->buyPackage($packageInfo, $param);
         if($resp){
             if($param['payType'] == 1){
-                $qrCode = qrCode($resp['wechat']['code_url']);
+                if(isset($resp['wechat']['code_url'])){
+                    $qrCode = qrCode($resp['wechat']['code_url']);
+                }else{
+                    ajax_info(1, $resp['wechat']);
+                }
             }
             ajax_info(0, 'Success', ['qrCode' => urlCompletion($qrCode)]);
         }else{

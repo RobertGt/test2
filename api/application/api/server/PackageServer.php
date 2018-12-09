@@ -36,22 +36,22 @@ class PackageServer
                 $price = $dayPrice * $day;
             }
         }
-        $packageList = $packageModel->field('packageId, packageName, packageType, upload, download, price, price payPrice, 1 num')->where(['isDelete' => 0])->order('price asc')->select();
+        $packageList = $packageModel->field('packageId, packageName, packageType, upload, download, price, 1 num')->where(['isDelete' => 0])->order('price asc')->select();
         $packages = [];
         foreach ($packageList as $value){
             $info = $value->getData();
-            $info['price'] = sprintf("%.2f", $info['price'] / 100);
             $info['package'] = $info['packageType'] == 1 ? "付费下载点数" . $info['download'] . '次':
                 "最大可上传".  $info['upload'] ."个应用,  每天可下载".  $info['download'] ."次";
+            $info['deduction'] = $price;
             if($info['packageType'] == 1){
-                $info['payPrice'] = sprintf("%.2f", $info['payPrice'] / 100);
+                $info['price'] = sprintf("%.2f", $info['price'] / 100);
                 $packages[] = $info;
             }elseif ($info['packageId'] == $userInfo['packageId']){
-                $info['payPrice'] = sprintf("%.2f", $info['payPrice'] / 100);
+                $info['price'] = sprintf("%.2f", $info['price'] / 100);
                 $packages[] = $info;
-            }elseif ($info['payPrice'] >= $userPrice){
-                $info['num'] = ceil($day / 31);
-                $info['payPrice'] = sprintf("%.2f", ($info['payPrice'] * $info['num'] - $price) / 100);
+            }elseif ($info['price'] >= $userPrice){
+                $info['num'] = ceil($day / 31) ? ceil($day / 31) : 1;
+                $info['price'] = sprintf("%.2f", $info['price'] / 100);
                 $packages[] = $info;
             }else{
                 continue;
@@ -65,13 +65,13 @@ class PackageServer
     {
         $create['orderNum'] = date('YmdHis') . round(1000, 9999);
         $create['uid'] = $param['uid'];
-        $create['oldPackage'] = $param['packageId'];
+        $create['oldPackage'] = $param['userPackage'];
         $create['packageId'] = $packageInfo['packageId'];
-        $create['original'] = $packageInfo['price'] * 100;
-        $create['price']    = $packageInfo['payPrice'] * 100;
-        $create['deductible'] =  $create['price'] -  $create['original'];
+        $create['original'] = $packageInfo['price'] * 100 * $param['num'];
+        $create['price']    = $create['original'] - $packageInfo['deduction'];
+        $create['deductible'] =  $packageInfo['deduction'];
         $create['package'] = serialize($packageInfo);
-        $create['number'] = $packageInfo['num'];
+        $create['number'] = $param['num'];
         $create['payType'] = $param['payType'];
         $renewalsModel = new UserRenewalsModel();
         $payMent = new Payment();
