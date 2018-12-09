@@ -42,7 +42,7 @@ class PackageServer
             $info = $value->getData();
             $info['package'] = $info['packageType'] == 1 ? "付费下载点数" . $info['download'] . '次':
                 "最大可上传".  $info['upload'] ."个应用,  每天可下载".  $info['download'] ."次";
-            $info['deduction'] = $price;
+            $info['deduction'] = 0;
             if($info['packageType'] == 1){
                 $info['price'] = sprintf("%.2f", $info['price'] / 100);
                 $packages[] = $info;
@@ -52,6 +52,7 @@ class PackageServer
             }elseif ($info['price'] >= $userPrice){
                 $info['num'] = ceil($day / 31) ? ceil($day / 31) : 1;
                 $info['price'] = sprintf("%.2f", $info['price'] / 100);
+                $info['deduction'] = $price;
                 $packages[] = $info;
             }else{
                 continue;
