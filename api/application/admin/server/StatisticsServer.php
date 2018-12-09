@@ -26,10 +26,13 @@ class StatisticsServer
         $redis = new Redis();
         $redis->handler()->select(1);
         $keyWithUserPrefix = $redis->handler()->keys('token_*');
-        $online = 0;
+        $user = [];
         foreach ($keyWithUserPrefix as $val){
-            $online += 1;
+            $uid = $redis->handler()->get($val);
+            if(!$uid)continue;
+            $user[$uid] = 1;
         }
+        $online = count($user);
         $response['online'] = $online;
         $response['upload'] = (new ApplicationModel())->count();
         $response['download'] =  (new DownloadModel())->count();

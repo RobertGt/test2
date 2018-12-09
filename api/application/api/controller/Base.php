@@ -34,12 +34,18 @@ class Base
         if(!$token){
             ajax_info(401, 'failure of authentication');
         }
+
         $field = "uid, email, state, realname, upload, download, packageId, expireTime";
         $userInfo = (new UserModel())->where(['token' => $token])->field($field)->find();
 
         if (!$userInfo){
             ajax_info(401, 'failure of authentication');
         }
+
+        $redis = new Redis();
+        $redis->handler()->select(1);
+        $redis->handler()->set('token_' . $token, $userInfo['uid'], 5 * 60);
+
         if($userInfo['expireTime'] < time()){
             $userInfo['upload'] = Config::get('default.upload');
             $userInfo['download'] = Config::get('default.download');
@@ -48,9 +54,6 @@ class Base
         if($this->userInfo['state'] == 1){
             ajax_info(403, '你的账号已经被禁用');
         }
-        $redis = new Redis();
-        $redis->handler()->select(1);
-        $redis->handler()->set('token_' . $token, 1, 5 * 60);
         return true;
     }
 }
