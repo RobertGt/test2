@@ -108,7 +108,7 @@ class StatisticsServer
 
     public function buyTop()
     {
-        $sql = "select t.total,p.packageName from (SELECT count(*) total,packageId FROM bas_user_renewals where state = 1 GROUP BY packageId ORDER BY total desc limit 10) t join bas_package p on t.packageId = p.packageId";
+        $sql = "select t.total,p.packageName from (SELECT count(*) total,packageId FROM bas_user_renewals where state = 1 GROUP BY packageId ORDER BY total desc limit 10) t join bas_package p on t.packageId = p.packageId ORDER BY t.total desc";
         $top10 = (new RenewalModel())->query($sql);
         $response = [];
         foreach ($top10 as $value){
@@ -119,7 +119,7 @@ class StatisticsServer
 
     public function downTop()
     {
-        $sql = "select t.total,a.appName from (SELECT count(*) total,appId FROM bas_application_down GROUP BY appId ORDER BY total desc limit 10) t join bas_application a on t.appId = a.appId";
+        $sql = "select t.total,a.appName from (SELECT count(*) total,appId FROM bas_application_down GROUP BY appId ORDER BY total desc limit 10) t join bas_application a on t.appId = a.appId ORDER BY t.total desc";
         $top10 = (new DownloadModel())->query($sql);
         $response = [];
         foreach ($top10 as $value){
