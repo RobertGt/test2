@@ -164,6 +164,7 @@ class ApplicationServer
                 $value = $value->getData();
                 if($k == 0)$appInfo['version'] = $value['version'];
                 $value['apkId'] = authcode($value['apkId'], 'ENCODE');
+                $value['appId'] = $appInfo['appId'];
                 $value['remark'] = $value['remark'] ? $value['remark'] : '';
                 $value['createTime'] = date('Y-m-d H:i:s', $value['createTime']);
                 $appInfo['versionList'][] = $value;
