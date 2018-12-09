@@ -11,7 +11,9 @@ namespace app\admin\server;
 
 use app\admin\model\ApplicationModel;
 use app\admin\model\DownloadModel;
+use app\admin\model\TempletModel;
 use app\admin\model\VersionModel;
+use app\api\model\UserMessageModel;
 use think\Exception;
 use think\Log;
 
@@ -91,6 +93,19 @@ class ApplicationServer
         try{
             $where['appid'] = $appId;
             $appModel->save(['state' => $state], $where);
+            if($state == 1){
+                $templet = (new TempletModel())->where(['templetType' => 1, 'state' => 0])->find();
+                if($templet){
+                    $info = $appModel->where($where)->field('appName, uid')->find();
+                    if($info){
+                        $create['uid'] = $info['uid'];
+                        $create['title'] = $templet['title'];
+                        $create['type'] = 1;
+                        $create['message'] = str_replace("{app}", $info['$info'], $templet['message']);
+                        (new UserMessageModel())->create($create);
+                    }
+                }
+            }
         }catch (Exception $e){
             Log::error("appStateUpdate error:" . $e->getMessage());
             return false;

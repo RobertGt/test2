@@ -11,6 +11,9 @@ namespace app\admin\server;
 
 use app\admin\model\PackageModel;
 use app\admin\model\PayModel;
+use app\admin\model\TempletModel;
+use app\admin\model\UserModel;
+use app\api\model\UserMessageModel;
 use think\Exception;
 use think\Log;
 
@@ -88,6 +91,21 @@ class PackageServer
         $create['price'] = intval($param['price'] * 100);
         try{
             (new PackageModel())->create($create);
+            if($param['message'] == 1){
+                $templet = (new TempletModel())->where(['templetType' => 2, 'state' => 0])->find();
+                if($templet){
+                    $userId = (new UserModel())->where(['state' => 0])->field('uid')->select();
+                    $message = [];
+                    foreach ($userId as $k => $v){
+                        $c['uid'] = $v['uid'];
+                        $c['title'] = $templet['title'];
+                        $c['type'] = 2;
+                        $c['message'] = str_replace("{package}", $create['packageName'], $templet['message']);
+                        $message[] = $c;
+                    }
+                    if($message)(new UserMessageModel())->saveAll($create);
+                }
+            }
         }catch (Exception $e){
             Log::error("packageInsert error:" . $e->getMessage());
             return false;

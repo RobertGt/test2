@@ -74,6 +74,7 @@ class Package extends Base
             'packageType' => $request->param('packageType','') ? 1 : 0,
             'upload'      => $request->param('upload', 0, 'intval'),
             'download'    => $request->param('download', 0, 'intval'),
+            'message'     => $request->param('message') ? 1 : 0,
             'price'       => $request->param('price', '')
         ];
 
