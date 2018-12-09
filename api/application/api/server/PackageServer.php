@@ -30,10 +30,10 @@ class PackageServer
         if($packageInfo){
             $response['packageName'] = $packageInfo['packageName'];
             if($userInfo['expireTime'] && $userInfo['expireTime'] > $now){
-                    $dayPrice = round($packageInfo['price'] / $packageInfo['day'], 2);
-                    $userPrice = $packageInfo['price'];
-                    $day = floor(($userInfo['expireTime'] - $now) / 86400);
-                    $price = $dayPrice * $day;
+                $dayPrice = round($packageInfo['price'] / $packageInfo['day'], 2);
+                $userPrice = $packageInfo['price'];
+                $day = floor(($userInfo['expireTime'] - $now) / 86400);
+                $price = $dayPrice * $day;
             }
         }
         $packageList = $packageModel->field('packageId, packageName, packageType, upload, download, price, 1 num')->where(['isDelete' => 0])->order('price asc')->select();
@@ -52,7 +52,7 @@ class PackageServer
             }elseif ($info['price'] >= $userPrice){
                 $info['num'] = ceil($day / 31) ? ceil($day / 31) : 1;
                 $info['price'] = sprintf("%.2f", $info['price'] / 100);
-                $info['deduction'] = $price;
+                $info['deduction'] = sprintf("%.2f", $price / 100);
                 $packages[] = $info;
             }else{
                 continue;
@@ -69,7 +69,7 @@ class PackageServer
         $create['oldPackage'] = $param['userPackage'];
         $create['packageId'] = $packageInfo['packageId'];
         $create['original'] = $packageInfo['price'] * 100 * $param['num'];
-        $create['price']    = $create['original'] - $packageInfo['deduction'];
+        $create['price']    = $create['original'] - $packageInfo['deduction'] * 100;
         $create['deductible'] =  $packageInfo['deduction'];
         $create['package'] = serialize($packageInfo);
         $create['number'] = $param['num'];
