@@ -224,7 +224,7 @@ class ApplicationServer
             return false;
         }
         if($userInfo['expireTime'] < time()){
-            $userInfo = Config::get('default');
+            $userInfo['download'] = Config::get('default.download');
         }
         $w['appId'] = $param['appId'];
         $w['createTime'] = ['egt', strtotime(date('Y-m-d'))];

@@ -178,10 +178,11 @@ class UserServer
                                                 ->count();
         if($userInfo['expireTime'] < time()){
             $userInfo['upload'] = Config::get('default.upload');
-            $userInfo['surplus'] = Config::get('default.surplus');
+            $userInfo['download'] = Config::get('default.download');
         }
         $userInfo['upload'] = $userInfo['upload'] - $upload;
-        $userInfo['surplus'] = $userInfo['surplus'] - $surplus;
+        $userInfo['download'] = $userInfo['download'] - $surplus >= 0 ? $userInfo['download'] - $surplus : 0;
+        $userInfo['surplus'] = $userInfo['surplus'];
         $userInfo['mobile'] = $userInfo['mobile'] ? $userInfo['mobile'] : '';
         $userInfo['wechat'] = $userInfo['wechat'] ? $userInfo['wechat'] : '';
         $userInfo['imNumber'] = $userInfo['imNumber'] ? $userInfo['imNumber'] : '';

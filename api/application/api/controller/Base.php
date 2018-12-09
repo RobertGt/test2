@@ -34,7 +34,7 @@ class Base
         if(!$token){
             ajax_info(401, 'failure of authentication');
         }
-        $field = "uid, email, state, realname, upload, packageId, expireTime";
+        $field = "uid, email, state, realname, upload, download, packageId, expireTime";
         $userInfo = (new UserModel())->where(['token' => $token])->field($field)->find();
 
         if (!$userInfo){
@@ -42,7 +42,7 @@ class Base
         }
         if($userInfo['expireTime'] < time()){
             $userInfo['upload'] = Config::get('default.upload');
-            $userInfo['surplus'] = Config::get('default.surplus');
+            $userInfo['download'] = Config::get('default.download');
         }
         $this->userInfo = $userInfo->getData();
         if($this->userInfo['state'] == 1){
