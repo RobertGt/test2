@@ -70,6 +70,7 @@ class PackageServer
         $create['packageId'] = $packageInfo['packageId'];
         $create['original'] = $packageInfo['price'] * 100 * $param['num'];
         $create['price']    = $create['original'] - $packageInfo['deduction'] * 100;
+        if($create['price'] <= 0)$create['price'] = 1;
         $create['deductible'] =  $packageInfo['deduction'];
         $create['package'] = serialize($packageInfo);
         $create['number'] = $param['num'];

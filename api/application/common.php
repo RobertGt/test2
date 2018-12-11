@@ -422,7 +422,7 @@ function qrCode($url, $logo = '', $platform = '')
     }
     $fileName = md5($url) . '.png';
     $filePath = $root . $path . $fileName;
-    
+
     if(!file_exists($filePath)){
         $object = new \Qrcode();
         $errorCorrectionLevel = 12;//容错级别
