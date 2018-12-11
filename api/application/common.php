@@ -416,17 +416,20 @@ function qrCode($url, $logo = '', $platform = '')
 {
     import('kairos.phpqrcode.qrlib');
     $root = ROOT_PATH . 'public';
-    $path = DS . 'uploads/code/' . date('Y-m-d') . "/";
+    $path = DS . 'uploads/code/';
     if(!file_exists($root . $path)){
         mkdir($root . $path, 0700,true);
     }
     $fileName = md5($url) . '.png';
     $filePath = $root . $path . $fileName;
-    $object = new \Qrcode();
-    $errorCorrectionLevel = 12;//容错级别
-    $matrixPointSize = 13;//生成图片大小
-    ob_end_clean();//清空缓冲区
-    $object->png($url, $filePath, $errorCorrectionLevel, $matrixPointSize, 2);
+    
+    if(!file_exists($filePath)){
+        $object = new \Qrcode();
+        $errorCorrectionLevel = 12;//容错级别
+        $matrixPointSize = 13;//生成图片大小
+        ob_end_clean();//清空缓冲区
+        $object->png($url, $filePath, $errorCorrectionLevel, $matrixPointSize, 2);
+    }
 
     if ($logo && file_exists($root . $logo) && $platform != 'ios') {
         $QR = imagecreatefromstring(file_get_contents($filePath));  //目标图象连接资源。
@@ -446,7 +449,6 @@ function qrCode($url, $logo = '', $platform = '')
         imagedestroy($QR);
         imagedestroy($logo);
     }
-
 
     return $path . $fileName;
 }

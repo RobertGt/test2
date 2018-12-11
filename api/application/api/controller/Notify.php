@@ -64,13 +64,13 @@ class Notify
             $userRecCharge->startTrans();
             try{
                 $q1 = $userRecCharge->save($save , $where);
-                $u['packageId'] = $info['packageId'];
-                $time = 31 * 60 * 60 * 24;
-                $u['expireTime'] = $userInfo['expireTime'] > time() ?
-                    $userInfo['expireTime'] + $info['number']  * $time : time() + $info['number']  * $time;
                 if($package['packageType'] == 1){
                     $u['surplus'] = ['inc', $package['download']];
                 }else{
+                    $time = 31 * 60 * 60 * 24;
+                    $u['expireTime'] = $userInfo['expireTime'] > time() ?
+                        $userInfo['expireTime'] + $info['number']  * $time : time() + $info['number']  * $time;
+                    $u['packageId'] = $info['packageId'];
                     $u['upload'] = $package['upload'];
                     $u['download'] = $package['download'];
                 }
