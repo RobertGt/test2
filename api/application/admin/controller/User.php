@@ -110,6 +110,29 @@ class User extends Base
         }
     }
 
+    public function userUpdate(Request $request)
+    {
+        $param = [
+            'id'          => $request->param('id',0, 'intval'),
+            'upload'      => $request->param('upload',0, 'intval'),
+            'download'    => $request->param('download',0, 'intval'),
+            'surplus'     => $request->param('surplus',0, 'intval')
+        ];
+
+        $validate = new UserValidate();
+        if(!$validate->scene('checkId')->check($param)){
+            ajax_info(1 , $validate->getError());
+        }
+
+        $response = (new UserServer())->userUpdate($param);
+
+        if($response){
+            ajax_info(0,'success');
+        }else{
+            ajax_info(1,'操作失败');
+        }
+    }
+
     public function realName(Request $request)
     {
         $realName  = $request->param('realName') ? 1 : 0;

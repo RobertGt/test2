@@ -113,7 +113,17 @@
     width: 90%;
     height: auto;
   }
-
+  .test{
+    background-color: #FFF;
+    background-image: none;
+    border: 1px solid #e5e6e7;
+    border-radius: 1px;
+    color: inherit;
+    padding: 6px 12px;
+    -webkit-transition: border-color .15s ease-in-out 0s,box-shadow .15s ease-in-out 0s;
+    transition: border-color .15s ease-in-out 0s,box-shadow .15s ease-in-out 0s;
+    font-size: 14px;
+  }
 </style>
 
 <body class="gray-bg">
@@ -139,6 +149,7 @@
     var state = 'admin/userStateUpdate';
     var realname = 'admin/userRealnameUpdate';
     var updatePass = 'admin/userPasswordUpdate';
+    var userupdate = 'admin/userUpdate';
     var index = parent.layer.getFrameIndex(window.name);
     $(".btn-outline").click(function() {
         parent.layer.close(index); //执行关闭
@@ -156,25 +167,25 @@
             dataType: "json",
             success: function(response) {
                 if (response.error == 0) {
-                    var html = "<div class=\"row show-grid col-sm-12\">" +
+                    var html = "<div class=\"row show-grid col-sm-12\" style='background-color: #ededed;'>" +
                         "<div class=\"col-sm-12\"><span class='font-bold badge-info p-xxs m-r'> 基本信息</span></div>" +
                         "<div class=\"col-sm-6\"><span class='font-bold m-r'> 微信：</span><span>" + response.result.wechat + "</span></div>" +
                         "<div class=\"col-sm-6\"><span class='font-bold m-r'> Q Q：</span><span>" + response.result.imNumber + "</span></div>" +
                         "<div class=\"col-sm-6\"><span class='font-bold m-r'> 公司：</span><span>" + response.result.company + "</span></div>" +
                         "<div class=\"col-sm-6\"><span class='font-bold m-r'> 职位：</span><span>" + response.result.job + "</span></div>" +
                         "</div>"
-                    html += "<div class=\"row show-grid col-sm-12\">" +
+                    html += "<div class=\"row show-grid col-sm-12\" style='background-color: #ededed;'>" +
                         "<div class=\"col-sm-12\"><span class='font-bold badge-info p-xxs m-r'> 账号信息</span></div>" +
                         "<div class=\"col-sm-6\"><span class='font-bold m-r'> 登录账号：</span><span>" + response.result.email + "</span></div>" +
                         "<div class=\"col-sm-6\"><span class='font-bold m-r'> 手机号码：</span><span>" + response.result.mobile + "</span></div>" +
                         "<div class=\"col-sm-6\"><span class='font-bold m-r'> 登录密码：</span><span><a href='javascript:;' class='reset' data-id='" + response.result.id + "'>重置密码</a></span></div>" +
                         "<div class=\"col-sm-6\"><span class='font-bold m-r'> 当前套餐：</span><span><a href='javascript:;' class='onclick' data-id='" + response.result.packageId + "'>" + response.result.packageName + "</a></span></div>" +
                         "<div class=\"col-sm-6\"><span class='font-bold m-r'> 套餐到期：</span><span>" + response.result.expireTime + "</span></div>" +
-                        "<div class=\"col-sm-6\"><span class='font-bold m-r'> 上传次数：</span><span>" + response.result.upload + " (次)</span></div>" +
-                        "<div class=\"col-sm-6\"><span class='font-bold m-r'> 每日下载：</span><span>" + response.result.download + " (次)</span></div>" +
-                        "<div class=\"col-sm-6\"><span class='font-bold m-r'> 剩余点数：</span><span>" + response.result.surplus + " (次)</span></div>" +
+                        "<div class=\"col-sm-6\"><span class='font-bold m-r'> 上传次数：</span><input class='test' value='"+ response.result.upload +"' name='upload'/>(次)</div>" +
+                        "<div class=\"col-sm-6\"><span class='font-bold m-r'> 每日下载：</span><input class='test' value='"+ response.result.download +"'  name='download'/>(次)</span></div>" +
+                        "<div class=\"col-sm-6\"><span class='font-bold m-r'> 剩余点数：</span><input class='test' value='"+ response.result.surplus +"'  name='surplus'/>(次)</span></div>" +
                         "</div>"
-                    html += "<div class=\"row show-grid col-sm-12\">" +
+                    html += "<div class=\"row show-grid col-sm-12\" style='background-color: #ededed;'>" +
                         "<div class=\"col-sm-12\"><span class='font-bold badge-info p-xxs m-r'> 实名信息</span>("+ response.result.realnameText +")</div>" +
                         "<div class=\"col-sm-4 text-center\"><a class=\"fancybox\" href="+ response.result.image1 +" title=\"身份证正面\"> "+
                         "<img src="+ response.result.image1 +" class=\"attachments\"></a></div>" +
@@ -192,7 +203,11 @@
                         b = 'btn-primary';
                     }
                     html += "<div class=\"col-sm-12 input-group text-center\" style='background-color: #fff!important;position: fixed;bottom: 0px;padding: 15px 0;'>" +
-                        "<button class=\"btn "+ b +" m-r\" data-id="+ response.result.id +">" +
+                        "<button class=\"btn btn-success m-r\" data-id="+ response.result.id +">" +
+                        "<i class=\"fa fa-edit\"></i>" +
+                        "<span class=\"bold\"> 保存</span>" +
+                        "</button>";
+                    html += "<button class=\"btn "+ b +" m-r\" data-id="+ response.result.id +">" +
                         "<i class=\"fa "+ fa +"\"></i>" +
                         "<span class=\"bold\"> "+ n +"</span>" +
                         "</button>";
@@ -270,13 +285,24 @@
             })
         })
     });
-    $(document).on("click",".btn-primary",function() {
+    $(document).on("click",".btn-danger",function() {
+        var id = $(this).attr("data-id");
+        layer.confirm("是否确定禁用用户?", {
+            btn: ["确定", "取消"]
+        }, function() {
+            postData = {id:id, state:1};
+            request(WEBHTTP + state, 'POST', postData, function(){
+                info();
+            })
+        })
+    });
+    $(document).on("click",".btn-success",function() {
         var id = $(this).attr("data-id");
         layer.confirm("是否确定启用用户?", {
             btn: ["确定", "取消"]
         }, function() {
-            postData = {id:id, state:0};
-            request(WEBHTTP + state, 'POST', postData, function(){
+            postData = {id:id, upload:$('input[name="upload"]').val(), download:$('input[name="download"]').val(), surplus:$('input[name="surplus"]').val()};
+            request(WEBHTTP + userupdate, 'POST', postData, function(){
                 info();
             })
         })

@@ -115,6 +115,22 @@ class UserServer
         return true;
     }
 
+    public function userUpdate($param = [])
+    {
+        $userModel = new UserModel();
+        try{
+            $where['uid'] = $param['id'];
+            $save['upload'] = $param['upload'];
+            $save['download'] = $param['download'];
+            $save['surplus'] = $param['surplus'];
+            $userModel->save($save, $where);
+        }catch (Exception $e){
+            Log::error("userUpdate error:" . $e->getMessage());
+            return false;
+        }
+        return true;
+    }
+
     public function userInfo($uid = 0)
     {
         $where['u.uid'] = $uid;

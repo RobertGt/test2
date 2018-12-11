@@ -70,6 +70,7 @@ Route::get([
 
     'admin/packageInfo'    => 'admin/Package/packageInfo',
     'admin/userInfo'       => 'admin/User/userInfo',
+    'admin/userUpdate'     => 'admin/User/userUpdate',
     'admin/appListByUser'  => 'admin/Application/appListByUser',
     'admin/appList'        => 'admin/Application/appList',
     'admin/appInfo'        => 'admin/Application/appInfo',
