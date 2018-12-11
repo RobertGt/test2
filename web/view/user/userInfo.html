@@ -298,7 +298,7 @@
     });
     $(document).on("click",".btn-success",function() {
         var id = $(this).attr("data-id");
-        layer.confirm("是否确定启用用户?", {
+        layer.confirm("确定保存?", {
             btn: ["确定", "取消"]
         }, function() {
             postData = {id:id, upload:$('input[name="upload"]').val(), download:$('input[name="download"]').val(), surplus:$('input[name="surplus"]').val()};
