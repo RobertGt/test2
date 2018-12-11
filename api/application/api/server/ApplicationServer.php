@@ -25,7 +25,7 @@ class ApplicationServer
     {
         $where['uid'] = $param['uid'];
         $package = $param['ext'] == 'apk' ? 'android' : 'ios';
-        $where['appkey'] = md5($param['uid'] . $param['package'] . $package);
+        $where['appkey'] = $param['package'];//md5($param['uid'] . $param['package'] . $package);
         $sort = getRandStr(5) . $where['uid'];
         $where[$package] = $param['package'];
         $applicationModel = new ApplicationModel();
@@ -36,6 +36,9 @@ class ApplicationServer
                 $create['appkey']  = $where['appkey'];
                 $create['uid']     = $param['uid'];
                 $create['appName'] = $param['appName'];
+                $create['type'] = $param['type'];
+                $create['group'] = $param['group'];
+                $create['company'] = $param['company'];
                 $create['appIcon'] = $param['icon'];
                 $create['appUrl']  = WEB_HTTP . '/g/' . $where['appkey'];
                 $create['sortUrl'] = $sort;

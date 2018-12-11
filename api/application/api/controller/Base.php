@@ -42,9 +42,9 @@ class Base
             ajax_info(401, '登录状态失效');
         }
 
-        $redis = new Redis();
-        $redis->handler()->select(1);
-        $redis->handler()->set('token_' . $token, $userInfo['uid'], 5 * 60);
+        //$redis = new Redis();
+        //$redis->handler()->select(1);
+        //$redis->handler()->set('token_' . $token, $userInfo['uid'], 5 * 60);
 
         if($userInfo['expireTime'] < time()){
             $userInfo['upload'] = Config::get('default.upload');

@@ -280,6 +280,19 @@ function ipaParseInfo($apk) {
                 (new \Chumper\Zipper\Zipper())->make($apk)
                     ->folder('Payload/' . $appFolder)
                     ->extractMatchingRegex($temp_save_path , "/Info\.plist$/i");
+                (new \Chumper\Zipper\Zipper())->make($apk)
+                    ->folder('Payload/' . $appFolder)
+                    ->extractMatchingRegex($temp_save_path ,"/embedded\.mobileprovision/i");
+                $apkinfo['company'] =  '-';
+                $apkinfo['group'] =  '-';
+                $apkinfo['type'] =  '内测版';
+                if(is_file($temp_save_path.'embedded.mobileprovision')){
+                    $embedded = $temp_save_path . 'embedded.mobileprovision';
+                    $c = file_get_contents($embedded);
+                    $apkinfo['company'] = preg_match('/<key>Name<\/key>([\s\S]+?)<string>([\s\S]+?)<\/string>/', $c, $m) ? mb_convert_encoding($m[2], ' UTF-8', 'HTML-ENTITIES') : '-';
+                    $apkinfo['type'] = preg_match('/^iOS Team Provisioning Profile:/', $apkinfo['company']) ? '内测版' : '企业版';
+                    $apkinfo['group'] = preg_match('/<key>TeamName<\/key>([\s\S]+?)<string>([\s\S]+?)<\/string>/', $c, $m) ? mb_convert_encoding($m[2], ' UTF-8', 'HTML-ENTITIES') : '-';
+                }
                 // 拼接plist文件完整路径
                 $fp = $temp_save_path . 'Info.plist';
                 // 获取plist文件内容
@@ -304,13 +317,14 @@ function ipaParseInfo($apk) {
                     $apkinfo['icon'] = $path . '/' . 'icon.png';
                     $parser::fix($ipaFilePath, $pngImgName);
                 }
+
                 // 包名
                 $apkinfo['package'] = $ipaInfo['CFBundleIdentifier'];
                 // 版本名
                 $apkinfo['version'] = $ipaInfo['CFBundleShortVersionString'];
-                $apkinfo['code'] = str_replace('.', '', $ipaInfo['CFBundleShortVersionString']);
+                $apkinfo['code'] = $ipaInfo['CFBundleVersion'];
                 // 别名
-                $apkinfo['appName'] = $ipaInfo['CFBundleName'];//!empty($ipaInfo['CFBundleDisplayName']) ? $ipaInfo['CFBundleDisplayName'] : $ipaInfo['CFBundleName'];
+                $apkinfo['appName'] = !empty($ipaInfo['CFBundleDisplayName']) ? $ipaInfo['CFBundleDisplayName'] : $ipaInfo['CFBundleName'];
             }
         }
     }
@@ -330,6 +344,10 @@ function apkParseInfo($apk) {
     if ( $return !== 0 ) {
         return false;
     }
+
+    $apkinfo['company'] =  '-';
+    $apkinfo['group'] =  '-';
+    $apkinfo['type'] =  '内测版';
 
     $output = implode(PHP_EOL, $output);
     //$apkinfo = new \stdClass;
