@@ -135,7 +135,7 @@ class ApplicationServer
     public function appInfo($appId = 0 , $uid = 0)
     {
         $where['appId'] = $appId;
-        $version = (new ApplicationVersionModel())->where($where)->field('apkId, version, createTime, remark, state')->order('version desc')->select();
+        $version = (new ApplicationVersionModel())->where($where)->field('apkId, version, createTime, remark, state, platform')->order('version desc')->select();
         $where['uid'] = $uid;
         $appInfo = (new ApplicationModel())->field('appId, appkey, appName, appUrl, sortUrl, appIcon, size, describe, android, ios,appImage, state, defaultPlatform')->where($where)->find();
 
