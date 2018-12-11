@@ -289,9 +289,9 @@ function ipaParseInfo($apk) {
                 if(is_file($temp_save_path.'embedded.mobileprovision')){
                     $embedded = $temp_save_path . 'embedded.mobileprovision';
                     $c = file_get_contents($embedded);
-                    $apkinfo['company'] = preg_match('/<key>Name<\/key>([\s\S]+?)<string>([\s\S]+?)<\/string>/', $c, $m) ? mb_convert_encoding($m[2], ' UTF-8', 'HTML-ENTITIES') : '-';
+                    $apkinfo['company'] = preg_match('/<key>Name<\/key>([\s\S]+?)<string>([\s\S]+?)<\/string>/', $c, $m) ? $m[2] : '-';
                     $apkinfo['type'] = preg_match('/^iOS Team Provisioning Profile:/', $apkinfo['company']) ? '内测版' : '企业版';
-                    $apkinfo['group'] = preg_match('/<key>TeamName<\/key>([\s\S]+?)<string>([\s\S]+?)<\/string>/', $c, $m) ? mb_convert_encoding($m[2], ' UTF-8', 'HTML-ENTITIES') : '-';
+                    $apkinfo['group'] = preg_match('/<key>TeamName<\/key>([\s\S]+?)<string>([\s\S]+?)<\/string>/', $c, $m) ? $m[2] : '-';
                 }
                 // 拼接plist文件完整路径
                 $fp = $temp_save_path . 'Info.plist';
