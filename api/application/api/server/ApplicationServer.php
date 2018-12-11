@@ -77,7 +77,7 @@ class ApplicationServer
         }
         $appList = (new ApplicationModel())->alias('a')->where($where)
                     ->join('bas_application_version v', 'v.appId = a.appId')
-                    ->field("a.appId, a.appName, a.appIcon, a.android, a.ios, a.size, max(v.version) version, a.defaultPlatform")
+                    ->field("a.appId, a.appName, a.appIcon, a.android, a.ios, a.size, max(v.version) version, max(v.code) code, a.defaultPlatform")
                     ->page($param['pageNum'], $param['pageSize'])
                     ->group('a.appId')
                     ->order("a.createTime desc")
@@ -89,7 +89,7 @@ class ApplicationServer
             $info['appName'] = $value['appName'] ? $value['appName'] : "";
             $info['appIcon'] = urlCompletion($value['appIcon']);
             $info['size'] = byteToMb($value['size']);
-            $info['version'] = $value['version'];
+            $info['version'] = $value['version'] . "（Build ". $value['code'] ."）";
             $info['platform'] = [];
             if($value['android'])$info['platform'][] = 'android';
             if($value['ios'])$info['platform'][] = 'ios';
@@ -138,9 +138,10 @@ class ApplicationServer
     public function appInfo($appId = 0 , $uid = 0)
     {
         $where['appId'] = $appId;
-        $version = (new ApplicationVersionModel())->where($where)->field('apkId, version, createTime, remark, state, platform')->order('version desc')->select();
+        $version = (new ApplicationVersionModel())->where($where)->field('apkId, version, code, createTime, remark, state, platform')->order('version desc')->select();
         $where['uid'] = $uid;
-        $appInfo = (new ApplicationModel())->field('appId, appkey, appName, appUrl, sortUrl, appIcon, size, describe, android, ios,appImage, state, defaultPlatform')->where($where)->find();
+        $appInfo = (new ApplicationModel())->field('appId, appkey, appName, appUrl, sortUrl, appIcon, size, describe, 
+                                                           android, ios,appImage, state, defaultPlatform, type, group, company')->where($where)->find();
 
 
         if($appInfo){
@@ -148,6 +149,9 @@ class ApplicationServer
             $appInfo['appId'] = authcode($appInfo['appId'], 'ENCODE');
             $appInfo['sortUrl'] = $appInfo['sortUrl'] ? $appInfo['sortUrl'] : '';
             $appInfo['describe'] = $appInfo['describe'] ? $appInfo['describe'] : '';
+            $appInfo['type'] = $appInfo['type'] ? $appInfo['type'] : '-';
+            $appInfo['group'] = $appInfo['group'] ? $appInfo['group'] : '-';
+            $appInfo['company'] = $appInfo['company'] ? $appInfo['company'] : '-';
             $appInfo['size'] = byteToMb($appInfo['size']);
             $appInfo['baseUrl'] = WEB_HTTP . '/';
             $appInfo['qrCode'] = urlCompletion(qrCode($appInfo['baseUrl'] . $appInfo['sortUrl'], $appInfo['appIcon'], $appInfo['defaultPlatform']));
@@ -165,7 +169,8 @@ class ApplicationServer
             $appInfo['versionList'] = [];
             foreach ($version as $k => $value){
                 $value = $value->getData();
-                if($k == 0)$appInfo['version'] = $value['version'];
+                if($k == 0)$appInfo['version'] = $value['version'] . "（Build ". $value['code'] ."）";
+                $value['version'] = $value['version'] . "（Build ". $value['code'] ."）";
                 $value['apkId'] = authcode($value['apkId'], 'ENCODE');
                 $value['appId'] = $appInfo['appId'];
                 $value['remark'] = $value['remark'] ? $value['remark'] : '';
@@ -191,10 +196,13 @@ class ApplicationServer
 
         if($appInfo){
             $appInfo = $appInfo->getData();
-            $version = (new ApplicationVersionModel())->where(['appId' => $appInfo['appId']])->field('apkId, version, createTime, remark, state')->order('version desc')->find()->getData();
+            $version = (new ApplicationVersionModel())->where(['appId' => $appInfo['appId']])->field('apkId, version, code, createTime, remark, state')->order('version desc')->find()->getData();
             $appInfo['appId'] = authcode($appInfo['appId'], 'ENCODE');
             $appInfo['sortUrl'] = $appInfo['sortUrl'] ? $appInfo['sortUrl'] : '';
             $appInfo['describe'] = $appInfo['describe'] ? $appInfo['describe'] : '';
+            $appInfo['type'] = $appInfo['type'] ? $appInfo['type'] : '-';
+            $appInfo['group'] = $appInfo['group'] ? $appInfo['group'] : '-';
+            $appInfo['company'] = $appInfo['company'] ? $appInfo['company'] : '-';
             $appInfo['size'] = byteToMb($appInfo['size']);
             $appInfo['baseUrl'] = WEB_HTTP . '/';
             $appInfo['qrCode'] = urlCompletion(qrCode($appInfo['baseUrl'] . $appInfo['sortUrl'], $appInfo['appIcon'], $appInfo['defaultPlatform']));
@@ -202,7 +210,7 @@ class ApplicationServer
             $appInfo['platform'] = [];
             if($appInfo['android'])$appInfo['platform'][] = 'android';
             if($appInfo['ios'])$appInfo['platform'][] = 'ios';
-            $appInfo['version'] = $version['version'];
+            $appInfo['version'] = $version['version'] . "（Build ". $version['code'] ."）";
             $appInfo['createTime'] = date('Y-m-d H:i:s', $version['createTime']);
         }else{
             $appInfo = [];
