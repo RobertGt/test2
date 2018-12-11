@@ -163,6 +163,7 @@ class ApplicationServer
             foreach ($version as $k => $value){
                 $value = $value->getData();
                 if($k == 0)$appInfo['version'] = $value['version'];
+                $value['version'] = $value['version'] . "(" .$value['platform'] . ")";
                 $value['apkId'] = authcode($value['apkId'], 'ENCODE');
                 $value['appId'] = $appInfo['appId'];
                 $value['remark'] = $value['remark'] ? $value['remark'] : '';
