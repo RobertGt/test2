@@ -68,8 +68,12 @@ class Notify
                     $u['surplus'] = ['inc', $package['download']];
                 }else{
                     $time = 31 * 60 * 60 * 24;
-                    $u['expireTime'] = $userInfo['expireTime'] > time() ?
-                        $userInfo['expireTime'] + $info['number']  * $time : time() + $info['number']  * $time;
+                    if($userInfo['packageId'] == $info['packageId']){
+                        $u['expireTime'] = $userInfo['expireTime'] > time() ?
+                            $userInfo['expireTime'] + $info['number']  * $time : time() + $info['number']  * $time;
+                    }else{
+                        $u['expireTime'] = time() + $info['number']  * $time;
+                    }
                     $u['packageId'] = $info['packageId'];
                     $u['upload'] = $package['upload'];
                     $u['download'] = $package['download'];
