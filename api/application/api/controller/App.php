@@ -119,12 +119,13 @@ class App extends Base
     public function appUpdate(Request $request)
     {
         $param = [
-            'appId'    => authcode($request->param('appId', '')),
-            'appName'  => $request->param('appName', ''),
-            'sortUrl'  => $request->param('sortUrl', ''),
-            'appIcon'  => $request->param('appIcon', ''),
-            'describe' => $request->param('describe', ''),
-            'appImage' => $request->param('appImage', ''),
+            'appId'      => authcode($request->param('appId', '')),
+            'appName'    => $request->param('appName', ''),
+            'sortUrl'    => $request->param('sortUrl', ''),
+            'appIcon'    => $request->param('appIcon', ''),
+            'describe'   => $request->param('describe', ''),
+            'appImage'   => $request->param('appImage', ''),
+            'background' => $request->param('background', '')
         ];
         $validate = new ApplicationValidate();
         if(!$validate->scene('appUpdate')->check($param)){

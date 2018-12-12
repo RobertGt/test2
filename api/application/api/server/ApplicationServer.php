@@ -144,7 +144,7 @@ class ApplicationServer
         $version = (new ApplicationVersionModel())->where($where)->field('apkId, version, code, createTime, remark, state, platform')->order('version desc')->select();
         $where['uid'] = $uid;
         $appInfo = (new ApplicationModel())->field('appId, appkey, appName, appUrl, sortUrl, appIcon, size, describe, 
-                                                           android, ios,appImage, state, defaultPlatform, type, group, company')->where($where)->find();
+                                                           android, ios,appImage, state, defaultPlatform, type, group, company, background')->where($where)->find();
 
 
         if($appInfo){
@@ -194,7 +194,7 @@ class ApplicationServer
             $where['sortUrl'] = $appId;
         }
         $appInfo = (new ApplicationModel())
-            ->field('appId, appkey, appName, appUrl, sortUrl, appIcon, size, describe, android, ios, state, defaultPlatform, type, group, company')
+            ->field('appId, appkey, appName, appUrl, sortUrl, appIcon, size, describe, android, ios, state, defaultPlatform, type, group, company, background')
             ->where($where)->find();
 
         if($appInfo){
@@ -345,6 +345,7 @@ class ApplicationServer
         $save['sortUrl'] = $param['sortUrl'];
         if($param['appIcon'])$save['appIcon'] = $param['appIcon'];
         $save['describe'] = $param['describe'];
+        $save['background'] = $param['background'];
         $save['appImage'] = trim($param['appImage'], ",");
         try{
             (new ApplicationModel())->save($save, $where);
