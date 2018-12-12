@@ -77,7 +77,7 @@ class ApplicationServer
         }
         $appList = (new ApplicationModel())->alias('a')->where($where)
                     ->join('bas_application_version v', 'v.appId = a.appId')
-                    ->field("a.appId, a.appName, a.appIcon, a.android, a.ios, a.size, max(v.version) version, max(v.code) code, a.defaultPlatform")
+                    ->field("a.appId, a.appName, a.appIcon, a.android, a.ios, a.size, max(v.version) version, max(v.code) code, a.defaultPlatform,a.sortUrl")
                     ->page($param['pageNum'], $param['pageSize'])
                     ->group('a.appId')
                     ->order("a.createTime desc")
@@ -85,6 +85,9 @@ class ApplicationServer
         $response = [];
         foreach ($appList as $row){
             $value = $row->getData();
+			$info['sortUrl'] = $value['sortUrl'] ? $value['sortUrl'] : '';
+            $info['baseUrl'] = WEB_HTTP . '/';
+
             $info['appId'] = authcode($value['appId'], 'ENCODE');
             $info['appName'] = $value['appName'] ? $value['appName'] : "";
             $info['appIcon'] = urlCompletion($value['appIcon']);
@@ -191,7 +194,7 @@ class ApplicationServer
             $where['sortUrl'] = $appId;
         }
         $appInfo = (new ApplicationModel())
-            ->field('appId, appkey, appName, appUrl, sortUrl, appIcon, size, describe, android, ios, state, defaultPlatform')
+            ->field('appId, appkey, appName, appUrl, sortUrl, appIcon, size, describe, android, ios, state, defaultPlatform, type, group, company')
             ->where($where)->find();
 
         if($appInfo){
