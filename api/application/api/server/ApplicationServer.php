@@ -291,7 +291,7 @@ class ApplicationServer
             if($version['platform'] == 'ios'){
                 $url = basename(basename($version['appUrl']), '.ipa');
                 $tmp = '/uploads/tmp/';
-                $response['url'] = urlCompletion($tmp . $url . '/down.plist');
+                $response['url'] = "itms-services://?action=download-manifest&url=" . urlCompletion($tmp . $url . '/down.plist');
                 $response['cert'] = urlCompletion($tmp . $url . '/embedded.mobileprovision');
             }else{
                 $response['url'] = urlCompletion($version['appUrl']);
