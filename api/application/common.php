@@ -381,7 +381,7 @@ function qrCode($url, $logo = '', $platform = '')
     $root = ROOT_PATH . 'public';
     $path = DS . 'uploads/code/';
     if(!file_exists($root . $path)){
-        mkdir($root . $path, 0700,true);
+        mkdir($root . $path, 0777,true);
     }
     $fileName = md5($url) . '.png';
     $filePath = $root . $path . $fileName;
