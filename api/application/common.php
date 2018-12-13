@@ -368,7 +368,7 @@ function apkParseInfo($apk) {
     foreach($resources as $resource){
         fwrite(fopen($temp . 'icon.png', 'w'), stream_get_contents($apk->getStream($resource)));
     }
-    $apkinfo['icon'] = @is_file($temp . 'icon.png') ? str_replace($root, '', $temp . '.png') : '/uploads/tmp/icon.png';
+    $apkinfo['icon'] = @is_file($temp . 'icon.png') ? str_replace($root, '', $temp . 'icon.png') : '/uploads/tmp/icon.png';
     $apkinfo['company'] =  '-';
     $apkinfo['group'] =  '-';
     $apkinfo['type'] =  '-';
