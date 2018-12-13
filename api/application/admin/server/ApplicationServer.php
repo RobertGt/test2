@@ -122,7 +122,7 @@ class ApplicationServer
         if($appInfo){
             $appInfo = $appInfo->getData();
             $appInfo['appIcon'] = $appInfo['appIcon'] ? urlCompletion($appInfo['appIcon']) : '../../static/img/app.png';
-            $appInfo['sortUrl'] = $appInfo['sortUrl'] ? $appInfo['sortUrl'] : '';
+            $appInfo['sortUrl'] = urlCompletion($appInfo['sortUrl']);
             $appInfo['describe'] = $appInfo['describe'] ? $appInfo['describe'] : '';
             $appInfo['appId'] = md5($appInfo['appId']);
             $appInfo['appImage'] = explode(',', $appInfo['appImage']);
