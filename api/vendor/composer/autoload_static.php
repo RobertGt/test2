@@ -16,6 +16,7 @@ class ComposerStaticInitf1790b36ec56881081fc5340ed380d58
         'S' => 
         array (
             'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Contracts\\' => 18,
             'Symfony\\Component\\Translation\\' => 30,
             'Symfony\\Component\\Finder\\' => 25,
         ),
@@ -45,6 +46,10 @@ class ComposerStaticInitf1790b36ec56881081fc5340ed380d58
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
+        'Symfony\\Contracts\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/contracts',
         ),
         'Symfony\\Component\\Translation\\' => 
         array (
@@ -98,6 +103,13 @@ class ComposerStaticInitf1790b36ec56881081fc5340ed380d58
             'CFPropertyList' => 
             array (
                 0 => __DIR__ . '/..' . '/rodneyrehm/plist/classes',
+            ),
+        ),
+        'A' => 
+        array (
+            'ApkParser' => 
+            array (
+                0 => __DIR__ . '/..' . '/tufanbarisyildirim/php-apk-parser/lib',
             ),
         ),
     );

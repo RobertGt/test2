@@ -63,30 +63,30 @@
     },
     {
         "name": "doctrine/inflector",
-        "version": "v1.2.0",
-        "version_normalized": "1.2.0.0",
+        "version": "v1.3.0",
+        "version_normalized": "1.3.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/doctrine/inflector.git",
-            "reference": "e11d84c6e018beedd929cff5220969a3c6d1d462"
+            "reference": "5527a48b7313d15261292c149e55e26eae771b0a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/inflector/zipball/e11d84c6e018beedd929cff5220969a3c6d1d462",
-            "reference": "e11d84c6e018beedd929cff5220969a3c6d1d462",
+            "url": "https://api.github.com/repos/doctrine/inflector/zipball/5527a48b7313d15261292c149e55e26eae771b0a",
+            "reference": "5527a48b7313d15261292c149e55e26eae771b0a",
             "shasum": ""
         },
         "require": {
-            "php": "^7.0"
+            "php": "^7.1"
         },
         "require-dev": {
             "phpunit/phpunit": "^6.2"
         },
-        "time": "2017-07-22T12:18:28+00:00",
+        "time": "2018-01-09T20:05:19+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.2.x-dev"
+                "dev-master": "1.3.x-dev"
             }
         },
         "installation-source": "dist",
@@ -132,29 +132,29 @@
     },
     {
         "name": "illuminate/contracts",
-        "version": "v5.5.44",
-        "version_normalized": "5.5.44.0",
+        "version": "5.7.17",
+        "version_normalized": "5.7.17.0",
         "source": {
             "type": "git",
             "url": "https://github.com/illuminate/contracts.git",
-            "reference": "b2a62b4a85485fca9cf5fa61a933ad64006ff528"
+            "reference": "758927e5e925c1d442a1faaa1356675ceba0194c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/illuminate/contracts/zipball/b2a62b4a85485fca9cf5fa61a933ad64006ff528",
-            "reference": "b2a62b4a85485fca9cf5fa61a933ad64006ff528",
+            "url": "https://api.github.com/repos/illuminate/contracts/zipball/758927e5e925c1d442a1faaa1356675ceba0194c",
+            "reference": "758927e5e925c1d442a1faaa1356675ceba0194c",
             "shasum": ""
         },
         "require": {
-            "php": ">=7.0",
-            "psr/container": "~1.0",
-            "psr/simple-cache": "~1.0"
+            "php": "^7.1.3",
+            "psr/container": "^1.0",
+            "psr/simple-cache": "^1.0"
         },
-        "time": "2018-03-20T15:34:35+00:00",
+        "time": "2018-11-15T13:49:08+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "5.5-dev"
+                "dev-master": "5.7-dev"
             }
         },
         "installation-source": "dist",
@@ -178,35 +178,37 @@
     },
     {
         "name": "illuminate/filesystem",
-        "version": "v5.5.44",
-        "version_normalized": "5.5.44.0",
+        "version": "5.7.17",
+        "version_normalized": "5.7.17.0",
         "source": {
             "type": "git",
             "url": "https://github.com/illuminate/filesystem.git",
-            "reference": "b8c0e36d47cfde3a0727bc6e2057775ff98a1bcd"
+            "reference": "dfd91acf0cc557c91b59f6b4b7b9a31a6561b109"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/illuminate/filesystem/zipball/b8c0e36d47cfde3a0727bc6e2057775ff98a1bcd",
-            "reference": "b8c0e36d47cfde3a0727bc6e2057775ff98a1bcd",
+            "url": "https://api.github.com/repos/illuminate/filesystem/zipball/dfd91acf0cc557c91b59f6b4b7b9a31a6561b109",
+            "reference": "dfd91acf0cc557c91b59f6b4b7b9a31a6561b109",
             "shasum": ""
         },
         "require": {
-            "illuminate/contracts": "5.5.*",
-            "illuminate/support": "5.5.*",
-            "php": ">=7.0",
-            "symfony/finder": "~3.3"
+            "illuminate/contracts": "5.7.*",
+            "illuminate/support": "5.7.*",
+            "php": "^7.1.3",
+            "symfony/finder": "^4.1"
         },
         "suggest": {
-            "league/flysystem": "Required to use the Flysystem local and FTP drivers (~1.0).",
-            "league/flysystem-aws-s3-v3": "Required to use the Flysystem S3 driver (~1.0).",
-            "league/flysystem-rackspace": "Required to use the Flysystem Rackspace driver (~1.0)."
+            "league/flysystem": "Required to use the Flysystem local and FTP drivers (^1.0).",
+            "league/flysystem-aws-s3-v3": "Required to use the Flysystem S3 driver (^1.0).",
+            "league/flysystem-cached-adapter": "Required to use the Flysystem cache (^1.0).",
+            "league/flysystem-rackspace": "Required to use the Flysystem Rackspace driver (^1.0).",
+            "league/flysystem-sftp": "Required to use the Flysystem SFTP driver (^1.0)."
         },
-        "time": "2018-02-07T00:04:00+00:00",
+        "time": "2018-10-29T20:54:16+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "5.5-dev"
+                "dev-master": "5.7-dev"
             }
         },
         "installation-source": "dist",
@@ -230,39 +232,41 @@
     },
     {
         "name": "illuminate/support",
-        "version": "v5.5.44",
-        "version_normalized": "5.5.44.0",
+        "version": "5.7.17",
+        "version_normalized": "5.7.17.0",
         "source": {
             "type": "git",
             "url": "https://github.com/illuminate/support.git",
-            "reference": "5c405512d75dcaf5d37791badce02d86ed8e4bc4"
+            "reference": "f8b9387034e11980d3953c814b6ad65e2cd244e3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/illuminate/support/zipball/5c405512d75dcaf5d37791badce02d86ed8e4bc4",
-            "reference": "5c405512d75dcaf5d37791badce02d86ed8e4bc4",
+            "url": "https://api.github.com/repos/illuminate/support/zipball/f8b9387034e11980d3953c814b6ad65e2cd244e3",
+            "reference": "f8b9387034e11980d3953c814b6ad65e2cd244e3",
             "shasum": ""
         },
         "require": {
-            "doctrine/inflector": "~1.1",
+            "doctrine/inflector": "^1.1",
             "ext-mbstring": "*",
-            "illuminate/contracts": "5.5.*",
-            "nesbot/carbon": "^1.24.1",
-            "php": ">=7.0"
+            "illuminate/contracts": "5.7.*",
+            "nesbot/carbon": "^1.26.3",
+            "php": "^7.1.3"
         },
-        "replace": {
+        "conflict": {
             "tightenco/collect": "<5.5.33"
         },
         "suggest": {
-            "illuminate/filesystem": "Required to use the composer class (5.5.*).",
-            "symfony/process": "Required to use the composer class (~3.3).",
-            "symfony/var-dumper": "Required to use the dd function (~3.3)."
+            "illuminate/filesystem": "Required to use the composer class (5.7.*).",
+            "moontoast/math": "Required to use ordered UUIDs (^1.1).",
+            "ramsey/uuid": "Required to use Str::uuid() (^3.7).",
+            "symfony/process": "Required to use the composer class (^4.1).",
+            "symfony/var-dumper": "Required to use the dd function (^4.1)."
         },
-        "time": "2018-08-10T19:40:01+00:00",
+        "time": "2018-12-08T15:33:10+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "5.5-dev"
+                "dev-master": "5.7-dev"
             }
         },
         "installation-source": "dist",
@@ -605,28 +609,98 @@
         ]
     },
     {
-        "name": "symfony/finder",
-        "version": "v3.4.19",
-        "version_normalized": "3.4.19.0",
+        "name": "symfony/contracts",
+        "version": "v1.0.2",
+        "version_normalized": "1.0.2.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/symfony/finder.git",
-            "reference": "6cf2be5cbd0e87aa35c01f80ae0bf40b6798e442"
+            "url": "https://github.com/symfony/contracts.git",
+            "reference": "1aa7ab2429c3d594dd70689604b5cf7421254cdf"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/finder/zipball/6cf2be5cbd0e87aa35c01f80ae0bf40b6798e442",
-            "reference": "6cf2be5cbd0e87aa35c01f80ae0bf40b6798e442",
+            "url": "https://api.github.com/repos/symfony/contracts/zipball/1aa7ab2429c3d594dd70689604b5cf7421254cdf",
+            "reference": "1aa7ab2429c3d594dd70689604b5cf7421254cdf",
             "shasum": ""
         },
         "require": {
-            "php": "^5.5.9|>=7.0.8"
+            "php": "^7.1.3"
         },
-        "time": "2018-11-11T19:48:54+00:00",
+        "require-dev": {
+            "psr/cache": "^1.0",
+            "psr/container": "^1.0"
+        },
+        "suggest": {
+            "psr/cache": "When using the Cache contracts",
+            "psr/container": "When using the Service contracts",
+            "symfony/cache-contracts-implementation": "",
+            "symfony/service-contracts-implementation": "",
+            "symfony/translation-contracts-implementation": ""
+        },
+        "time": "2018-12-05T08:06:11+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.4-dev"
+                "dev-master": "1.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Contracts\\": ""
+            },
+            "exclude-from-classmap": [
+                "**/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nicolas Grekas",
+                "email": "p@tchwork.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "A set of abstractions extracted out of the Symfony components",
+        "homepage": "https://symfony.com",
+        "keywords": [
+            "abstractions",
+            "contracts",
+            "decoupling",
+            "interfaces",
+            "interoperability",
+            "standards"
+        ]
+    },
+    {
+        "name": "symfony/finder",
+        "version": "v4.2.1",
+        "version_normalized": "4.2.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/finder.git",
+            "reference": "e53d477d7b5c4982d0e1bfd2298dbee63d01441d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/finder/zipball/e53d477d7b5c4982d0e1bfd2298dbee63d01441d",
+            "reference": "e53d477d7b5c4982d0e1bfd2298dbee63d01441d",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^7.1.3"
+        },
+        "time": "2018-11-11T19:52:12+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "4.2-dev"
             }
         },
         "installation-source": "dist",
@@ -718,34 +792,39 @@
     },
     {
         "name": "symfony/translation",
-        "version": "v3.4.19",
-        "version_normalized": "3.4.19.0",
+        "version": "v4.2.1",
+        "version_normalized": "4.2.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/translation.git",
-            "reference": "bdbe940ed3ef4179f86032086c32d3a858becc0f"
+            "reference": "c0e2191e9bed845946ab3d99767513b56ca7dcd6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/translation/zipball/bdbe940ed3ef4179f86032086c32d3a858becc0f",
-            "reference": "bdbe940ed3ef4179f86032086c32d3a858becc0f",
+            "url": "https://api.github.com/repos/symfony/translation/zipball/c0e2191e9bed845946ab3d99767513b56ca7dcd6",
+            "reference": "c0e2191e9bed845946ab3d99767513b56ca7dcd6",
             "shasum": ""
         },
         "require": {
-            "php": "^5.5.9|>=7.0.8",
+            "php": "^7.1.3",
+            "symfony/contracts": "^1.0.2",
             "symfony/polyfill-mbstring": "~1.0"
         },
         "conflict": {
-            "symfony/config": "<2.8",
+            "symfony/config": "<3.4",
             "symfony/dependency-injection": "<3.4",
             "symfony/yaml": "<3.4"
         },
+        "provide": {
+            "symfony/translation-contracts-implementation": "1.0"
+        },
         "require-dev": {
             "psr/log": "~1.0",
-            "symfony/config": "~2.8|~3.0|~4.0",
+            "symfony/config": "~3.4|~4.0",
+            "symfony/console": "~3.4|~4.0",
             "symfony/dependency-injection": "~3.4|~4.0",
             "symfony/finder": "~2.8|~3.0|~4.0",
-            "symfony/intl": "^2.8.18|^3.2.5|~4.0",
+            "symfony/intl": "~3.4|~4.0",
             "symfony/yaml": "~3.4|~4.0"
         },
         "suggest": {
@@ -753,11 +832,11 @@
             "symfony/config": "",
             "symfony/yaml": ""
         },
-        "time": "2018-11-26T10:17:44+00:00",
+        "time": "2018-12-06T10:45:32+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.4-dev"
+                "dev-master": "4.2-dev"
             }
         },
         "installation-source": "dist",
@@ -785,5 +864,58 @@
         ],
         "description": "Symfony Translation Component",
         "homepage": "https://symfony.com"
+    },
+    {
+        "name": "tufanbarisyildirim/php-apk-parser",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/tufanbarisyildirim/php-apk-parser.git",
+            "reference": "aceeb3d6f9a7bd48bbe9fa496195e729e3e5c499"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/tufanbarisyildirim/php-apk-parser/zipball/aceeb3d6f9a7bd48bbe9fa496195e729e3e5c499",
+            "reference": "aceeb3d6f9a7bd48bbe9fa496195e729e3e5c499",
+            "shasum": ""
+        },
+        "require": {
+            "ext-json": "*",
+            "ext-libxml": "*",
+            "ext-mbstring": "*",
+            "ext-simplexml": "*",
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "3.7.*"
+        },
+        "time": "2018-12-05T23:41:40+00:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "ApkParser": "lib"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Tufan Baris YILDIRIM",
+                "email": "tufanbarisyildirim@gmail.com",
+                "homepage": "http://tufanbarisyildirim.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "Read basic info about an application from .apk file.",
+        "homepage": "https://github.com/tufanbarisyildirim/php-apk-parser",
+        "keywords": [
+            "android",
+            "apk",
+            "parser"
+        ]
     }
 ]

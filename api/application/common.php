@@ -309,10 +309,13 @@ function ipaParseInfo($apk) {
                     if(!empty($f)){
                         $icon = array_pop($f);
                     }
-                    exec("unzip {$apk} {$icon} -d " . $temp_save_path);
+                    $icon = basename($icon);
+                    (new \Chumper\Zipper\Zipper())->make($apk)
+                        ->folder('Payload/' . $appFolder)
+                        ->extractMatchingRegex($temp_save_path ,"/{$icon}/i");
 
                     $parser = new \app\api\server\ParserServer();
-                    $ipaFilePath = $temp_save_path . "{$icon}";
+                    $ipaFilePath = $temp_save_path . $icon;
                     $pngImgName = $temp_save_path . 'icon.png';
                     $apkinfo['icon'] = $path . '/' . 'icon.png';
                     $parser::fix($ipaFilePath, $pngImgName);
@@ -325,6 +328,13 @@ function ipaParseInfo($apk) {
                 $apkinfo['code'] = $ipaInfo['CFBundleVersion'];
                 // 别名
                 $apkinfo['appName'] = !empty($ipaInfo['CFBundleDisplayName']) ? $ipaInfo['CFBundleDisplayName'] : $ipaInfo['CFBundleName'];
+
+                $down = $root . '/uploads/down.plist';
+                $str = file_get_contents($down);
+                $url = urlCompletion(str_replace($root, '', $apk));
+                $icon = urlCompletion($apkinfo['icon']);
+                $str = str_replace(array('{ipa}', '{icon}', '{bid}', '{name}'), array($url, $icon, $apkinfo['package'], $apkinfo['appName']), $str);
+                fwrite(fopen($temp_save_path . 'down.plist', 'w'), $str);
             }
         }
     }
@@ -334,99 +344,34 @@ function ipaParseInfo($apk) {
 
 function apkParseInfo($apk) {
 
-    $aapt = 'aapt';// 这里其实是aapt的路径，不过我已经ln到/usr/local/aapt了。就不用了。
     $root = ROOT_PATH . 'public';
     $temp_save_path = $root . '/uploads/tmp/';
 
-    exec("{$aapt} d badging {$apk}", $output, $return);
-
-    // 解析错误
-    if ( $return !== 0 ) {
-        return false;
+    $temp = $temp_save_path . basename($apk, '.apk') . '/';
+    if(!file_exists($temp)){
+        mkdir($temp, 0700,true);
     }
-
+    $apk = new \ApkParser\Parser($apk);
+    // 解析错误
+    if (!$apk) {
+       return false;
+    }
+    $apkinfo['icon'] = '/uploads/tmp/icon.png';
+    $apkinfo['package'] = $apk->getManifest()->getPackageName();
+    $apkinfo['version'] = $apk->getManifest()->getVersionName();
+    $apkinfo['code'] = $apk->getManifest()->getVersionCode();
+    $labelResourceId = $apk->getManifest()->getApplication()->getLabel();
+    $appLabel = $apk->getResources($labelResourceId);
+    $apkinfo['appName'] = $appLabel[0];
+    $resourceId = $apk->getManifest()->getApplication()->getIcon();
+    $resources = $apk->getResources($resourceId);
+    foreach($resources as $resource){
+        fwrite(fopen($temp . 'icon.png', 'w'), stream_get_contents($apk->getStream($resource)));
+    }
+    $apkinfo['icon'] = @is_file($temp . 'icon.png') ? str_replace($root, '', $temp . '.png') : '/uploads/tmp/icon.png';
     $apkinfo['company'] =  '-';
     $apkinfo['group'] =  '-';
-    $apkinfo['type'] =  '内测版';
-
-    $output = implode(PHP_EOL, $output);
-    //$apkinfo = new \stdClass;
-
-    // 对外显示名称
-    $pattern = "/application: label='(.*)'/isU";
-    $results = preg_match($pattern, $output, $res);
-    $apkinfo['appName'] = $results ? $res[1] : '';
-
-    // 内部名称，软件唯一的
-    $pattern = "/package: name='(.*)'/isU";
-    $results = preg_match($pattern, $output, $res);
-    $apkinfo['package'] = $results ? $res[1] : '';
-
-    // 内部版本名称，用于检查升级
-    $pattern = "/versionCode='(.*)'/isU";
-    $results = preg_match($pattern, $output, $res);
-    $apkinfo['code'] = $results ? $res[1] : 0;
-
-    // 对外显示的版本名称
-    $pattern = "/versionName='(.*)'/isU";
-    $results = preg_match($pattern, $output, $res);
-    $apkinfo['version'] = $results ? $res[1] : '';
-    /*
-    // 系统支持
-    $pattern = "/sdkVersion:'(.*)'/isU";
-    $results = preg_match($pattern, $output, $res);
-    $apkinfo->sdk_version = $results ? $res[1] : 0;
-
-    // 分辨率支持
-    $densities = array(
-        "/densities: '(.*)'/isU",
-        "/densities: '120' '(.*)'/isU",
-        "/densities: '160' '(.*)'/isU",
-        "/densities: '240' '(.*)'/isU",
-        "/densities: '120' '160' '(.*)'/isU",
-        "/densities: '160' '240' '(.*)'/isU",
-        "/densities: '120' '160' '240' '(.*)'/isU"
-    );
-
-    foreach($densities AS $k=>$v) {
-        if( preg_match($v, $output, $res) ) {
-            $apkinfo->densities[] = $res[1];
-        }
-    }
-
-    // 应用权限
-    $pattern = "/uses-permission: name='(.*)'/isU";
-    $results = preg_match_all($pattern, $output, $res);
-    $apkinfo->permissions = $results ? $res[1] : '';
-
-    // 需要的功能（硬件支持）
-    $pattern = "/uses-feature: name='(.*)'/isU";
-    $results = preg_match_all($pattern, $output, $res);
-    $apkinfo->features = $results ? $res[1] : '';
-    */
-    $apkinfo['icon'] = '/uploads/tmp/icon.png';
-    // 应用图标路径
-    if( preg_match("/icon='(.+)'/isU", $output, $res) ) {
-
-        $icon_draw = trim( $res[1] );
-        $icon_hdpi = 'res/drawable-hdpi/' . basename($icon_draw);
-
-        $temp =$temp_save_path.basename($apk, '.apk') . DIRECTORY_SEPARATOR;
-
-        if( @is_dir($temp) === FALSE ) {
-            mkdir($temp,0777,true);
-        }
-
-        exec("unzip {$apk} {$icon_draw} -d " . $temp);
-        exec("unzip {$apk} {$icon_hdpi} -d " . $temp);
-
-        $icon_draw_abs = $temp . $icon_draw;
-        $icon_hdpi_abs = $temp . $icon_hdpi;
-
-        $apkinfo['icon'] = @is_file($icon_hdpi_abs) ? str_replace($root, '', $icon_hdpi_abs) :
-            (@is_file($icon_draw_abs) ? str_replace($root, '', $icon_draw_abs) : '/uploads/tmp/icon.png');
-    }
-
+    $apkinfo['type'] =  '-';
     return $apkinfo;
 }
 

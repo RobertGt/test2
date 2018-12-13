@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'CFPropertyList' => array($vendorDir . '/rodneyrehm/plist/classes'),
+    'ApkParser' => array($vendorDir . '/tufanbarisyildirim/php-apk-parser/lib'),
 );

@@ -259,7 +259,7 @@ class ApplicationServer
         $where['platform'] = $param['platform'];
         $where['state'] = 1;
 
-        $version = (new ApplicationVersionModel())->where($where)->field('apkId, version, appUrl')->order('version desc')->find();
+        $version = (new ApplicationVersionModel())->where($where)->field('apkId, version, appUrl, platform')->order('version desc')->find();
         if(!$version){
             $this->errMsg = '下载平台不存在';
             return false;
@@ -288,7 +288,14 @@ class ApplicationServer
             if($surplus >= $userInfo['download']){
                 (new UserModel())->where(['uid' => $appInfo['uid']])->exp('surplus', 'surplus - 1')->update();
             }
-            $response['url'] = urlCompletion($version['appUrl']);
+            if($version['platform'] == 'ios'){
+                $url = basename(basename($version['appUrl']), '.ipa');
+                $tmp = '/uploads/tmp/';
+                $response['url'] = urlCompletion($tmp . $url . '/down.plist');
+                $response['cert'] = urlCompletion($tmp . $url . '/embedded.mobileprovision');
+            }else{
+                $response['url'] = urlCompletion($version['appUrl']);
+            }
         }catch (Exception $e){
             Log::error("appDownUrl error:" . $e->getMessage());
             $this->errMsg = '未知错误';
