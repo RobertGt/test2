@@ -292,7 +292,7 @@ class ApplicationServer
                 $url = basename(basename($version['appUrl']), '.ipa');
                 $tmp = '/uploads/tmp/';
                 $response['url'] = "itms-services://?action=download-manifest&url=" . urlCompletion($tmp . $url . '/down.plist');
-                $response['cert'] = urlCompletion($tmp . $url . '/embedded.mobileprovision');
+                $response['cert'] = urlCompletion('/uploads/app.mobileprovision');
             }else{
                 $response['url'] = urlCompletion($version['appUrl']);
             }
